@@ -1,13 +1,12 @@
 {
     "ModTitle": "Cheb's Necromancy",
-    "ModVersion": "0.0.2",
+    "ModVersion": "0.0.3",
     "ModAuthor": "Cheb Gonaz",
     "ContactInfo": "chebgonaz@gmail.com",
     "DFUnity_Version": "0.15.0",
     "ModDescription": "Adds Necromancy to the game.",
     "GUID": "fb48eda0-b2d7-4b67-9ccf-b9c98c6edf35",
     "Files": [
-        "Assets/Game/Mods/ChebsNecromancy.dfmod.json",
         "Assets/Scripts/Internal/DaggerfallMobileUnit.cs",
         "Assets/Prefabs/Missiles/ShockMissile.prefab",
         "Assets/Prefabs/Missiles/FireMissile.prefab",
@@ -31,8 +30,9 @@
         "Assets/Prefabs/Missiles/PoisonMissile.prefab",
         "Assets/Scripts/Internal/DaggerfallEnemy.cs",
         "Assets/Scripts/Game/Serialization/SerializableEnemy.cs",
-        "Assets/Game/Mods/ChebsNecromancy/Scripts/SkeletonSpawner.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/MinionSpawner.cs",
         "Assets/Game/Mods/ChebsNecromancy/Scripts/SpawnSkeletonCommand.cs",
-        "Assets/Game/Mods/ChebsNecromancy/Scripts/ChebsNecromancy.cs"
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/ChebsNecromancy.cs",
+        "Assets/Game/Mods/ChebsNecromancy/ChebsNecromancy.dfmod.json"
     ]
 }

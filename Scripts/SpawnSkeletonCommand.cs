@@ -1,5 +1,4 @@
-﻿using ChebsNecromancyMod;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ChebsNecromancyMod
 {
@@ -11,7 +10,7 @@ namespace ChebsNecromancyMod
 
         public static string Execute(params string[] args)
         {
-            SkeletonSpawner spawner = new GameObject("SkeletonSpawner").AddComponent<SkeletonSpawner>();
+            var spawner = new GameObject("SkeletonSpawner").AddComponent<MinionSpawner>();
             return "";
         }
     }

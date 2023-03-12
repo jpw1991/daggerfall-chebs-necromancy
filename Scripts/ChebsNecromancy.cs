@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using DaggerfallWorkshop.Game;
+﻿using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
+using UnityEngine;
 using Wenzil.Console;
 
 namespace ChebsNecromancyMod
