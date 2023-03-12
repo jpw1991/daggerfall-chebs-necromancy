@@ -11,7 +11,6 @@ namespace ChebsNecromancyMod
         public float doorCrouchingHeight = 5f;
 
         private EnemyMotor enemyMotor;
-        //private EnemyEntity enemyEntity;
         private EnemySenses enemySenses;
         private bool obstacleDetected;
         private bool fallDetected;
@@ -45,13 +44,11 @@ namespace ChebsNecromancyMod
 
         protected void FollowPlayer()
         {
-            // Move the enemy twice as fast as you walk so you don't lose them
-            float moveSpeed = (1 + PlayerSpeedChanger.dfWalkBase) * MeshReader.GlobalScale * 1.5f;//(enemyEntity.Stats.LiveSpeed + PlayerSpeedChanger.dfWalkBase) * MeshReader.GlobalScale * 1.5f;
+            var moveSpeed = (1 + PlayerSpeedChanger.dfWalkBase) * MeshReader.GlobalScale * 1.5f;
 
             destination = Camera.main.transform.position;
 
-            // Get direction & distance to destination.
-            Vector3 direction = (destination - enemyMotor.transform.position).normalized;
+            var direction = (destination - enemyMotor.transform.position).normalized;
             var distance = (destination - enemyMotor.transform.position).magnitude;
 
             if (distance >= stopDistance)
@@ -71,9 +68,7 @@ namespace ChebsNecromancyMod
                 TurnToTarget(direction);
             }
 
-            Vector3 motion = direction * moveSpeed;
-
-            // Check if there is something to collide with directly in movement direction, such as upward sloping ground.
+            var motion = direction * moveSpeed;
             var direction2d = direction;
             direction2d.y = 0;
 
@@ -121,23 +116,21 @@ namespace ChebsNecromancyMod
         void ObstacleCheck(Vector3 direction)
         {
             obstacleDetected = false;
-            float checkDistance = controller.radius / Mathf.Sqrt(2f);
+            var checkDistance = controller.radius / Mathf.Sqrt(2f);
             foundUpwardSlope = false;
             foundDoor = false;
 
-            RaycastHit hit;
             // Climbable/not climbable step for the player seems to be at around a height of 0.65f. The player is 1.8f tall.
             // Using the same ratio to height as these values, set the capsule for the enemy.
             Vector3 p1 = enemyMotor.transform.position + (Vector3.up * -originalHeight * 0.1388F);
             Vector3 p2 = p1 + (Vector3.up * Mathf.Min(originalHeight, doorCrouchingHeight) / 2);
 
-            if (Physics.CapsuleCast(p1, p2, controller.radius / 2, direction, out hit, checkDistance, ignoreMaskForObstacles))
+            if (Physics.CapsuleCast(p1, p2, controller.radius / 2, direction, out RaycastHit hit, checkDistance, ignoreMaskForObstacles))
             {
-                // Debug.DrawRay(transform.position, direction, Color.red, 2.0f);
                 obstacleDetected = true;
-                DaggerfallEntityBehaviour entityBehaviour2 = hit.transform.GetComponent<DaggerfallEntityBehaviour>();
-                DaggerfallActionDoor door = hit.transform.GetComponent<DaggerfallActionDoor>();
-                DaggerfallLoot loot = hit.transform.GetComponent<DaggerfallLoot>();
+                var entityBehaviour2 = hit.transform.GetComponent<DaggerfallEntityBehaviour>();
+                var door = hit.transform.GetComponent<DaggerfallActionDoor>();
+                var loot = hit.transform.GetComponent<DaggerfallLoot>();
 
                 if (entityBehaviour2)
                 {
@@ -161,7 +154,7 @@ namespace ChebsNecromancyMod
                 else if (!CanFly() && !enemyMotor.IsLevitating)
                 {
                     // If an obstacle was hit, check for a climbable upward slope
-                    Vector3 checkUp = enemyMotor.transform.position + direction;
+                    var checkUp = enemyMotor.transform.position + direction;
                     checkUp.y++;
 
                     direction = (checkUp - enemyMotor.transform.position).normalized;
