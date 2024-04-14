@@ -20,8 +20,8 @@ namespace ChebsNecromancyMod
             go.AddComponent<ChebsNecromancy>();
 
             ConsoleCommandsDatabase.RegisterCommand(
-                SpawnSkeletonCommand.name, SpawnSkeletonCommand.description,
-                SpawnSkeletonCommand.usage, SpawnSkeletonCommand.Execute);
+                SpawnCommand.name, SpawnCommand.description,
+                SpawnCommand.usage, SpawnCommand.Execute);
 
             ConsoleCommandsDatabase.RegisterCommand(
                 RecallMinionsCommand.name, RecallMinionsCommand.description,
@@ -41,7 +41,6 @@ namespace ChebsNecromancyMod
             {
                 if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly)
                 {
-                    Debug.Log($"Registering existing minion {daggerfallEnemy.name}");
                     daggerfallEnemy.gameObject.AddComponent<UndeadMinion>();
                 }
             }

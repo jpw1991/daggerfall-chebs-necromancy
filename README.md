@@ -2,8 +2,6 @@
 
 A mod for Daggerfall Unity that adds Necromancy.
 
-**Note:** Skeleton roaring removed in 0.0.3 to preserve our collective eardrums from harm.
-
 https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/114746b1-2c01-4d91-9dbd-30d932badcd0
 
 ##  About Me
@@ -21,26 +19,27 @@ Thank you and I hope you enjoy the mod! If you have questions or need help pleas
 Right now, this mod is very basic and in its early stages. All you can do is:
 
 - Press `~` to open the console
-- Type `spawnskeleton` and some skeletons will spawn
-- Type `recallminions` to bring the skeletons to your position if they get stuck
+- Type `help spawn` to read the options, then spawn a minion in
+  - `spawn skeleton` will spawn a skeletal warrior
+  - `spawn vampire` will spawn a vampire, etc.
+- Type `recallminions` to bring the undead to your position if they get stuck or lost
 
-These skeletons are clones of vanilla skeletons but are allied to the player. They have code which makes them follow the player, but the pathfinding isn't great.
+The undead are clones of vanilla enemies but are allied to the player. They also have code attached to them which makes them follow the player, but the pathfinding isn't great.
 
 ## Wishes for the Future
 
-- More kinds of minions
-- Minions follow the player
 - Some kind of progression system, like a Necromancy level that increases with use
-- Spells to create the minions rather than console commands
+- Spells or some other in-game way to create the minions rather than console commands
 
 ## Installation
 
-- to do
+- Please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
 
 ## Changelog
 
 Version | Date       | Info
 --- |------------| ---
+0.0.4 | 14/04/2024 | Remove spawnskeleton command and replace with spawn command that can spawn many different types of undead.
 0.0.3 | 14/04/2024 | Restore UndeadMinion script when when game loads so that existing minions resume following; Add command to recall minions to your position; remove skeleton bark
 0.0.2 | 05/02/2023 | Add command to spawn skeletons
 0.0.1 | 05/02/2023 | Create mod

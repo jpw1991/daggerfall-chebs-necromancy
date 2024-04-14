@@ -1,6 +1,6 @@
 {
     "ModTitle": "Cheb's Necromancy",
-    "ModVersion": "0.0.3",
+    "ModVersion": "0.0.4",
     "ModAuthor": "Cheb Gonaz",
     "ContactInfo": "chebgonaz@gmail.com",
     "DFUnity_Version": "0.15.0",
@@ -31,8 +31,8 @@
         "Assets/Scripts/Internal/DaggerfallEnemy.cs",
         "Assets/Scripts/Game/Serialization/SerializableEnemy.cs",
         "Assets/Game/Mods/ChebsNecromancy/Scripts/MinionSpawner.cs",
-        "Assets/Game/Mods/ChebsNecromancy/Scripts/SpawnSkeletonCommand.cs",
         "Assets/Game/Mods/ChebsNecromancy/Scripts/ChebsNecromancy.cs",
-        "Assets/Game/Mods/ChebsNecromancy/ChebsNecromancy.dfmod.json"
+        "Assets/Game/Mods/ChebsNecromancy/ChebsNecromancy.dfmod.json",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/SpawnCommand.cs"
     ]
 }
