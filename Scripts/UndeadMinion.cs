@@ -7,22 +7,28 @@ namespace ChebsNecromancyMod
 {
     public class UndeadMinion : MonoBehaviour
     {
-        public float stopDistance = 5f;
-        public float doorCrouchingHeight = 5f;
+        [SerializeField] private float stopDistance = 5f;
+        [SerializeField] private float doorCrouchingHeight = 5f;
 
         private EnemyMotor enemyMotor;
         private EnemySenses enemySenses;
+        private CharacterController controller;
+        private MobileUnit mobile;
+
+        private int ignoreMaskForObstacles;
+
+        private Vector3 destination;
+        private float originalHeight;
         private bool obstacleDetected;
         private bool fallDetected;
         private bool foundUpwardSlope;
         private bool foundDoor;
-        private Vector3 destination;
-        private CharacterController controller;
-        private float originalHeight;
-        private MobileUnit mobile;
-        private int ignoreMaskForObstacles;
 
-        protected void Awake()
+        private const float TURN_SPEED = 20f;
+        private const float YAW_ANGLE = 22.5f;
+        private const float FALL_RAYCAST_DISTANCE = 1.5f;
+
+        private void Awake()
         {
             enemyMotor = GetComponent<EnemyMotor>();
             enemySenses = enemyMotor.GetComponent<EnemySenses>();
@@ -32,6 +38,12 @@ namespace ChebsNecromancyMod
             ignoreMaskForObstacles = ~(1 << LayerMask.NameToLayer("SpellMissiles") | 1 << LayerMask.NameToLayer("Ignore Raycast"));
 
             enemyMotor.IsHostile = false;
+
+            if (TryGetComponent(out EnemySounds enemySounds))
+            {
+                // mute that infernal roaring
+                enemySounds.BarkSound = SoundClips.None;
+            }
         }
 
         private void FixedUpdate()
@@ -42,7 +54,7 @@ namespace ChebsNecromancyMod
             }
         }
 
-        protected void FollowPlayer()
+        private void FollowPlayer()
         {
             var moveSpeed = (1 + PlayerSpeedChanger.dfWalkBase) * MeshReader.GlobalScale * 1.5f;
 
@@ -55,29 +67,30 @@ namespace ChebsNecromancyMod
             {
                 AttemptMove(direction, moveSpeed, Camera.main.transform);
             }
-            else if (!enemySenses.TargetIsWithinYawAngle(22.5f, destination))
+            else if (!enemySenses.TargetIsWithinYawAngle(YAW_ANGLE, destination))
             {
                 TurnToTarget(direction);
             }
         }
 
-        void AttemptMove(Vector3 direction, float moveSpeed, Transform targetTransform)
+        private void AttemptMove(Vector3 direction, float moveSpeed, Transform targetTransform)
         {
-            if (!enemySenses.TargetIsWithinYawAngle(5.625f, destination))
+            if (!enemySenses.TargetIsWithinYawAngle(YAW_ANGLE / 4, destination))
             {
                 TurnToTarget(direction);
             }
 
             var motion = direction * moveSpeed;
-            var direction2d = direction;
-            direction2d.y = 0;
+            var direction2d = new Vector3(direction.x, 0, direction.z);
 
             ObstacleCheck(direction2d);
             FallCheck(direction2d);
 
             if (fallDetected || obstacleDetected)
             {
-                enemyMotor.transform.position = targetTransform.position - targetTransform.forward;
+                var position = targetTransform.position;
+                var newPos = new Vector3(position.x, enemyMotor.transform.position.y, position.z);
+                enemyMotor.transform.position = newPos - targetTransform.forward;
             }
             else
             {
@@ -85,14 +98,12 @@ namespace ChebsNecromancyMod
             }
         }
 
-        void TurnToTarget(Vector3 targetDirection)
+        private void TurnToTarget(Vector3 targetDirection)
         {
-            const float turnSpeed = 20f;
-
-            enemyMotor.transform.forward = Vector3.RotateTowards(enemyMotor.transform.forward, targetDirection, turnSpeed * Mathf.Deg2Rad, 0.0f);
+            enemyMotor.transform.forward = Vector3.RotateTowards(enemyMotor.transform.forward, targetDirection, TURN_SPEED * Mathf.Deg2Rad, 0.0f);
         }
 
-        void FallCheck(Vector3 direction)
+        private void FallCheck(Vector3 direction)
         {
             if (CanFly() || enemyMotor.IsLevitating || obstacleDetected || foundUpwardSlope || foundDoor)
             {
@@ -105,7 +116,7 @@ namespace ChebsNecromancyMod
 
             direction *= checkDistance;
             var ray = new Ray(rayOrigin + direction, Vector3.down);
-            fallDetected = !Physics.Raycast(ray, out RaycastHit hit, (originalHeight * 0.5f) + 1.5f);
+            fallDetected = !Physics.Raycast(ray, out RaycastHit hit, (originalHeight * 0.5f) + FALL_RAYCAST_DISTANCE);
         }
 
         bool CanFly()

@@ -1,11 +1,8 @@
-using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using DaggerfallWorkshop;
-using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace ChebsNecromancyMod
@@ -13,7 +10,7 @@ namespace ChebsNecromancyMod
     public class MinionSpawner : MonoBehaviour
     {
         public MobileTypes foeType = MobileTypes.SkeletalWarrior;
-        public int spawnCount = 3;
+        public int spawnCount = 1;
         public float maxDistance = 3f;
         public bool alliedToPlayer = true;
 
@@ -34,6 +31,11 @@ namespace ChebsNecromancyMod
 
         void PositionMinion(GameObject minion)
         {
+            if (Camera.main == null)
+            {
+                Debug.LogError("ChebsNecromancy.MinionSpawner.PositionMinion: Camera.main is null.");
+                return;
+            }
             var center = Camera.main.transform.position;
             var randomPos = Random.insideUnitSphere.normalized * maxDistance + center;
             randomPos.y = center.y;
