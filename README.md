@@ -4,7 +4,7 @@ A mod for Daggerfall Unity that adds Necromancy.
 
 **Note:** Skeleton roaring removed in 0.0.3 to preserve our collective eardrums from harm.
 
-![dfu.mp4](dfu.mp4)
+https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/114746b1-2c01-4d91-9dbd-30d932badcd0
 
 ##  About Me
 
