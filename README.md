@@ -2,7 +2,7 @@
 
 A mod for Daggerfall Unity that adds Necromancy.
 
-https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/114746b1-2c01-4d91-9dbd-30d932badcd0
+[![video](https://img.youtube.com/vi/pf2PREe3q1E/0.jpg)](https://www.youtube.com/watch?v=pf2PREe3q1E)
 
 ##  About Me
 
