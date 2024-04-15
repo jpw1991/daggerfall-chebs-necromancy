@@ -34,10 +34,6 @@ Spells can be created at the spell maker in the Mage's Guild.
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/d6377ecd-f057-4e6d-8dca-a7f74160ba02)
 
-![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/ce9aa2c5-0c25-47c5-ba79-c7fd05305c8b)
-
-
-
 ## Configuration
 
 The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.5. Help in this department would be immensely appreciated!
@@ -62,6 +58,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.6 | 15/04/2024 | Fix spell prices not updating properly
 0.0.5 | 15/04/2024 | Add spells to mysticism school; Add customizable spell costs
 0.0.4 | 14/04/2024 | Remove spawnskeleton command and replace with spawn command that can spawn many different types of undead.
 0.0.3 | 14/04/2024 | Restore UndeadMinion script when when game loads so that existing minions resume following; Add command to recall minions to your position; remove skeleton bark
