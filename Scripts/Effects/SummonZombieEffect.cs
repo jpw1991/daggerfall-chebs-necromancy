@@ -5,8 +5,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonZombieEffect : ChebEffect
     {
-        protected new static string effectKey = "Summon Zombie";
-        protected new static string effectDescription = "Summons a zombie to follow and guard you.";
+        protected override string effectKey => "Summon Zombie";
+        protected override string effectDescription => "Summons a zombie to follow and guard you.";
 
         public new static int CostA { get; set; }
         public new static int CostB { get; set; }

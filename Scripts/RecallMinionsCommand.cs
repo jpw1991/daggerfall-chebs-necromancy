@@ -1,7 +1,4 @@
-﻿using DaggerfallWorkshop;
-using UnityEngine;
-
-namespace ChebsNecromancyMod
+﻿namespace ChebsNecromancyMod
 {
     public static class RecallMinionsCommand
     {

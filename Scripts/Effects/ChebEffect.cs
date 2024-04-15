@@ -7,12 +7,12 @@ namespace ChebsNecromancyMod
 {
     public class ChebEffect : BaseEntityEffect
     {
-        protected static string effectKey = "Recall Minions";
-        protected static string effectDescription = "Recall all minions to your location.";
+        protected virtual string effectKey => "Recall Minions";
+        protected virtual string effectDescription => "Recall all minions to your location.";
 
-        public static int CostA { get; set; }
-        public static int CostB { get; set; }
-        public static int CostOffset { get; set; }
+        public int CostA { get; set; }
+        public int CostB { get; set; }
+        public int CostOffset { get; set; }
 
         public override void SetProperties()
         {

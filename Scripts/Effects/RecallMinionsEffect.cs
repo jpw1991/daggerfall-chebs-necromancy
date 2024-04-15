@@ -5,12 +5,12 @@ namespace ChebsNecromancyMod
 {
     public class RecallMinionsEffect : ChebEffect
     {
-        protected new static string effectKey = "Recall Minions";
-        protected new static string effectDescription = "Recall all minions to your location.";
+        protected override string effectKey => "Recall Minions";
+        protected override string effectDescription => "Recall all minions to your location.";
 
-        public new static int CostA { get; set; }
-        public new static int CostB { get; set; }
-        public new static int CostOffset { get; set; }
+        public int CostA { get; set; }
+        public int CostB { get; set; }
+        public int CostOffset { get; set; }
 
         protected override void DoEffect()
         {

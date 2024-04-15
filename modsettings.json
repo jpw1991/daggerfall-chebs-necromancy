@@ -28,7 +28,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 10,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -63,7 +63,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 500,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -98,7 +98,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 250,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -133,7 +133,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 10,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -168,7 +168,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 100,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -203,7 +203,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 50,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -238,7 +238,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 10,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -273,7 +273,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 10,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
@@ -308,7 +308,7 @@
                     "Min": 1,
                     "Max": 1000,
                     "Value": 10,
-                    "Name": "Chance Cost Offset Gold",
+                    "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"

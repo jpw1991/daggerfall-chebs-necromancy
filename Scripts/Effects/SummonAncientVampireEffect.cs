@@ -5,8 +5,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonAncientVampireEffect : ChebEffect
     {
-        protected new static string effectKey = "Summon Ancient Vampire";
-        protected new static string effectDescription = "Summons an ancient vampire to follow and guard you.";
+        protected override string effectKey => "Summon Ancient Vampire";
+        protected override string effectDescription => "Summons an ancient vampire to follow and guard you.";
 
         public new static int CostA { get; set; }
         public new static int CostB { get; set; }
