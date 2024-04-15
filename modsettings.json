@@ -1,0 +1,320 @@
+{
+    "Version": "0.0.4",
+    "Sections": [
+        {
+            "Name": "Recall Minions",
+            "Description": "Options for the Recall Minions spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 1,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Ancient Lich",
+            "Description": "Options for the Summon Ancient Lich spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 500,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Ancient Vampire",
+            "Description": "Options for the Summon Ancient Vampire spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 250,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Ghost",
+            "Description": "Options for the Summon Ghost spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 3,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 6,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Lich",
+            "Description": "Options for the Summon Lich spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 100,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Mummy",
+            "Description": "Options for the Summon Mummy spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 50,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Skeleton",
+            "Description": "Options for the Summon Skeleton spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 1,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Vampire",
+            "Description": "Options for the Summon Vampire spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "Summon Zombie",
+            "Description": "Options for the Summon Zombie spell effect.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Chance Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Chance Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Chance Cost Offset Gold",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        }
+    ]
+}

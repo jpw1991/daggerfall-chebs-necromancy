@@ -33,6 +33,16 @@
         "Assets/Game/Mods/ChebsNecromancy/Scripts/MinionSpawner.cs",
         "Assets/Game/Mods/ChebsNecromancy/Scripts/ChebsNecromancy.cs",
         "Assets/Game/Mods/ChebsNecromancy/ChebsNecromancy.dfmod.json",
-        "Assets/Game/Mods/ChebsNecromancy/Scripts/SpawnCommand.cs"
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/SpawnCommand.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonMummyEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonAncientLichEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonGhostEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonAncientVampireEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonZombieEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonVampireEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonSkeletonEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/RecallMinionsEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/Scripts/Effects/SummonLichEffect.cs",
+        "Assets/Game/Mods/ChebsNecromancy/modsettings.json"
     ]
 }
