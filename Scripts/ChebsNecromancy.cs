@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
@@ -61,15 +62,24 @@ namespace ChebsNecromancyMod
                 baseEntityEffect.CostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost B");
                 baseEntityEffect.CostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost Offset");
 
-                if (effectBroker.HasEffectTemplate(baseEntityEffect.Key))
+                baseEntityEffect.SetProperties();
+
+                var existing = effectBroker.HasEffectTemplate(baseEntityEffect.Key);
+                if (existing)
                 {
-                    Debug.Log($"Updating existing {baseEntityEffect.Key}.");
-                    var existingTemplate = effectBroker.GetEffectTemplate(baseEntityEffect.Key);
-                    existingTemplate.Settings = baseEntityEffect.Settings;
+                    var template = effectBroker.GetEffectTemplate(baseEntityEffect.Key);
+                    template.Settings = baseEntityEffect.Settings;
+                    Debug.Log($"Updating {baseEntityEffect.Key} with costs " +
+                              $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
+                              $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
+                              $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
                 }
                 else
                 {
-                    Debug.Log($"Registering new {baseEntityEffect.Key}");
+                    Debug.Log($"Registering {baseEntityEffect.Key} with costs " +
+                              $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
+                              $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
+                              $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
                     effectBroker.RegisterEffectTemplate(baseEntityEffect);
                 }
             }
