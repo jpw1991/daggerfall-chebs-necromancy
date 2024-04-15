@@ -1,6 +1,6 @@
 {
     "ModTitle": "Cheb's Necromancy",
-    "ModVersion": "0.0.7",
+    "ModVersion": "0.0.8",
     "ModAuthor": "Cheb Gonaz",
     "ContactInfo": "chebgonaz@gmail.com",
     "DFUnity_Version": "1.1.0",
@@ -22,6 +22,7 @@
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/Effects/SummonVampireEffect.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/Effects/SummonAncientVampireEffect.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/Effects/SummonZombieEffect.cs",
-        "Assets/Game/Mods/daggerfall-chebs-necromancy/ChebsNecromancy.dfmod.json"
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/ChebsNecromancy.dfmod.json",
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/modsettings.json"
     ]
 }

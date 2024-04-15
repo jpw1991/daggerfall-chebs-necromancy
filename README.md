@@ -52,12 +52,14 @@ The spell effects have a backend which can be triggered by console commands:
 
 ## Installation
 
-- Please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
+- Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
+- For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
 
 ## Changelog
 
 Version | Date       | Info
 --- |------------| ---
+0.0.8 | 15/04/2024 | Mod should now properly work with built versions of the game
 0.0.6 | 15/04/2024 | Fix spell prices not updating properly
 0.0.5 | 15/04/2024 | Add spells to mysticism school; Add customizable spell costs
 0.0.4 | 14/04/2024 | Remove spawnskeleton command and replace with spawn command that can spawn many different types of undead.

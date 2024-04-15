@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
-using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
@@ -69,17 +68,17 @@ namespace ChebsNecromancyMod
                 {
                     var template = effectBroker.GetEffectTemplate(baseEntityEffect.Key);
                     template.Settings = baseEntityEffect.Settings;
-                    Debug.Log($"Updating {baseEntityEffect.Key} with costs " +
-                              $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
-                              $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
-                              $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
+                    // Debug.Log($"Updating {baseEntityEffect.Key} with costs " +
+                    //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
+                    //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
+                    //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
                 }
                 else
                 {
-                    Debug.Log($"Registering {baseEntityEffect.Key} with costs " +
-                              $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
-                              $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
-                              $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
+                    // Debug.Log($"Registering {baseEntityEffect.Key} with costs " +
+                    //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
+                    //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
+                    //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
                     effectBroker.RegisterEffectTemplate(baseEntityEffect);
                 }
             }
