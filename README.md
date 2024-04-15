@@ -32,7 +32,19 @@ Adds several different spell effects for summoning a variety of undead minions a
 
 Spells can be created at the spell maker in the Mage's Guild.
 
-### Cheating/Debugging
+![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/d6377ecd-f057-4e6d-8dca-a7f74160ba02)
+
+![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/ce9aa2c5-0c25-47c5-ba79-c7fd05305c8b)
+
+
+
+## Configuration
+
+The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.5. Help in this department would be immensely appreciated!
+
+![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/1822a5ee-8ed0-40b4-bb42-392a7c36bad1)
+
+## Cheating/Debugging
 
 The spell effects have a backend which can be triggered by console commands:
 
