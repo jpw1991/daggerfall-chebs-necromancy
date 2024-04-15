@@ -1,6 +1,8 @@
 # Cheb's Necromancy
 
-A mod for Daggerfall Unity that adds Necromancy.
+A mod for Daggerfall Unity that adds Necromancy to the game as spells under the Mysticism school.
+
+The undead are clones of vanilla enemies but are allied to the player. They also have code attached to them which makes them follow the player, but the pathfinding isn't great. It's based off how the enemies pursue the player and works basically the same way.
 
 [![video](https://img.youtube.com/vi/pf2PREe3q1E/0.jpg)](https://www.youtube.com/watch?v=pf2PREe3q1E)
 
@@ -16,20 +18,29 @@ Thank you and I hope you enjoy the mod! If you have questions or need help pleas
 
 ## Description
 
-Right now, this mod is very basic and in its early stages. All you can do is:
+Adds several different spell effects for summoning a variety of undead minions as well as a utility spell to recall these to your position:
+
+- Recall Minions
+- Summon Skeleton
+- Summon Ghost
+- Summon Zombie
+- Summon Mummy
+- Summon Vampire
+- Summon Lich
+- Summon Ancient Vampire
+- Summon Ancient Lich
+
+Spells can be created at the spell maker in the Mage's Guild.
+
+### Cheating/Debugging
+
+The spell effects have a backend which can be triggered by console commands:
 
 - Press `~` to open the console
 - Type `help spawn` to read the options, then spawn a minion in
   - `spawn skeleton` will spawn a skeletal warrior
   - `spawn vampire` will spawn a vampire, etc.
 - Type `recallminions` to bring the undead to your position if they get stuck or lost
-
-The undead are clones of vanilla enemies but are allied to the player. They also have code attached to them which makes them follow the player, but the pathfinding isn't great.
-
-## Wishes for the Future
-
-- Some kind of progression system, like a Necromancy level that increases with use
-- Spells or some other in-game way to create the minions rather than console commands
 
 ## Installation
 
@@ -39,6 +50,7 @@ The undead are clones of vanilla enemies but are allied to the player. They also
 
 Version | Date       | Info
 --- |------------| ---
+0.0.5 | 15/04/2024 | Add spells to mysticism school; Add customizable spell costs
 0.0.4 | 14/04/2024 | Remove spawnskeleton command and replace with spawn command that can spawn many different types of undead.
 0.0.3 | 14/04/2024 | Restore UndeadMinion script when when game loads so that existing minions resume following; Add command to recall minions to your position; remove skeleton bark
 0.0.2 | 05/02/2023 | Add command to spawn skeletons
