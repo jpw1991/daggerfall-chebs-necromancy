@@ -1,6 +1,6 @@
 # Cheb's Necromancy
 
-A mod for Daggerfall Unity that adds Necromancy to the game as spells under the Mysticism school.
+A mod for Daggerfall Unity that adds Necromancy to the game as spells under the Mysticism school. It also adds an optional Necromancer class which starts with the Animate Dead spell.
 
 The undead are clones of vanilla enemies but are allied to the player. They also have code attached to them which makes them follow the player, but the pathfinding isn't great. It's based off how the enemies pursue the player and works basically the same way.
 
@@ -34,9 +34,16 @@ Spells can be created at the spell maker in the Mage's Guild.
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/d6377ecd-f057-4e6d-8dca-a7f74160ba02)
 
+## Installation
+
+1. Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
+2. **Important:** Copy `BIOG18T0.TXT` to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/BIOGs`. Without this, the custom Necromancer class will not work.
+
+For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
+
 ## Configuration
 
-The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.5. Help in this department would be immensely appreciated!
+The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.11. Help in this department would be immensely appreciated!
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/1822a5ee-8ed0-40b4-bb42-392a7c36bad1)
 
@@ -61,15 +68,11 @@ The spell effects have a backend which can be triggered by console commands:
 
 </details>
 
-## Installation
-
-- Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
-- For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
-
 ## Changelog
 
 Version | Date       | Info
 --- |------------| ---
+0.0.11 | 16/04/2024 | Add starter necromancer class
 0.0.10 | 16/04/2024 | Add basic Animate Dead spell for purchase
 0.0.9 | 16/04/2024 | Fix problem where all friendly NPCs get teleported by recall minions.
 0.0.8 | 15/04/2024 | Mod should now properly work with built versions of the game

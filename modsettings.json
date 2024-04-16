@@ -2,6 +2,21 @@
     "Version": "0.0.4",
     "Sections": [
         {
+            "Name": "Custom Class",
+            "Description": "Custom classes added by the mod.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Value": true,
+                    "Name": "Necromancer",
+                    "Description": "Adds the Necromancer class to the starting options. Turn off if you're using other class mods. It may conflict.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
             "Name": "Recall Minions",
             "Description": "Options for the Recall Minions spell effect.",
             "IsAdvanced": false,

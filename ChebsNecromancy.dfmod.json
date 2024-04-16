@@ -23,6 +23,8 @@
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/Effects/SummonAncientVampireEffect.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/Effects/SummonZombieEffect.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/ChebsNecromancy.dfmod.json",
-        "Assets/Game/Mods/daggerfall-chebs-necromancy/modsettings.json"
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/modsettings.json",
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/RoleplayRealismItemsMod/StartingEquipmentStuff.cs",
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/CustomWizard.cs"
     ]
 }
