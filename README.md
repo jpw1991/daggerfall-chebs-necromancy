@@ -70,6 +70,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.10 | 16/04/2024 | Add basic Animate Dead spell for purchase
 0.0.9 | 16/04/2024 | Fix problem where all friendly NPCs get teleported by recall minions.
 0.0.8 | 15/04/2024 | Mod should now properly work with built versions of the game
 0.0.6 | 15/04/2024 | Fix spell prices not updating properly

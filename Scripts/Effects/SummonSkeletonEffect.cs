@@ -5,7 +5,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonSkeletonEffect : ChebEffect
     {
-        protected override string effectKey => "Summon Skeleton";
+        public const string EffectKey = "Summon Skeleton";
+        protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a skeleton to follow and guard you.";
 
         public new static int CostA { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
@@ -34,6 +35,8 @@ namespace ChebsNecromancyMod
             SaveLoadManager.OnLoad += RegisterExistingMinions;
 
             mod.LoadSettings();
+
+            CreateBeginnerSpell();
 
             mod.IsReady = true;
         }
@@ -113,6 +116,49 @@ namespace ChebsNecromancyMod
         private void OnDestroy()
         {
             SaveLoadManager.OnLoad -= RegisterExistingMinions;
+        }
+
+        private static void CreateBeginnerSpell()
+        {
+            // In DFU a spell is called an effect bundle - basically a bundle of spell effects (makes sense). Here we
+            // create a beginner spell for people so they have some minions to start off with if they wish.
+            var effectBroker = GameManager.Instance.EntityEffectBroker;
+            if (!effectBroker.HasEffectTemplate(SummonSkeletonEffect.EffectKey))
+            {
+                Debug.LogError("Cheb's Necromancy: CreateBeginnerSpell: Failed to get template from effect broker");
+                return;
+            }
+            var template = effectBroker.GetEffectTemplate(SummonSkeletonEffect.EffectKey);
+            var templateSettings = new EffectSettings()
+            {
+                ChanceBase = 25,
+                ChancePerLevel = 5,
+                ChancePlus = 1
+            };
+            var effectEntry = new EffectEntry()
+            {
+                Key = template.Properties.Key,
+                Settings = templateSettings,
+            };
+            var animateDead = new EffectBundleSettings()
+            {
+                Version = 1,
+                BundleType = BundleTypes.Spell,
+                TargetType = TargetTypes.CasterOnly,
+                ElementType = ElementTypes.Magic,
+                Name = "Animate Dead",
+                IconIndex = 12,
+                Effects = new EffectEntry[] { effectEntry },
+            };
+            // add it to stores so it can be purchased
+            var offer = new EntityEffectBroker.CustomSpellBundleOffer()
+            {
+                Key = "AnimateDead-CustomOffer",
+                Usage = EntityEffectBroker.CustomSpellBundleOfferUsage.SpellsForSale,
+                BundleSetttings = animateDead,
+            };
+            effectBroker.RegisterCustomSpellBundleOffer(offer);
+            // add it to necromancer origin
         }
     }
 }
