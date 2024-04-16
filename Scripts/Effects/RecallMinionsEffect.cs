@@ -30,7 +30,8 @@ namespace ChebsNecromancyMod
             var daggerfallEnemies = Object.FindObjectsOfType<DaggerfallEnemy>();
             foreach (var daggerfallEnemy in daggerfallEnemies)
             {
-                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly)
+                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
+                    && daggerfallEnemy.TryGetComponent(out UndeadMinion _))
                 {
                     daggerfallEnemy.transform.position = recallPosition;
                 }

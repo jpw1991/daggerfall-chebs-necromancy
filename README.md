@@ -40,7 +40,16 @@ The costs of the spells can be manipulated via the mod settings. I don't know wh
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/1822a5ee-8ed0-40b4-bb42-392a7c36bad1)
 
-## Cheating/Debugging
+## Debugging
+
+Check the log file and look for "Cheb" to find errors related to this mod.
+
+The log file's [location differs per operating system](https://docs.unity3d.com/Manual/LogFiles.html). On Linux it is located in `$HOME/.config/unity3d/Daggerfall Workshop/Daggerfall Unity/Player.log`
+
+## Cheating
+
+<details>
+<summary>Expand to see cheating info (hidden so people's experience doesn't get ruined)</summary>
 
 The spell effects have a backend which can be triggered by console commands:
 
@@ -49,6 +58,8 @@ The spell effects have a backend which can be triggered by console commands:
   - `spawn skeleton` will spawn a skeletal warrior
   - `spawn vampire` will spawn a vampire, etc.
 - Type `recallminions` to bring the undead to your position if they get stuck or lost
+
+</details>
 
 ## Installation
 
@@ -59,6 +70,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.9 | 16/04/2024 | Fix problem where all friendly NPCs get teleported by recall minions.
 0.0.8 | 15/04/2024 | Mod should now properly work with built versions of the game
 0.0.6 | 15/04/2024 | Fix spell prices not updating properly
 0.0.5 | 15/04/2024 | Add spells to mysticism school; Add customizable spell costs

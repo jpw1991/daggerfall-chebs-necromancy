@@ -88,10 +88,22 @@ namespace ChebsNecromancyMod
         {
             // When the scene loads, existing skeletons from the last session won't have the UndeadMinion script
             // attached to them. Find them and attach it here, so that they follow the player etc.
+            var undeadIds = new List<int>()
+            {
+                (int)MobileTypes.AncientLich,
+                (int)MobileTypes.VampireAncient,
+                (int)MobileTypes.Ghost,
+                (int)MobileTypes.Lich,
+                (int)MobileTypes.Mummy,
+                (int)MobileTypes.SkeletalWarrior,
+                (int)MobileTypes.Vampire,
+                (int)MobileTypes.Zombie
+            };
             var daggerfallEnemies = FindObjectsOfType<DaggerfallEnemy>();
             foreach (var daggerfallEnemy in daggerfallEnemies)
             {
-                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly)
+                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
+                    && undeadIds.Contains(daggerfallEnemy.MobileUnit.Enemy.ID))
                 {
                     daggerfallEnemy.gameObject.AddComponent<UndeadMinion>();
                 }
