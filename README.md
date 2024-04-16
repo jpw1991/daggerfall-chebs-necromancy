@@ -39,11 +39,13 @@ Spells can be created at the spell maker in the Mage's Guild.
 1. Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
 2. **Important:** Copy `BIOG18T0.TXT` to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/BIOGs`. Without this, the custom Necromancer class will not work.
 
-For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation)
+For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall-unity/modding/#installation).
 
 ## Configuration
 
 The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.11. Help in this department would be immensely appreciated!
+
+By default, the Necromancer class is enabled. It can be disabled in the settings, which may help if you're using other class mods and problems occur.
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/1822a5ee-8ed0-40b4-bb42-392a7c36bad1)
 
