@@ -634,14 +634,27 @@ namespace ChebsNecromancyMod
     {
         const int startClassDescriptionID = 2100;
 
-        public static Dictionary<DFCareer, string> CustomClasses = new Dictionary<DFCareer, string>()
-        {
-            { ChebsNecromancy.GenerateNecromancerCareer(),
-                "Necromancers are mystics that specialize in raising the dead to do their\n" +
-                "bidding. Fueled by darkness, a necromancer is most powerful at night.\n" +
-                "Unfortunately, the sun makes them uncomfortable and they cannot tolerate\n" +
-                "holy places." }
-        };
+        public static Dictionary<DFCareer, List<TextFile.Token>> CustomClasses =
+            new Dictionary<DFCareer, List<TextFile.Token>>()
+            {
+                {
+                    ChebsNecromancy.GenerateNecromancerCareer(), new List<TextFile.Token>()
+                    {
+                        new TextFile.Token()
+                            { text = "Necromancers are mystics that specialize in raising the dead to do their" },
+                        new TextFile.Token()
+                            { text = "bidding. Fueled by darkness, a necromancer is most powerful at night." },
+                        new TextFile.Token()
+                            { text = "Unfortunately, the sun makes them uncomfortable and they cannot tolerate" },
+                        new TextFile.Token() { text = "holy places." },
+                        new TextFile.Token() { text = "" },
+                        new TextFile.Token() { text = "The skills most important to a Necromancer are: Mysticism," },
+                        new TextFile.Token() { text = "Illusion, and Restoration." },
+                        new TextFile.Token() { text = "" },
+                        new TextFile.Token() { text = "Do you wish to be a Necromancer?" },
+                    }
+                }
+            };
         public List<DFCareer> classList = new List<DFCareer>();
         public DFCareer selectedClass;
         public int selectedClassIndex = 0;
@@ -696,17 +709,19 @@ namespace ChebsNecromancyMod
             }
             else
             {
-                Debug.Log("This far 1");
                 selectedClass = classList[index];
                 selectedClass.Name = className; // Ensures any localized display names are assigned after selection from list
                 selectedClassIndex = index;
-                Debug.Log("This far 2");
+
                 if (CustomClasses.ContainsKey(selectedClass))
                 {
-                    Debug.Log("This far 3A");
+                    Debug.Log($"Cheb's Necromancy: Custom class {className} chosen");
                     // don't read from file - there's not one. Generate
                     DaggerfallMessageBox messageBox = new DaggerfallMessageBox(uiManager, this);
-                    messageBox.SetText(CustomClasses[selectedClass]);
+                    var textTokens = CustomClasses[selectedClass];
+                    // todo: SetTextTokens requires localization to work and will display empty until that's done
+                    //messageBox.SetTextTokens(textTokens.ToArray());
+                    messageBox.SetText(textTokens.Select(t => t.text).ToArray());
                     messageBox.AddButton(DaggerfallMessageBox.MessageBoxButtons.Yes);
                     Button noButton = messageBox.AddButton(DaggerfallMessageBox.MessageBoxButtons.No);
                     noButton.ClickSound = DaggerfallUI.Instance.GetAudioClip(SoundClips.ButtonClick);
@@ -715,7 +730,7 @@ namespace ChebsNecromancyMod
                 }
                 else
                 {
-                    Debug.Log("This far 3B");
+                    Debug.Log($"Cheb's Necromancy: Vanilla class {className} chosen");
                     TextFile.Token[] textTokens = DaggerfallUnity.Instance.TextProvider.GetRSCTokens(startClassDescriptionID + index);
                     DaggerfallMessageBox messageBox = new DaggerfallMessageBox(uiManager, this);
                     messageBox.SetTextTokens(textTokens);
@@ -728,8 +743,6 @@ namespace ChebsNecromancyMod
 
                 AudioClip clip = DaggerfallUnity.Instance.SoundReader.GetAudioClip(SoundClips.SelectClassDrums);
                 DaggerfallUI.Instance.AudioSource.PlayOneShot(clip, DaggerfallUnity.Settings.SoundVolume);
-
-                Debug.Log("This far 4");
             }
         }
 

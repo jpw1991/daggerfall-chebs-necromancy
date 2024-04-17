@@ -74,6 +74,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.12 | 17/04/2024 | Fix Necromancer class description text
 0.0.11 | 16/04/2024 | Add starter necromancer class
 0.0.10 | 16/04/2024 | Add basic Animate Dead spell for purchase
 0.0.9 | 16/04/2024 | Fix problem where all friendly NPCs get teleported by recall minions.
