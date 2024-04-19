@@ -28,7 +28,7 @@ namespace ChebsNecromancyMod.RoleplayRealismItemsMod
             if (item.ItemGroup == ItemGroups.Armor || item.ItemGroup == ItemGroups.Weapons ||
                 item.ItemGroup == ItemGroups.MensClothing || item.ItemGroup == ItemGroups.WomensClothing)
             {
-                item.currentCondition = (int)(UnityEngine.Random.Range(0.3f, 0.75f) * item.maxCondition);
+                item.currentCondition = (int)(Random.Range(0.3f, 0.75f) * item.maxCondition);
             }
             if (equip)
                 entity.ItemEquipTable.EquipItem(item, true, false);
@@ -36,7 +36,7 @@ namespace ChebsNecromancyMod.RoleplayRealismItemsMod
 
         public static void AssignSkillEquipment(PlayerEntity playerEntity, CharacterDocument characterDocument)
         {
-            Debug.Log("Starting Equipment: Assigning Based on Skills");
+            ChebsNecromancy.ChebLog("Starting Equipment: Assigning Based on Skills");
 
             // Set condition of ebony dagger if player has one from char creation questions
             IList daggers = playerEntity.Items.SearchItems(ItemGroups.Weapons, (int)Weapons.Dagger);
@@ -72,7 +72,7 @@ namespace ChebsNecromancyMod.RoleplayRealismItemsMod
 
             // Add spellbook, all players start with one - also a little gold and a crappy iron dagger for those with no weapon skills.
             playerEntity.Items.AddItem(ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Spellbook));
-            playerEntity.GoldPieces += UnityEngine.Random.Range(5, playerEntity.Career.Luck);
+            playerEntity.GoldPieces += Random.Range(5, playerEntity.Career.Luck);
             playerEntity.Items.AddItem(ItemBuilder.CreateWeapon(Weapons.Dagger, WeaponMaterialTypes.Iron));
 
             // Add some torches and candles if player torch is from items setting enabled
@@ -84,7 +84,7 @@ namespace ChebsNecromancyMod.RoleplayRealismItemsMod
                     playerEntity.Items.AddItem(ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Candle));
             }
 
-            Debug.Log("Starting Equipment: Assigning Finished");
+            ChebsNecromancy.ChebLog("Starting Equipment: Assigning Finished");
         }
 
         static void AssignSkillItems(PlayerEntity playerEntity, DFCareer.Skills skill)
@@ -141,7 +141,7 @@ namespace ChebsNecromancyMod.RoleplayRealismItemsMod
                     items.AddItem(bandages);
                     return;
                 case DFCareer.Skills.Mercantile:
-                    playerEntity.GoldPieces += UnityEngine.Random.Range(playerEntity.Career.Luck, playerEntity.Career.Luck * 4); return;
+                    playerEntity.GoldPieces += Random.Range(playerEntity.Career.Luck, playerEntity.Career.Luck * 4); return;
                 case DFCareer.Skills.Pickpocket:
                     items.AddItem(ItemBuilder.CreateRandomGem()); return;
                 case DFCareer.Skills.Running:
