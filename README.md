@@ -43,7 +43,7 @@ For more info, please read [here](https://www.dfworkshop.net/projects/daggerfall
 
 ## Configuration
 
-The costs of the spells can be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.11. Help in this department would be immensely appreciated!
+Most, but not all, aspects of the Necromancy class can be tweaked to your liking in the config. The costs of the spells can also be manipulated via the mod settings. I don't know what all the values do and they're wildly out of whack as of 0.0.11. Help in this department would be immensely appreciated!
 
 By default, the Necromancer class is enabled. It can be disabled in the settings, which may help if you're using other class mods and problems occur.
 
@@ -74,6 +74,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.13 | 19/04/2024 | Expose many class options to the config so users can tweak stuff about it to their liking; improve quiz with necromancy-themed questions
 0.0.12 | 17/04/2024 | Fix Necromancer class description text
 0.0.11 | 16/04/2024 | Add starter necromancer class
 0.0.10 | 16/04/2024 | Add basic Animate Dead spell for purchase
