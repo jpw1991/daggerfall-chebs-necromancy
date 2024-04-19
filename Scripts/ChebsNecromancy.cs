@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DaggerfallConnect;
+using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.MagicAndEffects;
@@ -9,6 +11,7 @@ using DaggerfallWorkshop.Game.UserInterface;
 using DaggerfallWorkshop.Game.UserInterfaceWindows;
 using DaggerfallWorkshop.Game.Utility.ModSupport;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
+using Newtonsoft.Json;
 using UnityEngine;
 using Wenzil.Console;
 
@@ -17,10 +20,11 @@ namespace ChebsNecromancyMod
     public class ChebsNecromancy : MonoBehaviour
     {
         public const string NecromancerCareerName = "Necromancer";
-
-        private static Mod mod;
         public static EffectBundleSettings AnimateDeadSpell;
         public static bool EnableCustomClassNecromancer = true;
+        public static DFCareer NecromancerCareer;
+
+        private static Mod mod;
 
         [Invoke(StateManager.StateTypes.Start, 0)]
         public static void Init(InitParams initParams)
@@ -78,46 +82,97 @@ namespace ChebsNecromancyMod
             daggerfallUi.UserInterfaceManager.OnWindowChange += HijackWizard;
         }
 
-        public static DFCareer GenerateNecromancerCareer()
+        public static DFCareer GenerateNecromancerCareer(ModSettings modSettings)
         {
-            return new DFCareer()
+            var skillsMap = new Dictionary<int, DFCareer.Skills>
+            {
+                { 0, DFCareer.Skills.Medical  },
+                { 1, DFCareer.Skills.Etiquette  },
+                { 2, DFCareer.Skills.Streetwise  },
+                { 3, DFCareer.Skills.Jumping  },
+                { 4, DFCareer.Skills.Orcish  },
+                { 5, DFCareer.Skills.Harpy  },
+                { 6, DFCareer.Skills.Giantish  },
+                { 7, DFCareer.Skills.Dragonish  },
+                { 8, DFCareer.Skills.Nymph  },
+                { 9, DFCareer.Skills.Daedric  },
+                { 10, DFCareer.Skills.Spriggan  },
+                { 11, DFCareer.Skills.Centaurian  },
+                { 12, DFCareer.Skills.Impish  },
+                { 13, DFCareer.Skills.Lockpicking  },
+                { 14, DFCareer.Skills.Mercantile  },
+                { 15, DFCareer.Skills.Pickpocket  },
+                { 16, DFCareer.Skills.Stealth  },
+                { 17, DFCareer.Skills.Swimming  },
+                { 18, DFCareer.Skills.Climbing  },
+                { 19, DFCareer.Skills.Backstabbing  },
+                { 20, DFCareer.Skills.Dodging  },
+                { 21, DFCareer.Skills.Running  },
+                { 22, DFCareer.Skills.Destruction  },
+                { 23, DFCareer.Skills.Restoration  },
+                { 24, DFCareer.Skills.Illusion  },
+                { 25, DFCareer.Skills.Alteration  },
+                { 26, DFCareer.Skills.Thaumaturgy  },
+                { 27, DFCareer.Skills.Mysticism  },
+                { 28, DFCareer.Skills.ShortBlade  },
+                { 29, DFCareer.Skills.LongBlade  },
+                { 30, DFCareer.Skills.HandToHand  },
+                { 31, DFCareer.Skills.Axe  },
+                { 32, DFCareer.Skills.BluntWeapon  },
+                { 33, DFCareer.Skills.Archery  },
+                { 34, DFCareer.Skills.CriticalStrike  },
+
+            };
+            var toleranceMap = new Dictionary<int, DFCareer.Tolerance>()
+            {
+                {0, DFCareer.Tolerance.Normal},
+                {1, DFCareer.Tolerance.Immune},
+                {2, DFCareer.Tolerance.Resistant},
+                {3, DFCareer.Tolerance.LowTolerance},
+                {4, DFCareer.Tolerance.CriticalWeakness},
+            };
+            var proficiencyMap = (DFCareer.Proficiency[])Enum.GetValues(typeof(DFCareer.Proficiency));
+
+            const string section = "Necromancer Class";
+
+            var result = new DFCareer()
                 {
                     Name = NecromancerCareerName,
-                    AdvancementMultiplier = 1.0f,
-                    HitPointsPerLevel = 8,
-                    Strength = 40,
-                    Intelligence = 65,
-                    Willpower = 70,
-                    Agility = 40,
-                    Endurance = 50,
-                    Personality = 40,
-                    Speed = 40,
-                    Luck = 50,
-                    PrimarySkill1 = DFCareer.Skills.Mysticism,
-                    PrimarySkill2 = DFCareer.Skills.Restoration,
-                    PrimarySkill3 = DFCareer.Skills.Illusion,
-                    MajorSkill1 = DFCareer.Skills.Alteration,
-                    MajorSkill2 = DFCareer.Skills.Thaumaturgy,
-                    MajorSkill3 = DFCareer.Skills.Destruction,
-                    MinorSkill1 = DFCareer.Skills.Etiquette,
-                    MinorSkill2 = DFCareer.Skills.Mercantile,
-                    MinorSkill3 = DFCareer.Skills.Dodging,
-                    MinorSkill4 = DFCareer.Skills.Medical,
-                    MinorSkill5 = DFCareer.Skills.ShortBlade,
-                    MinorSkill6 = DFCareer.Skills.Stealth,
-                    Paralysis = DFCareer.Tolerance.Normal,
-                    Magic = DFCareer.Tolerance.Normal,
-                    Poison = DFCareer.Tolerance.Normal,
-                    Fire = DFCareer.Tolerance.Normal,
-                    Frost = DFCareer.Tolerance.Normal,
-                    Shock = DFCareer.Tolerance.Normal,
-                    Disease = DFCareer.Tolerance.Normal,
-                    ShortBlades = DFCareer.Proficiency.Expert,
-                    LongBlades = DFCareer.Proficiency.Normal,
-                    HandToHand = DFCareer.Proficiency.Normal,
-                    Axes = DFCareer.Proficiency.Normal,
-                    BluntWeapons = DFCareer.Proficiency.Expert,
-                    MissileWeapons = DFCareer.Proficiency.Normal,
+                    AdvancementMultiplier = modSettings.GetFloat(section, "Advancement Multiplier"),
+                    HitPointsPerLevel = modSettings.GetInt(section, "HP per Level"),
+                    Strength = modSettings.GetInt(section, "Strength"),
+                    Intelligence = modSettings.GetInt(section, "Intelligence"),
+                    Willpower = modSettings.GetInt(section, "Willpower"),
+                    Agility = modSettings.GetInt(section, "Agility"),
+                    Endurance = modSettings.GetInt(section, "Endurance"),
+                    Personality = modSettings.GetInt(section, "Personality"),
+                    Speed = modSettings.GetInt(section, "Speed"),
+                    Luck = modSettings.GetInt(section, "Luck"),
+                    PrimarySkill1 = skillsMap[modSettings.GetInt(section, "Primary Skill 1")],
+                    PrimarySkill2 = skillsMap[modSettings.GetInt(section, "Primary Skill 2")],
+                    PrimarySkill3 = skillsMap[modSettings.GetInt(section, "Primary Skill 3")],
+                    MajorSkill1 = skillsMap[modSettings.GetInt(section, "Major Skill 1")],
+                    MajorSkill2 = skillsMap[modSettings.GetInt(section, "Major Skill 2")],
+                    MajorSkill3 = skillsMap[modSettings.GetInt(section, "Major Skill 3")],
+                    MinorSkill1 = skillsMap[modSettings.GetInt(section, "Minor Skill 1")],
+                    MinorSkill2 = skillsMap[modSettings.GetInt(section, "Minor Skill 2")],
+                    MinorSkill3 = skillsMap[modSettings.GetInt(section, "Minor Skill 3")],
+                    MinorSkill4 = skillsMap[modSettings.GetInt(section, "Minor Skill 4")],
+                    MinorSkill5 = skillsMap[modSettings.GetInt(section, "Minor Skill 5")],
+                    MinorSkill6 = skillsMap[modSettings.GetInt(section, "Minor Skill 6")],
+                    Paralysis = toleranceMap[modSettings.GetInt(section, "Paralysis")],
+                    Magic = toleranceMap[modSettings.GetInt(section, "Magic")],
+                    Poison = toleranceMap[modSettings.GetInt(section, "Poison")],
+                    Fire = toleranceMap[modSettings.GetInt(section, "Fire")],
+                    Frost = toleranceMap[modSettings.GetInt(section, "Frost")],
+                    Shock = toleranceMap[modSettings.GetInt(section, "Shock")],
+                    Disease = toleranceMap[modSettings.GetInt(section, "Disease")],
+                    ShortBlades = proficiencyMap[modSettings.GetInt(section, "Short Blades")],
+                    LongBlades = proficiencyMap[modSettings.GetInt(section, "Long Blades")],
+                    HandToHand = proficiencyMap[modSettings.GetInt(section, "Hand to Hand")],
+                    Axes = proficiencyMap[modSettings.GetInt(section, "Axes")],
+                    BluntWeapons = proficiencyMap[modSettings.GetInt(section, "Blunt Weapons")],
+                    MissileWeapons = proficiencyMap[modSettings.GetInt(section, "Missile Weapons")],
                     UndeadAttackModifier = DFCareer.AttackModifier.Bonus,
                     DaedraAttackModifier = DFCareer.AttackModifier.Normal,
                     HumanoidAttackModifier = DFCareer.AttackModifier.Normal,
@@ -132,15 +187,44 @@ namespace ChebsNecromancyMod
                     SpellPointMultiplier = DFCareer.SpellPointMultipliers.Times_3_00,
                     SpellPointMultiplierValue = 1.0f,
                     SpellAbsorption = DFCareer.SpellAbsorptionFlags.InDarkness,
-                    NoRegenSpellPoints = false,
-                    AcuteHearing = false,
-                    Athleticism = false,
-                    AdrenalineRush = false,
+                    NoRegenSpellPoints = modSettings.GetBool(section, "No Regen Spell Points"),
+                    AcuteHearing = modSettings.GetBool(section, "Acute Hearing"),
+                    Athleticism = modSettings.GetBool(section, "Athleticism"),
+                    AdrenalineRush = modSettings.GetBool(section, "Adrenaline Rush"),
                     Regeneration = DFCareer.RegenerationFlags.InDarkness,
                     RapidHealing = DFCareer.RapidHealingFlags.None,
-                    DamageFromSunlight = false,
-                    DamageFromHolyPlaces = true
+                    DamageFromSunlight = modSettings.GetBool(section, "Damage From Sunlight"),
+                    DamageFromHolyPlaces = modSettings.GetBool(section, "Damage From Holy Places")
                 };
+
+            // log the result in case of errors
+            Debug.Log($"Cheb's Necromancy: Class result: {JsonConvert.SerializeObject(result)}");
+
+            return result;
+        }
+
+        public static Dictionary<DFCareer, List<TextFile.Token>> GetCustomClasses()
+        {
+            return new Dictionary<DFCareer, List<TextFile.Token>>()
+            {
+                {
+                    NecromancerCareer, new List<TextFile.Token>()
+                    {
+                        new TextFile.Token()
+                            { text = "Necromancers are mystics that specialize in raising the dead to do their" },
+                        new TextFile.Token()
+                            { text = "bidding. Fueled by darkness, a necromancer is most powerful at night." },
+                        new TextFile.Token()
+                            { text = "Unfortunately, the sun makes them uncomfortable and they cannot tolerate" },
+                        new TextFile.Token() { text = "holy places." },
+                        new TextFile.Token() { text = "" },
+                        new TextFile.Token() { text = "The skills most important to a Necromancer are: Mysticism," },
+                        new TextFile.Token() { text = "Illusion, and Restoration." },
+                        new TextFile.Token() { text = "" },
+                        new TextFile.Token() { text = "Do you wish to be a Necromancer?" },
+                    }
+                }
+            };
         }
 
         void HijackWizard(object sender, EventArgs e)
@@ -159,7 +243,10 @@ namespace ChebsNecromancyMod
 
         static void LoadSettings(ModSettings modSettings, ModSettingsChange change)
         {
-            EnableCustomClassNecromancer = modSettings.GetBool("Custom Class", "Necromancer");
+            const string section = "Necromancer Class";
+            EnableCustomClassNecromancer = modSettings.GetBool(section, "Enabled");
+
+            NecromancerCareer = GenerateNecromancerCareer(modSettings);
 
             var spellEffects = new List<ChebEffect>()
             {
