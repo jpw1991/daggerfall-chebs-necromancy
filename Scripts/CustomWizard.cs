@@ -634,30 +634,11 @@ namespace ChebsNecromancyMod
     {
         const int startClassDescriptionID = 2100;
 
-        public static Dictionary<DFCareer, List<TextFile.Token>> CustomClasses =
-            new Dictionary<DFCareer, List<TextFile.Token>>()
-            {
-                {
-                    ChebsNecromancy.GenerateNecromancerCareer(), new List<TextFile.Token>()
-                    {
-                        new TextFile.Token()
-                            { text = "Necromancers are mystics that specialize in raising the dead to do their" },
-                        new TextFile.Token()
-                            { text = "bidding. Fueled by darkness, a necromancer is most powerful at night." },
-                        new TextFile.Token()
-                            { text = "Unfortunately, the sun makes them uncomfortable and they cannot tolerate" },
-                        new TextFile.Token() { text = "holy places." },
-                        new TextFile.Token() { text = "" },
-                        new TextFile.Token() { text = "The skills most important to a Necromancer are: Mysticism," },
-                        new TextFile.Token() { text = "Illusion, and Restoration." },
-                        new TextFile.Token() { text = "" },
-                        new TextFile.Token() { text = "Do you wish to be a Necromancer?" },
-                    }
-                }
-            };
         public List<DFCareer> classList = new List<DFCareer>();
         public DFCareer selectedClass;
         public int selectedClassIndex = 0;
+
+        protected Dictionary<DFCareer, List<TextFile.Token>> CustomClasses;
 
         public DFCareer SelectedClass
         {
@@ -684,6 +665,8 @@ namespace ChebsNecromancyMod
                     listBox.AddItem(TextManager.Instance.GetLocalizedText(classFile.Career.Name));
                 }
             }
+
+            CustomClasses = ChebsNecromancy.GetCustomClasses();
 
             foreach (var dfCareer in CustomClasses.Keys)
             {
