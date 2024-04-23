@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace ChebsNecromancyMod.MinionSpawners
 {
-    public class AncientLichSpawner : MinionSpawner
+    public class LichSpawner : MinionSpawner
     {
         private void Awake()
         {
-            foeType = MobileTypes.AncientLich;
+            foeType = MobileTypes.Lich;
         }
 
         protected override void ScaleMinion(GameObject minion)
@@ -25,7 +25,7 @@ namespace ChebsNecromancyMod.MinionSpawners
             willpower = willpower > 0 ? willpower : 1;
             intelligence = intelligence > 0 ? intelligence : 1;
 
-            // Vanilla Ancient Lich has 30-170 HP: https://en.uesp.net/wiki/Daggerfall:Ancient_Lich
+            // Vanilla Lich has 30-170 HP: https://en.uesp.net/wiki/Daggerfall:Lich
             var minionEntity = daggerfallEntityBehaviour.Entity;
             var scaledHealth =
                 mysticismLevel / 3  // +30 HP at 100 Mysticism

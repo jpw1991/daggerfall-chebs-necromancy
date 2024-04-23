@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace ChebsNecromancyMod.MinionSpawners
 {
-    public class SkeletonSpawner : MinionSpawner
+    public class ZombieSpawner : MinionSpawner
     {
         private void Awake()
         {
-            foeType = MobileTypes.SkeletalWarrior;
+            foeType = MobileTypes.Zombie;
         }
 
         protected override void ScaleMinion(GameObject minion)
@@ -26,13 +26,13 @@ namespace ChebsNecromancyMod.MinionSpawners
             willpower = willpower > 0 ? willpower : 1;
             intelligence = intelligence > 0 ? intelligence : 1;
 
-            // Vanilla Skeleton has 17-66 HP: https://en.uesp.net/wiki/Daggerfall:Skeletal_Warrior
+            // Vanilla Skeleton has 52-66 HP: https://en.uesp.net/wiki/Daggerfall:Zombie
             var minionEntity = daggerfallEntityBehaviour.Entity;
             var scaledHealth =
-                mysticismLevel / 9  // +11 HP at 100 Mysticism
+                mysticismLevel / 7  // +14 HP at 100 Mysticism
                 + magnitude / 3     // +33 HP at 100 magnitude
-                + intelligence / 7  // +14 HP at 100 int
-                + willpower / 7     // +14 HP at 100 wil
+                + intelligence / 6  // +16 HP at 100 int
+                + willpower / 6     // +16 HP at 100 wil
                 ;
             minionEntity.MaxHealth = scaledHealth;
             minionEntity.CurrentHealth = scaledHealth;
@@ -41,7 +41,7 @@ namespace ChebsNecromancyMod.MinionSpawners
                          + willpower / 400
                          + intelligence / 400;
             minionEntity.Level *= factor;
-            // Give the skeleton a better weapon depending on the factor (no idea if this works)
+            // Give the skeleton a better weapon depending on the factor
             var maceMat = WeaponMaterialTypes.Iron;
             if (factor >= 0.9)
                 maceMat = WeaponMaterialTypes.Daedric;
@@ -58,14 +58,9 @@ namespace ChebsNecromancyMod.MinionSpawners
             else if (factor >= 0.2)
                 maceMat = WeaponMaterialTypes.Steel;
             var mace = ItemBuilder.CreateWeapon(Weapons.Mace, maceMat);
-            // Scale damage - doesn't work. Min/max damage changes aren't reflected.
-            // var mobileEnemy = minion.GetComponent<DaggerfallEnemy>().MobileUnit.Enemy;
-            // mobileEnemy.MinDamage *= factor;
-            // mobileEnemy.MaxDamage *= factor;
             // todo: localize
             var msg = $"{foeType} created with {maceMat} {mace.shortName}!";
             DaggerfallUI.AddHUDText(msg);
-            minionEntity.ItemEquipTable.EquipItem(mace);
         }
     }
 }

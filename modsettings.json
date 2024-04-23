@@ -2,6 +2,26 @@
     "Version": "0.0.14",
     "Sections": [
         {
+            "Name": "General",
+            "Description": "General mod settings.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Options": [
+                        "Errors",
+                        "All",
+                        "None"
+                    ],
+                    "Value": 0,
+                    "Name": "Logging",
+                    "Description": "How much logging should appear in the Player.log for debugging purposes.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
             "Name": "Necromancer Class",
             "Description": "Custom class added by the mod.",
             "IsAdvanced": false,

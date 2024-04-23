@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Utility;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,9 @@ namespace ChebsNecromancyMod
         private IEnumerator Start()
         {
             yield return new WaitForEndOfFrame();
+
+            ChebsNecromancy.ChebLog($"{this} magnitude={magnitude}, mysticismLevel={mysticismLevel}, " +
+                                    $"intelligence={intelligence}, willpower={willpower}");
 
             GameObjectHelper.CreateFoeGameObjects(Vector3.zero, foeType, spawnCount, alliedToPlayer: alliedToPlayer)
                 .ToList()
@@ -69,6 +73,14 @@ namespace ChebsNecromancyMod
 
             minion.AddComponent<UndeadMinion>();
             minion.SetActive(true);
+
+            ChebsNecromancy.ChebLog($@"Finalized minion: {JsonConvert.SerializeObject(mobileUnit.Enemy,
+                new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Error = ((sender, args) => { })
+                })
+            }");
         }
     }
 }

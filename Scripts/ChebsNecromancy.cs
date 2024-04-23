@@ -16,12 +16,19 @@ using Wenzil.Console;
 
 namespace ChebsNecromancyMod
 {
+    public enum Logging
+    {
+        Errors = 0,
+        All,
+        None
+    }
     public class ChebsNecromancy : MonoBehaviour
     {
         public const string NecromancerCareerName = "Necromancer";
         public static EffectBundleSettings AnimateDeadSpell, NoviceRecallSpell;
         public static bool EnableCustomClassNecromancer = true;
         public static DFCareer NecromancerCareer;
+        public static Logging Log = Logging.Errors;
 
         private static Mod mod;
 
@@ -243,6 +250,9 @@ namespace ChebsNecromancyMod
 
         static void LoadSettings(ModSettings modSettings, ModSettingsChange change)
         {
+            var loggingMap = (Logging[])Enum.GetValues(typeof(Logging));
+            Log = loggingMap[modSettings.GetInt("General", "Logging")];
+
             const string section = "Necromancer Class";
             EnableCustomClassNecromancer = modSettings.GetBool(section, "Enabled");
 
@@ -440,12 +450,14 @@ namespace ChebsNecromancyMod
         // then later be unable to find relevant messages.
         public static void ChebLog(string msg)
         {
-            Debug.Log($"Cheb's Necromancy: {msg}");
+            if (Log == Logging.All)
+                Debug.Log($"Cheb's Necromancy: {msg}");
         }
 
         public static void ChebError(string msg)
         {
-            Debug.LogError($"Cheb's Necromancy: {msg}");
+            if (Log != Logging.None)
+                Debug.LogError($"Cheb's Necromancy: {msg}");
         }
 
         #endregion

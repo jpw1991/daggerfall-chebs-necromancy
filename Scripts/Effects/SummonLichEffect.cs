@@ -1,3 +1,4 @@
+using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game.MagicAndEffects;
@@ -43,8 +44,11 @@ namespace ChebsNecromancyMod
 
             var spawner = new GameObject("MinionSpawner");
             spawner.SetActive(false);
-            var minionSpawner = spawner.AddComponent<MinionSpawner>();
-            minionSpawner.foeType = MobileTypes.Lich;
+            var minionSpawner = spawner.AddComponent<LichSpawner>();
+            minionSpawner.magnitude = GetMagnitude();
+            minionSpawner.mysticismLevel = caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism);
+            minionSpawner.intelligence = caster.Entity.Stats.LiveIntelligence;
+            minionSpawner.willpower = caster.Entity.Stats.LiveWillpower;
             spawner.SetActive(true);
         }
     }
