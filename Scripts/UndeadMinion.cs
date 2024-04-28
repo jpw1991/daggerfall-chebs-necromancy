@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.ComponentModel;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Entity;
@@ -7,6 +9,9 @@ namespace ChebsNecromancyMod
 {
     public class UndeadMinion : MonoBehaviour
     {
+        [Tooltip("The magnitude that was used to create this minion.")]
+        public int createdWithMagnitude = 1;
+
         [SerializeField] private float stopDistance = 5f;
         [SerializeField] private float doorCrouchingHeight = 5f;
 
@@ -27,6 +32,21 @@ namespace ChebsNecromancyMod
         private const float TURN_SPEED = 20f;
         private const float YAW_ANGLE = 22.5f;
         private const float FALL_RAYCAST_DISTANCE = 1.5f;
+
+        public static List<DaggerfallEnemy> GetActiveMinions()
+        {
+            var result = new List<DaggerfallEnemy>();
+            var daggerfallEnemies = Object.FindObjectsOfType<DaggerfallEnemy>();
+            foreach (var daggerfallEnemy in daggerfallEnemies)
+            {
+                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
+                    && daggerfallEnemy.TryGetComponent(out UndeadMinion _))
+                {
+                    result.Add(daggerfallEnemy);
+                }
+            }
+            return result;
+        }
 
         private void Awake()
         {

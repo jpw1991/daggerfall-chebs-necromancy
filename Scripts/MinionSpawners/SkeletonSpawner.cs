@@ -63,8 +63,11 @@ namespace ChebsNecromancyMod.MinionSpawners
             // mobileEnemy.MinDamage *= factor;
             // mobileEnemy.MaxDamage *= factor;
             // todo: localize
-            var msg = $"{foeType} created with {maceMat} {mace.shortName}!";
-            DaggerfallUI.AddHUDText(msg);
+            if (showHUDMessage)
+            {
+                var msg = $"{foeType} created with {maceMat} {mace.shortName}!";
+                DaggerfallUI.AddHUDText(msg);
+            }
             minionEntity.ItemEquipTable.EquipItem(mace);
         }
     }

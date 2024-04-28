@@ -10,6 +10,8 @@ namespace ChebsNecromancyMod
 {
     public class MinionSpawner : MonoBehaviour
     {
+        public bool showHUDMessage = true;
+
         public MobileTypes foeType = MobileTypes.SkeletalWarrior;
         public int spawnCount = 1;
         public float maxDistance = 3f;
@@ -46,7 +48,9 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("MinionSpawner.PositionMinion: Camera.main is null.");
                 return;
             }
-            var center = Camera.main.transform.position;
+
+            var cameraTransform = Camera.main.transform;
+            var center = cameraTransform.position + cameraTransform.forward * 2;
             var randomPos = Random.insideUnitSphere.normalized * maxDistance + center;
             randomPos.y = center.y;
             minion.transform.position = randomPos;
@@ -71,7 +75,8 @@ namespace ChebsNecromancyMod
                 GameObjectHelper.AlignControllerToGround(minion.GetComponent<CharacterController>());
             }
 
-            minion.AddComponent<UndeadMinion>();
+            var undeadMinion = minion.AddComponent<UndeadMinion>();
+            undeadMinion.createdWithMagnitude = magnitude;
             minion.SetActive(true);
 
             ChebsNecromancy.ChebLog($@"Finalized minion: {JsonConvert.SerializeObject(mobileUnit.Enemy,

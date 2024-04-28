@@ -41,8 +41,11 @@ namespace ChebsNecromancyMod.MinionSpawners
             minionEntity.Level *= factor;
             // todo: scale damage somehow
             // todo: localize
-            var msg = $"{foeType} created!";
-            DaggerfallUI.AddHUDText(msg);
+            if (showHUDMessage)
+            {
+                var msg = $"{foeType} created!";
+                DaggerfallUI.AddHUDText(msg);
+            }
         }
     }
 }

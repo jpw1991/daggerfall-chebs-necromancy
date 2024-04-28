@@ -49,15 +49,8 @@ namespace ChebsNecromancyMod
                 return;
             }
             var recallPosition = Camera.main.transform.position + Vector3.forward;
-            var daggerfallEnemies = Object.FindObjectsOfType<DaggerfallEnemy>();
-            foreach (var daggerfallEnemy in daggerfallEnemies)
-            {
-                if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
-                    && daggerfallEnemy.TryGetComponent(out UndeadMinion _))
-                {
-                    daggerfallEnemy.transform.position = recallPosition;
-                }
-            }
+            var activeMinions = UndeadMinion.GetActiveMinions();
+            activeMinions.ForEach(m => m.transform.position = recallPosition);
         }
     }
 }
