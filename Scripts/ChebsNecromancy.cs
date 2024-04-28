@@ -30,6 +30,20 @@ namespace ChebsNecromancyMod
         public static DFCareer NecromancerCareer;
         public static Logging Log = Logging.Errors;
 
+        public static List<DaggerfallEnemy> MinionsToRestore = new List<DaggerfallEnemy>();
+
+        public static readonly List<int> UndeadIds = new List<int>()
+        {
+            (int)MobileTypes.AncientLich,
+            (int)MobileTypes.VampireAncient,
+            (int)MobileTypes.Ghost,
+            (int)MobileTypes.Lich,
+            (int)MobileTypes.Mummy,
+            (int)MobileTypes.SkeletalWarrior,
+            (int)MobileTypes.Vampire,
+            (int)MobileTypes.Zombie
+        };
+
         private static Mod mod;
 
         [Invoke(StateManager.StateTypes.Start, 0)]
@@ -51,6 +65,15 @@ namespace ChebsNecromancyMod
             mod.LoadSettingsCallback = LoadSettings;
 
             SaveLoadManager.OnLoad += RegisterExistingMinions;
+            //StateManager.OnStateChange += state => { ChebLog($"State changed: {state}"); };
+            // On pre-transition, make note of all active minions
+            PlayerEnterExit.OnPreTransition += args => { RecordActiveMinions(); };
+            // On post-transition, restore aforementioned active minions
+            PlayerEnterExit.OnTransitionExterior += args => { RestoreActiveMinions(); };
+            PlayerEnterExit.OnTransitionInterior += args => { RestoreActiveMinions(); };
+            PlayerEnterExit.OnTransitionDungeonExterior += args => { RestoreActiveMinions(); };
+            PlayerEnterExit.OnTransitionDungeonInterior += args => { RestoreActiveMinions(); };
+
 
             mod.LoadSettings();
 
@@ -58,6 +81,66 @@ namespace ChebsNecromancyMod
             NoviceRecallSpell = CreateNoviceRecallSpell();
 
             mod.IsReady = true;
+        }
+
+        public static void RecordActiveMinions()
+        {
+            // Record all the active minions so that they can be restored post-transition.
+            ChebLog("Recording active minions...");
+            MinionsToRestore = UndeadMinion.GetActiveMinions();
+
+        }
+
+        public static void RestoreActiveMinions()
+        {
+            // Restore the minions that have been recorded pre-transition.
+            var player = GameManager.Instance.PlayerEntity;
+            var mysticismLevel = player.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism);
+            var intelligence = player.Stats.LiveIntelligence;
+            var willpower = player.Stats.LiveWillpower;
+            // First, hide (and later destroy) active minions (otherwise ones that already exist will remain)
+            var alreadyPresentMinions = UndeadMinion.GetActiveMinions();
+            alreadyPresentMinions.ForEach(m => m.gameObject.SetActive(false));
+            // Restore the minions
+            foreach (var daggerfallEnemy in MinionsToRestore)
+            {
+                var magnitude = daggerfallEnemy.GetComponent<UndeadMinion>().createdWithMagnitude;
+                switch (daggerfallEnemy.MobileUnit.Enemy.ID)
+                {
+                    case (int)MobileTypes.AncientLich:
+                        SummonAncientLichEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.VampireAncient:
+                        SummonAncientVampireEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.Ghost:
+                        SummonGhostEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.Lich:
+                        SummonLichEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.Mummy:
+                        SummonMummyEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.SkeletalWarrior:
+                        SummonSkeletonEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.Vampire:
+                        SummonVampireEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    case (int)MobileTypes.Zombie:
+                        SummonZombieEffect.Spawn(magnitude, mysticismLevel, intelligence, willpower, false);
+                        break;
+                    default:
+                        ChebError($"RestoreActiveMinions: failed to restore minion of " +
+                                  $"unknown type {daggerfallEnemy.MobileUnit.Enemy.ID}");
+                        break;
+                }
+                // Destroy the hidden minions
+                alreadyPresentMinions.ForEach(m => Destroy(m.gameObject));
+                // Clear the list
+                MinionsToRestore = new List<DaggerfallEnemy>();
+            }
         }
 
         private void Start()
@@ -324,22 +407,11 @@ namespace ChebsNecromancyMod
         {
             // When the scene loads, existing skeletons from the last session won't have the UndeadMinion script
             // attached to them. Find them and attach it here, so that they follow the player etc.
-            var undeadIds = new List<int>()
-            {
-                (int)MobileTypes.AncientLich,
-                (int)MobileTypes.VampireAncient,
-                (int)MobileTypes.Ghost,
-                (int)MobileTypes.Lich,
-                (int)MobileTypes.Mummy,
-                (int)MobileTypes.SkeletalWarrior,
-                (int)MobileTypes.Vampire,
-                (int)MobileTypes.Zombie
-            };
             var daggerfallEnemies = FindObjectsOfType<DaggerfallEnemy>();
             foreach (var daggerfallEnemy in daggerfallEnemies)
             {
                 if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
-                    && undeadIds.Contains(daggerfallEnemy.MobileUnit.Enemy.ID))
+                    && UndeadIds.Contains(daggerfallEnemy.MobileUnit.Enemy.ID))
                 {
                     daggerfallEnemy.gameObject.AddComponent<UndeadMinion>();
                 }

@@ -59,8 +59,12 @@ namespace ChebsNecromancyMod.MinionSpawners
                 maceMat = WeaponMaterialTypes.Steel;
             var mace = ItemBuilder.CreateWeapon(Weapons.Mace, maceMat);
             // todo: localize
-            var msg = $"{foeType} created with {maceMat} {mace.shortName}!";
-            DaggerfallUI.AddHUDText(msg);
+            if (showHUDMessage)
+            {
+                var msg = $"{foeType} created with {maceMat} {mace.shortName}!";
+                DaggerfallUI.AddHUDText(msg);
+            }
+            minionEntity.ItemEquipTable.EquipItem(mace);
         }
     }
 }

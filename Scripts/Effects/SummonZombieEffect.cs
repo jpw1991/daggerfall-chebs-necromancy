@@ -41,13 +41,20 @@ namespace ChebsNecromancyMod
         {
             base.DoEffect();
 
+            Spawn(GetMagnitude(), caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism),
+                caster.Entity.Stats.LiveIntelligence, caster.Entity.Stats.LiveWillpower, true);
+        }
+
+        public static void Spawn(int magnitude, int mysticismLevel, int intelligence, int willpower, bool showHUDMessage)
+        {
             var spawner = new GameObject("MinionSpawner");
             spawner.SetActive(false);
             var minionSpawner = spawner.AddComponent<ZombieSpawner>();
-            minionSpawner.magnitude = GetMagnitude();
-            minionSpawner.mysticismLevel = caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism);
-            minionSpawner.intelligence = caster.Entity.Stats.LiveIntelligence;
-            minionSpawner.willpower = caster.Entity.Stats.LiveWillpower;
+            minionSpawner.showHUDMessage = showHUDMessage;
+            minionSpawner.magnitude = magnitude;
+            minionSpawner.mysticismLevel = mysticismLevel;
+            minionSpawner.intelligence = intelligence;
+            minionSpawner.willpower = willpower;
             spawner.SetActive(true);
         }
     }
