@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Utility;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,26 +15,35 @@ namespace ChebsNecromancyMod
         public float maxDistance = 3f;
         public bool alliedToPlayer = true;
 
+        public int magnitude;
+        public int mysticismLevel;
+        public int intelligence;
+        public int willpower;
+
         private IEnumerator Start()
         {
             yield return new WaitForEndOfFrame();
+
+            ChebsNecromancy.ChebLog($"{this} magnitude={magnitude}, mysticismLevel={mysticismLevel}, " +
+                                    $"intelligence={intelligence}, willpower={willpower}");
 
             GameObjectHelper.CreateFoeGameObjects(Vector3.zero, foeType, spawnCount, alliedToPlayer: alliedToPlayer)
                 .ToList()
                 .ForEach(m =>
                 {
                     PositionMinion(m);
+                    ScaleMinion(m);
                     FinalizeMinion(m);
                 });
 
             Destroy(this);
         }
 
-        void PositionMinion(GameObject minion)
+        protected virtual void PositionMinion(GameObject minion)
         {
             if (Camera.main == null)
             {
-                Debug.LogError("ChebsNecromancy.MinionSpawner.PositionMinion: Camera.main is null.");
+                ChebsNecromancy.ChebError("MinionSpawner.PositionMinion: Camera.main is null.");
                 return;
             }
             var center = Camera.main.transform.position;
@@ -42,7 +52,11 @@ namespace ChebsNecromancyMod
             minion.transform.position = randomPos;
         }
 
-        void FinalizeMinion(GameObject minion)
+        protected virtual void ScaleMinion(GameObject minion)
+        {
+        }
+
+        protected virtual void FinalizeMinion(GameObject minion)
         {
             var mobileUnit = minion.GetComponentInChildren<MobileUnit>();
             if (mobileUnit)
@@ -59,6 +73,14 @@ namespace ChebsNecromancyMod
 
             minion.AddComponent<UndeadMinion>();
             minion.SetActive(true);
+
+            ChebsNecromancy.ChebLog($@"Finalized minion: {JsonConvert.SerializeObject(mobileUnit.Enemy,
+                new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    Error = ((sender, args) => { })
+                })
+            }");
         }
     }
 }

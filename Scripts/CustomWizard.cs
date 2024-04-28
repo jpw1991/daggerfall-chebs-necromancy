@@ -8,7 +8,6 @@ using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
-using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Player;
 using DaggerfallWorkshop.Game.UserInterface;
 using DaggerfallWorkshop.Game.UserInterfaceWindows;
@@ -565,6 +564,8 @@ namespace ChebsNecromancyMod
                     {
                         // the real spell a necromancer wants to start with: Animate Dead!
                         entity.AddSpell(ChebsNecromancy.AnimateDeadSpell);
+                        // and give em a basic recall too
+                        entity.AddSpell(ChebsNecromancy.NoviceRecallSpell);
 
                         // Some extra spells a necromancer might find useful.
                         // Classic spell indexes are on https://en.uesp.net/wiki/Daggerfall:SPELLS.STD_indices under Spell Catalogue
@@ -683,7 +684,7 @@ namespace ChebsNecromancyMod
 
         void DaggerfallClassSelectWindow_OnItemPicked(int index, string className)
         {
-            Debug.Log($"listBox.Count={listBox.Count}, classList.Count={classList.Count}, index={index}, className={className}");
+            ChebsNecromancy.ChebLog($"listBox.Count={listBox.Count}, classList.Count={classList.Count}, index={index}, className={className}");
             if (index >= classList.Count) // "Custom" option selected
             {
                 selectedClass = null;
@@ -698,7 +699,7 @@ namespace ChebsNecromancyMod
 
                 if (CustomClasses.ContainsKey(selectedClass))
                 {
-                    Debug.Log($"Cheb's Necromancy: Custom class {className} chosen");
+                    ChebsNecromancy.ChebLog($"Custom class {className} chosen");
                     // don't read from file - there's not one. Generate
                     DaggerfallMessageBox messageBox = new DaggerfallMessageBox(uiManager, this);
                     var textTokens = CustomClasses[selectedClass];
@@ -713,7 +714,7 @@ namespace ChebsNecromancyMod
                 }
                 else
                 {
-                    Debug.Log($"Cheb's Necromancy: Vanilla class {className} chosen");
+                    ChebsNecromancy.ChebLog($"Vanilla class {className} chosen");
                     TextFile.Token[] textTokens = DaggerfallUnity.Instance.TextProvider.GetRSCTokens(startClassDescriptionID + index);
                     DaggerfallMessageBox messageBox = new DaggerfallMessageBox(uiManager, this);
                     messageBox.SetTextTokens(textTokens);

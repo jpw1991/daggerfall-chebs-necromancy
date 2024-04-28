@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
@@ -17,12 +16,19 @@ using Wenzil.Console;
 
 namespace ChebsNecromancyMod
 {
+    public enum Logging
+    {
+        Errors = 0,
+        All,
+        None
+    }
     public class ChebsNecromancy : MonoBehaviour
     {
         public const string NecromancerCareerName = "Necromancer";
-        public static EffectBundleSettings AnimateDeadSpell;
+        public static EffectBundleSettings AnimateDeadSpell, NoviceRecallSpell;
         public static bool EnableCustomClassNecromancer = true;
         public static DFCareer NecromancerCareer;
+        public static Logging Log = Logging.Errors;
 
         private static Mod mod;
 
@@ -49,17 +55,18 @@ namespace ChebsNecromancyMod
             mod.LoadSettings();
 
             AnimateDeadSpell = CreateAnimateDeadSpell();
+            NoviceRecallSpell = CreateNoviceRecallSpell();
 
             mod.IsReady = true;
         }
 
         private void Start()
         {
-            Debug.Log("Starting Cheb");
+            ChebLog("Starting Cheb");
 
             if (!EnableCustomClassNecromancer)
             {
-                Debug.Log("Custom Class Necromancer disabled.");
+                ChebLog("Custom Class Necromancer disabled.");
                 return;
             }
 
@@ -75,7 +82,7 @@ namespace ChebsNecromancyMod
 
             if (daggerfallUi == null)
             {
-                Debug.LogError("Failed to get DaggerfallUI");
+                ChebError("Failed to get DaggerfallUI");
                 return;
             }
 
@@ -198,7 +205,7 @@ namespace ChebsNecromancyMod
                 };
 
             // log the result in case of errors
-            Debug.Log($"Cheb's Necromancy: Class result: {JsonConvert.SerializeObject(result)}");
+            ChebLog($"Class result: {JsonConvert.SerializeObject(result)}");
 
             return result;
         }
@@ -218,8 +225,8 @@ namespace ChebsNecromancyMod
                             { text = "Unfortunately, the sun makes them uncomfortable and they cannot tolerate" },
                         new TextFile.Token() { text = "holy places." },
                         new TextFile.Token() { text = "" },
-                        new TextFile.Token() { text = "The skills most important to a Necromancer are: Mysticism," },
-                        new TextFile.Token() { text = "Illusion, and Restoration." },
+                        new TextFile.Token() { text = $"The skills most important to a Necromancer are: {NecromancerCareer.MajorSkill1}," },
+                        new TextFile.Token() { text = $"{NecromancerCareer.MajorSkill2}, and {NecromancerCareer.MajorSkill3}." },
                         new TextFile.Token() { text = "" },
                         new TextFile.Token() { text = "Do you wish to be a Necromancer?" },
                     }
@@ -234,15 +241,18 @@ namespace ChebsNecromancyMod
             var window = uiManager.TopWindow.Value;
             if (window is StartNewGameWizard)
             {
-                Debug.Log("StartNewGameWizard opening, close it.");
+                ChebLog("StartNewGameWizard opening, close it.");
                 window.CloseWindow();
-                Debug.Log("StartNewGameWizard closed, opening CustomStartNewGameWizard.");
+                ChebLog("StartNewGameWizard closed, opening CustomStartNewGameWizard.");
                 uiManager.PushWindow(new CustomStartNewGameWizard(uiManager));
             }
         }
 
         static void LoadSettings(ModSettings modSettings, ModSettingsChange change)
         {
+            var loggingMap = (Logging[])Enum.GetValues(typeof(Logging));
+            Log = loggingMap[modSettings.GetInt("General", "Logging")];
+
             const string section = "Necromancer Class";
             EnableCustomClassNecromancer = modSettings.GetBool(section, "Enabled");
 
@@ -265,9 +275,27 @@ namespace ChebsNecromancyMod
 
             foreach (var baseEntityEffect in spellEffects)
             {
-                baseEntityEffect.CostA = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost A");
-                baseEntityEffect.CostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost B");
-                baseEntityEffect.CostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost Offset");
+                //ChebLog($"Processing {baseEntityEffect.DisplayName}");
+                if (baseEntityEffect.Properties.SupportChance)
+                {
+                    //ChebLog("Has chance");
+                    baseEntityEffect.ChanceCostA = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost A");
+                    baseEntityEffect.ChanceCostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost B");
+                    baseEntityEffect.ChanceCostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost Offset");
+                }
+
+                if (baseEntityEffect.Properties.SupportMagnitude)
+                {
+                    //ChebLog("Has magnitude");
+                    baseEntityEffect.MagnitudeCostA = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost A");
+                    baseEntityEffect.MagnitudeCostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost B");
+                    baseEntityEffect.MagnitudeCostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost Offset");
+                }
+
+                if (baseEntityEffect.Properties.SupportDuration)
+                {
+                    // todo
+                }
 
                 baseEntityEffect.SetProperties();
 
@@ -276,14 +304,14 @@ namespace ChebsNecromancyMod
                 {
                     var template = effectBroker.GetEffectTemplate(baseEntityEffect.Key);
                     template.Settings = baseEntityEffect.Settings;
-                    // Debug.Log($"Updating {baseEntityEffect.Key} with costs " +
+                    // ChebLog($"Updating {baseEntityEffect.Key} with costs " +
                     //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
                     //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
                     //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
                 }
                 else
                 {
-                    // Debug.Log($"Registering {baseEntityEffect.Key} with costs " +
+                    // ChebLog($"Registering {baseEntityEffect.Key} with costs " +
                     //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
                     //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
                     //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
@@ -330,7 +358,7 @@ namespace ChebsNecromancyMod
             var effectBroker = GameManager.Instance.EntityEffectBroker;
             if (!effectBroker.HasEffectTemplate(SummonSkeletonEffect.EffectKey))
             {
-                Debug.LogError("Cheb's Necromancy: CreateBeginnerSpell: Failed to get template from effect broker");
+                ChebError("CreateBeginnerSpell: Failed to get template from effect broker");
                 return new EffectBundleSettings();
             }
 
@@ -339,7 +367,12 @@ namespace ChebsNecromancyMod
             {
                 ChanceBase = 25,
                 ChancePerLevel = 5,
-                ChancePlus = 1
+                ChancePlus = 1,
+                MagnitudeBaseMin = 1,
+                MagnitudeBaseMax = 1,
+                MagnitudePerLevel = 1,
+                MagnitudePlusMax = 1,
+                MagnitudePlusMin = 1
             };
             var effectEntry = new EffectEntry()
             {
@@ -367,5 +400,66 @@ namespace ChebsNecromancyMod
 
             return offer.BundleSetttings;
         }
+
+        private static EffectBundleSettings CreateNoviceRecallSpell()
+        {
+            // Create a basic recall spell so that they can recall their stuck minions
+            var effectBroker = GameManager.Instance.EntityEffectBroker;
+            if (!effectBroker.HasEffectTemplate(RecallMinionsEffect.EffectKey))
+            {
+                ChebError("CreateBeginnerSpell: Failed to get template from effect broker");
+                return new EffectBundleSettings();
+            }
+
+            var template = effectBroker.GetEffectTemplate(RecallMinionsEffect.EffectKey);
+            var templateSettings = new EffectSettings()
+            {
+                ChanceBase = 25,
+                ChancePerLevel = 5,
+                ChancePlus = 1,
+            };
+            var effectEntry = new EffectEntry()
+            {
+                Key = template.Properties.Key,
+                Settings = templateSettings,
+            };
+            var noviceRecall = new EffectBundleSettings()
+            {
+                Version = 1,
+                BundleType = BundleTypes.Spell,
+                TargetType = TargetTypes.CasterOnly,
+                ElementType = ElementTypes.Magic,
+                Name = "Novice Recall",
+                IconIndex = 12,
+                Effects = new EffectEntry[] { effectEntry },
+            };
+            // add it to stores so it can be purchased
+            var offer = new EntityEffectBroker.CustomSpellBundleOffer()
+            {
+                Key = "NoviceRecall-CustomOffer",
+                Usage = EntityEffectBroker.CustomSpellBundleOfferUsage.SpellsForSale,
+                BundleSetttings = noviceRecall,
+            };
+            effectBroker.RegisterCustomSpellBundleOffer(offer);
+
+            return offer.BundleSetttings;
+        }
+
+        #region Logging
+        // Wrappers for logging so I don't keep being too lazy to write "Cheb's Necromancy" on front of messages and
+        // then later be unable to find relevant messages.
+        public static void ChebLog(string msg)
+        {
+            if (Log == Logging.All)
+                Debug.Log($"Cheb's Necromancy: {msg}");
+        }
+
+        public static void ChebError(string msg)
+        {
+            if (Log != Logging.None)
+                Debug.LogError($"Cheb's Necromancy: {msg}");
+        }
+
+        #endregion
     }
 }

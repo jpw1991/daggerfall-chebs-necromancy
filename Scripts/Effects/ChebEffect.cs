@@ -10,9 +10,12 @@ namespace ChebsNecromancyMod
         protected virtual string effectKey => "Recall Minions";
         protected virtual string effectDescription => "Recall all minions to your location.";
 
-        public int CostA { get; set; }
-        public int CostB { get; set; }
-        public int CostOffset { get; set; }
+        public int ChanceCostA { get; set; }
+        public int ChanceCostB { get; set; }
+        public int ChanceCostOffset { get; set; }
+        public int MagnitudeCostA { get; set; }
+        public int MagnitudeCostB { get; set; }
+        public int MagnitudeCostOffset { get; set; }
 
         public override void SetProperties()
         {
@@ -23,14 +26,6 @@ namespace ChebsNecromancyMod
             properties.AllowedCraftingStations = MagicCraftingStations.SpellMaker;
             properties.MagicSkill = DFCareer.MagicSkills.Mysticism;
             properties.DisableReflectiveEnumeration = true;
-            // if we wanna make stuff harder, we can add durations to the spell etc. but we all know Cheb hates that
-            // stuff.
-            properties.SupportChance = true;
-            properties.ChanceCosts = MakeEffectCosts(CostA, CostB, CostOffset);
-            properties.SupportDuration = false;
-            // properties.DurationCosts = MakeEffectCosts(8, 100, 200);
-            properties.SupportMagnitude = false;
-            // properties.MagnitudeCosts = MakeEffectCosts(8, 100, 200);
         }
 
         #region Text

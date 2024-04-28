@@ -1,16 +1,38 @@
+using DaggerfallConnect;
 using DaggerfallWorkshop;
+using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
 namespace ChebsNecromancyMod
 {
     public class RecallMinionsEffect : ChebEffect
     {
-        protected override string effectKey => "Recall Minions";
+        public const string EffectKey = "Recall Minions";
+        protected override string effectKey => EffectKey;
         protected override string effectDescription => "Recall all minions to your location.";
 
-        public int CostA { get; set; }
-        public int CostB { get; set; }
-        public int CostOffset { get; set; }
+        public new int ChanceCostA { get; set; }
+        public new int ChanceCostB { get; set; }
+        public new int ChanceCostOffset { get; set; }
+
+        public override void SetProperties()
+        {
+            properties.Key = effectKey;
+            properties.ShowSpellIcon = false;
+            properties.AllowedTargets = TargetTypes.CasterOnly;
+            properties.AllowedElements = EntityEffectBroker.ElementFlags_MagicOnly;
+            properties.AllowedCraftingStations = MagicCraftingStations.SpellMaker;
+            properties.MagicSkill = DFCareer.MagicSkills.Mysticism;
+            properties.DisableReflectiveEnumeration = true;
+
+            properties.SupportChance = true;
+            properties.ChanceCosts = MakeEffectCosts(ChanceCostA, ChanceCostB, ChanceCostOffset);
+            // what purpose could duration/magnitude have on recall?
+            properties.SupportDuration = false;
+            // properties.DurationCosts = MakeEffectCosts(8, 100, 200);
+            properties.SupportMagnitude = false;
+            //properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
+        }
 
         protected override void DoEffect()
         {
@@ -23,7 +45,7 @@ namespace ChebsNecromancyMod
         {
             if (Camera.main == null)
             {
-                Debug.LogError("ChebsNecromancy.RecallMinionsEffect.RecallMinions: Camera.main is null.");
+                ChebsNecromancy.ChebError("RecallMinionsEffect.RecallMinions: Camera.main is null.");
                 return;
             }
             var recallPosition = Camera.main.transform.position + Vector3.forward;

@@ -1,6 +1,26 @@
 {
-    "Version": "0.0.13",
+    "Version": "0.0.14",
     "Sections": [
+        {
+            "Name": "General",
+            "Description": "General mod settings.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Options": [
+                        "Errors",
+                        "All",
+                        "None"
+                    ],
+                    "Value": 0,
+                    "Name": "Logging",
+                    "Description": "How much logging should appear in the Player.log for debugging purposes.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                }
+            ],
+            "$version": "v1"
+        },
         {
             "Name": "Necromancer Class",
             "Description": "Custom class added by the mod.",
@@ -912,6 +932,33 @@
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 500,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
             ],
             "$version": "v1"
@@ -945,6 +992,33 @@
                     "Value": 250,
                     "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 250,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
@@ -982,6 +1056,33 @@
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 100,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
             ],
             "$version": "v1"
@@ -1015,6 +1116,33 @@
                     "Value": 100,
                     "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 100,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
@@ -1052,6 +1180,33 @@
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 50,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
             ],
             "$version": "v1"
@@ -1085,6 +1240,33 @@
                     "Value": 10,
                     "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 1,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 10,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
@@ -1122,6 +1304,33 @@
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 500,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
             ],
             "$version": "v1"
@@ -1155,6 +1364,33 @@
                     "Value": 10,
                     "Name": "Chance Cost Offset",
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to ChanceCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 10,
+                    "Name": "Magnitude Cost A",
+                    "Description": "The costA parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 100,
+                    "Value": 100,
+                    "Name": "Magnitude Cost B",
+                    "Description": "The costB parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 1000,
+                    "Value": 500,
+                    "Name": "Magnitude Cost Offset",
+                    "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
                 }
