@@ -55,6 +55,8 @@ Check the log file and look for "Cheb" to find errors related to this mod.
 
 The log file's [location differs per operating system](https://docs.unity3d.com/Manual/LogFiles.html). On Linux it is located in `$HOME/.config/unity3d/Daggerfall Workshop/Daggerfall Unity/Player.log`
 
+The logging level can be increased/decreased in the mod settings. By default, only errors are logged.
+
 ## Cheating
 
 <details>

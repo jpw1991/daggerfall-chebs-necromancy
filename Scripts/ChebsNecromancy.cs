@@ -4,7 +4,10 @@ using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Entity;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
+using DaggerfallWorkshop.Game.Questing;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.UserInterface;
 using DaggerfallWorkshop.Game.UserInterfaceWindows;
@@ -25,6 +28,10 @@ namespace ChebsNecromancyMod
     public class ChebsNecromancy : MonoBehaviour
     {
         public const string NecromancerCareerName = "Necromancer";
+
+        public static bool CorpseItemEnabled = true;
+        public static DaggerfallUnityItem CorpseItem;
+
         public static EffectBundleSettings AnimateDeadSpell, NoviceRecallSpell;
         public static bool EnableCustomClassNecromancer = true;
         public static DFCareer NecromancerCareer;
@@ -64,8 +71,15 @@ namespace ChebsNecromancyMod
 
             mod.LoadSettingsCallback = LoadSettings;
 
+            #region BeforeSettings
+            // Custom items
+            CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Dead_Body);
+            CorpseItem.value = 0;
+            CorpseItem.weightInKg = 1.0f;
+            CorpseItem.RenameItem("Humanoid Corpse");
+
+            // Events
             SaveLoadManager.OnLoad += RegisterExistingMinions;
-            //StateManager.OnStateChange += state => { ChebLog($"State changed: {state}"); };
             // On pre-transition, make note of all active minions
             PlayerEnterExit.OnPreTransition += args => { RecordActiveMinions(); };
             // On post-transition, restore aforementioned active minions
@@ -73,14 +87,75 @@ namespace ChebsNecromancyMod
             PlayerEnterExit.OnTransitionInterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonExterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonInterior += args => { RestoreActiveMinions(); };
-
+            // Custom item drops
+            EnemyDeath.OnEnemyDeath += OnEnemyDeath; // removed later, if disabled in settings.
+            #endregion
 
             mod.LoadSettings();
 
+            #region AfterSettings
+            // Create spells after settings are loaded, so that values from the config get used.
             AnimateDeadSpell = CreateAnimateDeadSpell();
             NoviceRecallSpell = CreateNoviceRecallSpell();
+            #endregion
 
             mod.IsReady = true;
+        }
+
+        public static void OnEnemyDeath(object sender, EventArgs eventArgs)
+        {
+            // drop a corpse if it's a humanoid or humanoid-like monster
+            var enemyDeath = sender as EnemyDeath;
+            if (enemyDeath == null) return;
+            if (!enemyDeath.TryGetComponent(out DaggerfallEntityBehaviour entityBehaviour)) return;
+            if (!(entityBehaviour.Entity is EnemyEntity enemyEntity)) return;
+            var dropCorpse = false;
+            if (enemyEntity.EntityType == EntityTypes.EnemyClass)
+            {
+                // humanoid
+                switch (enemyEntity.CareerIndex)
+                {
+                    case (int)ClassCareers.Mage:
+                    case (int)ClassCareers.Spellsword:
+                    case (int)ClassCareers.Battlemage:
+                    case (int)ClassCareers.Sorcerer:
+                    case (int)ClassCareers.Healer:
+                    case (int)ClassCareers.Nightblade:
+                    case (int)ClassCareers.Bard:
+                    case (int)ClassCareers.Acrobat:
+                    case (int)ClassCareers.Assassin:
+                    case (int)ClassCareers.Burglar:
+                    case (int)ClassCareers.Rogue:
+                    case (int)ClassCareers.Thief:
+                    case (int)ClassCareers.Monk:
+                    case (int)ClassCareers.Archer:
+                    case (int)ClassCareers.Ranger:
+                    case (int)ClassCareers.Barbarian:
+                    case (int)ClassCareers.Warrior:
+                    case (int)ClassCareers.Knight:
+                        dropCorpse = true;
+                        break;
+                }
+            }
+            else
+            {
+                // humanoid monster
+                switch (enemyEntity.CareerIndex)
+                {
+                    case (int)MonsterCareers.Orc:
+                    case (int)MonsterCareers.OrcSergeant:
+                    case (int)MonsterCareers.OrcShaman:
+                    case (int)MonsterCareers.OrcWarlord:
+                        dropCorpse = true;
+                        break;
+                }
+            }
+
+            if (dropCorpse)
+            {
+                ChebLog($"Dropping corpse for {enemyEntity.Name}");
+                entityBehaviour.CorpseLootContainer.Items.AddItem(CorpseItem);
+            }
         }
 
         public static void RecordActiveMinions()
@@ -336,8 +411,8 @@ namespace ChebsNecromancyMod
             var loggingMap = (Logging[])Enum.GetValues(typeof(Logging));
             Log = loggingMap[modSettings.GetInt("General", "Logging")];
 
-            const string section = "Necromancer Class";
-            EnableCustomClassNecromancer = modSettings.GetBool(section, "Enabled");
+            const string classSection = "Necromancer Class";
+            EnableCustomClassNecromancer = modSettings.GetBool(classSection, "Enabled");
 
             NecromancerCareer = GenerateNecromancerCareer(modSettings);
 
@@ -401,6 +476,11 @@ namespace ChebsNecromancyMod
                     effectBroker.RegisterEffectTemplate(baseEntityEffect);
                 }
             }
+
+            const string corpseSection = "Corpse Item";
+            CorpseItemEnabled = modSettings.GetBool(corpseSection, "Enabled");
+            if (!CorpseItemEnabled) EnemyDeath.OnEnemyDeath -= OnEnemyDeath;
+            CorpseItem.weightInKg = modSettings.GetInt(corpseSection, "Weight in KG");
         }
 
         private static void RegisterExistingMinions(SaveData_v1 saveDataV1)

@@ -22,6 +22,30 @@
             "$version": "v1"
         },
         {
+            "Name": "Corpse Item",
+            "Description": "Configure the custom corpse item.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Value": true,
+                    "Name": "Enabled",
+                    "Description": "If enabled, enemy humnanoids will drop corpse items and these items will be required for making minions with.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
+                {
+                    "Min": 1,
+                    "Max": 200,
+                    "Value": 1,
+                    "Name": "Weight in KG",
+                    "Description": "How much the custom corpse item weighs.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
             "Name": "Necromancer Class",
             "Description": "Custom class added by the mod.",
             "IsAdvanced": false,
