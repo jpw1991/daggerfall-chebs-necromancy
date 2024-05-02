@@ -7,7 +7,6 @@ using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Entity;
 using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
-using DaggerfallWorkshop.Game.Questing;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.UserInterface;
 using DaggerfallWorkshop.Game.UserInterfaceWindows;
@@ -69,11 +68,20 @@ namespace ChebsNecromancyMod
                 RecallMinionsCommand.name, RecallMinionsCommand.description,
                 RecallMinionsCommand.usage, RecallMinionsCommand.Execute);
 
+            ConsoleCommandsDatabase.RegisterCommand(
+                SpawnCorpseItemCommand.name, SpawnCorpseItemCommand.description,
+                SpawnCorpseItemCommand.usage, SpawnCorpseItemCommand.Execute);
+
             mod.LoadSettingsCallback = LoadSettings;
 
             #region BeforeSettings
             // Custom items
-            CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Dead_Body);
+            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Dead_Body);
+            // CorpseItem.FromItemData(new ItemData_v1()
+            // {
+            //
+            // });
+            CorpseItem = ItemBuilder.CreateItem(ItemGroups.UselessItems1, (int)UselessItems1.Clay_Jar);
             CorpseItem.value = 0;
             CorpseItem.weightInKg = 1.0f;
             CorpseItem.RenameItem("Humanoid Corpse");
@@ -154,7 +162,7 @@ namespace ChebsNecromancyMod
             if (dropCorpse)
             {
                 ChebLog($"Dropping corpse for {enemyEntity.Name}");
-                entityBehaviour.CorpseLootContainer.Items.AddItem(CorpseItem);
+                entityBehaviour.CorpseLootContainer.Items.AddItem(CorpseItem.Clone());
             }
         }
 

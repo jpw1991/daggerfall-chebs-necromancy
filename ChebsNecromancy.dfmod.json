@@ -33,6 +33,7 @@
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/MinionSpawners/AncientVampireSpawner.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/RoleplayRealismItemsMod/StartingEquipmentStuff.cs",
         "Assets/Game/Mods/daggerfall-chebs-necromancy/ChebsNecromancy.dfmod.json",
-        "Assets/Game/Mods/daggerfall-chebs-necromancy/modsettings.json"
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/modsettings.json",
+        "Assets/Game/Mods/daggerfall-chebs-necromancy/Scripts/SpawnCorpseItemCommand.cs"
     ]
 }

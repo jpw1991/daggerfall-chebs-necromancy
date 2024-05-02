@@ -1,6 +1,5 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
-using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 

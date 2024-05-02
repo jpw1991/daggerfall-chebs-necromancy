@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Entity;
@@ -36,7 +35,7 @@ namespace ChebsNecromancyMod
         public static List<DaggerfallEnemy> GetActiveMinions()
         {
             var result = new List<DaggerfallEnemy>();
-            var daggerfallEnemies = Object.FindObjectsOfType<DaggerfallEnemy>();
+            var daggerfallEnemies = FindObjectsOfType<DaggerfallEnemy>();
             foreach (var daggerfallEnemy in daggerfallEnemies)
             {
                 if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
