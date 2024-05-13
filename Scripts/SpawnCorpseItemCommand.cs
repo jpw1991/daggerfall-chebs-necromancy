@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using DaggerfallWorkshop;
-using DaggerfallWorkshop.Game;
-using DaggerfallWorkshop.Game.Items;
-using UnityEngine;
+﻿using DaggerfallWorkshop.Game;
 
 namespace ChebsNecromancyMod
 {
@@ -21,7 +17,7 @@ namespace ChebsNecromancyMod
             }
 
             for (var i=0; i<amount; i++)
-                GameManager.Instance.PlayerEntity.Items.AddItem(ChebsNecromancy.CorpseItem.Clone(), ItemCollection.AddPosition.Back, true);
+                GameManager.Instance.PlayerEntity.Items.AddItem(CustomCorpseItem.Create());//, ItemCollection.AddPosition.Back, true);
 
             return "";
         }

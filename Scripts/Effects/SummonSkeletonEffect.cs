@@ -1,7 +1,6 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
-using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
@@ -49,9 +48,9 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("SummonSkeletonEffect.HasReagents: caster is null");
                 return false;
             }
+
             var result = caster.Entity.Items
-                .SearchItems(ItemGroups.MiscItems, (int)MiscItems.Dead_Body)
-                .Exists(m => m == ChebsNecromancy.CorpseItem);
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex) != null;
             if (!result) DaggerfallUI.AddHUDText("No corpse item available.");
             return result;
         }
@@ -63,7 +62,15 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("SummonSkeletonEffect.ConsumeReagents: caster is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(ChebsNecromancy.CorpseItem);
+
+            var foundCorpseItem =
+                caster.Entity.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (foundCorpseItem == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
+                return;
+            }
+            caster.Entity.Items.RemoveItem(foundCorpseItem);
         }
 
         protected override void DoEffect()
