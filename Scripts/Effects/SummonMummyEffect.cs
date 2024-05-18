@@ -1,5 +1,7 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
+using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
@@ -37,12 +39,86 @@ namespace ChebsNecromancyMod
             properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
         }
 
+        public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
+
+        protected bool HasReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("SummonMummyEffect.HasReagents: caster is null");
+                return false;
+            }
+
+            var corpseItem = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (corpseItem == null)
+            {
+                DaggerfallUI.AddHUDText("No corpse item available.");
+                return false;
+            }
+
+            var bandage = caster.Entity.Items
+                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage);
+            var oil = caster.Entity.Items
+                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil);
+            if (oil == null && bandage == null)
+            {
+                DaggerfallUI.AddHUDText("Bandages or oil required.");
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void ConsumeReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("SummonMummyEffect.ConsumeReagents: caster is null");
+                return;
+            }
+
+            var foundCorpseItem =
+                caster.Entity.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (foundCorpseItem == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
+                return;
+            }
+
+            // consume oil before bandages (oil seems more useless)
+            var bandage = caster.Entity.Items
+                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage);
+            var oil = caster.Entity.Items
+                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil);
+            if (oil == null && bandage == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: oil and bandages is null");
+                return;
+            }
+
+            if (oil != null)
+            {
+                ChebsNecromancy.ChebLog("Consuming oil");
+                caster.Entity.Items.RemoveItem(oil);
+            }
+            else
+            {
+                ChebsNecromancy.ChebLog("Consuming bandage");
+                caster.Entity.Items.RemoveItem(bandage);
+            }
+
+            caster.Entity.Items.RemoveItem(foundCorpseItem);
+        }
+
         protected override void DoEffect()
         {
             base.DoEffect();
 
             Spawn(GetMagnitude(), caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism),
                 caster.Entity.Stats.LiveIntelligence, caster.Entity.Stats.LiveWillpower, true);
+
+            ConsumeReagents();
         }
 
         public static void Spawn(int magnitude, int mysticismLevel, int intelligence, int willpower, bool showHUDMessage)

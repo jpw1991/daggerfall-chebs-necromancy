@@ -1,5 +1,7 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
+using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
@@ -37,12 +39,70 @@ namespace ChebsNecromancyMod
             properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
         }
 
+        public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
+
+        protected bool HasReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("HasReagents: caster is null");
+                return false;
+            }
+
+            var corpseItem = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (corpseItem == null)
+            {
+                DaggerfallUI.AddHUDText("No corpse item available.");
+                return false;
+            }
+
+            var lichDust = caster.Entity.Items
+                .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
+            if (lichDust == null)
+            {
+                DaggerfallUI.AddHUDText("No lich dust available.");
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void ConsumeReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("ConsumeReagents: caster is null");
+                return;
+            }
+
+            var corpseItem = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (corpseItem == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
+                return;
+            }
+            caster.Entity.Items.RemoveItem(corpseItem);
+
+            var lichDust = caster.Entity.Items
+                .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
+            if (lichDust == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: lichDust is null");
+                return;
+            }
+            caster.Entity.Items.RemoveItem(lichDust);
+        }
+
         protected override void DoEffect()
         {
             base.DoEffect();
 
             Spawn(GetMagnitude(), caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism),
                 caster.Entity.Stats.LiveIntelligence, caster.Entity.Stats.LiveWillpower, true);
+
+            ConsumeReagents();
         }
 
         public static void Spawn(int magnitude, int mysticismLevel, int intelligence, int willpower, bool showHUDMessage)
