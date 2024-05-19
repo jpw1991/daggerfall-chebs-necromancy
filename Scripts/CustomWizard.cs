@@ -575,6 +575,11 @@ namespace ChebsNecromancyMod
                         entity.AddSpell(StartingEquipmentStuff.GetClassicSpell(1));  // Fenrik's Door Jam
                         entity.AddSpell(StartingEquipmentStuff.GetClassicSpell(94)); // Recall!
                         entity.AddSpell(StartingEquipmentStuff.GetClassicSpell(97)); // Balyna's Balm
+
+                        // Add a starter corpse so that they have something to reanimate right away
+                        var starterCorpse = CustomCorpseItem.Create();
+                        starterCorpse.RenameItem("My Last Apprentice. What was his name again?");
+                        entity.Items.AddItem(starterCorpse);
                     };
                 }
                 StartNewGame();
