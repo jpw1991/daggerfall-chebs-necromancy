@@ -34,6 +34,23 @@ Spells can be created at the spell maker in the Mage's Guild.
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/d6377ecd-f057-4e6d-8dca-a7f74160ba02)
 
+## Ingredient Requirements
+
+If enabled in the config (default: enabled), items will be required to create minions with. Items are only consumed on successful reanimation.
+
+Minion | Requirements
+--- | ---
+Skeleton | Humanoid Corpse
+Ghost | Humanoid Corpse, Ectoplasm
+Zombie | Humanoid Corpse
+Mummy | Humanoid Corpse, Oil/Bandage
+Vampire | Humanoid Corpse, Red/Yellow Rose
+Lich | Humanoid Corpse, Lich Dust
+Ancient Vampire | Humanoid Corpse, Black/White Rose
+Ancient Lich | Humanoid Corpse, Lich Dust
+
+Item requirements help with balance by making minions more difficult to acquire, without imposing frustrating limits or durations.
+
 ## Installation
 
 1. Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
@@ -69,6 +86,7 @@ The spell effects have a backend which can be triggered by console commands:
   - `spawn skeleton` will spawn a skeletal warrior
   - `spawn vampire` will spawn a vampire, etc.
 - Type `recallminions` to bring the undead to your position if they get stuck or lost
+- Type `sci` to spawn in a corpse item. This stands for `spawn corpse item` and follows the style of other daggerfall commands like `tgm`.
 
 </details>
 
