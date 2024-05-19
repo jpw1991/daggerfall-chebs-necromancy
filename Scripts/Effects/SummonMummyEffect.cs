@@ -100,7 +100,7 @@ namespace ChebsNecromancyMod
             if (oil != null)
             {
                 ChebsNecromancy.ChebLog("Consuming oil");
-                caster.Entity.Items.RemoveItem(oil);
+                caster.Entity.Items.RemoveOne(oil);
             }
             else
             {
@@ -108,7 +108,7 @@ namespace ChebsNecromancyMod
                 caster.Entity.Items.RemoveItem(bandage);
             }
 
-            caster.Entity.Items.RemoveItem(foundCorpseItem);
+            caster.Entity.Items.RemoveOne(foundCorpseItem);
         }
 
         protected override void DoEffect()

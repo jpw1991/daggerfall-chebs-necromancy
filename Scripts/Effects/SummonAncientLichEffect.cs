@@ -83,7 +83,7 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(corpseItem);
+            caster.Entity.Items.RemoveOne(corpseItem);
 
             var lichDust = caster.Entity.Items
                 .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
@@ -92,7 +92,7 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("Failed to consume reagents: lichDust is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(lichDust);
+            caster.Entity.Items.RemoveOne(lichDust);
         }
 
         protected override void DoEffect()

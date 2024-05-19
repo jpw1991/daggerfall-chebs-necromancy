@@ -57,7 +57,15 @@ namespace ChebsNecromancyMod
                 return false;
             }
 
-            // todo: vampire appropriate item requirement
+            var blackRoseItem = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
+            var whiteRoseItem = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
+            if (blackRoseItem == null && whiteRoseItem == null)
+            {
+                DaggerfallUI.AddHUDText("Black/White rose required.");
+                return false;
+            }
 
             return true;
         }
@@ -77,16 +85,28 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(corpseItem);
+            caster.Entity.Items.RemoveOne(corpseItem);
 
-            var lichDust = caster.Entity.Items
-                .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
-            if (lichDust == null)
+            var blackRose = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
+            var whiteRose = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
+            if (blackRose == null && whiteRose == null)
             {
-                ChebsNecromancy.ChebError("Failed to consume reagents: lichDust is null");
+                ChebsNecromancy.ChebError("Failed to consume reagents: black and white rose is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(lichDust);
+
+            if (blackRose != null)
+            {
+                ChebsNecromancy.ChebLog("Consuming black rose");
+                caster.Entity.Items.RemoveOne(blackRose);
+            }
+            else
+            {
+                ChebsNecromancy.ChebLog("Consuming white rose");
+                caster.Entity.Items.RemoveOne(whiteRose);
+            }
         }
 
         protected override void DoEffect()

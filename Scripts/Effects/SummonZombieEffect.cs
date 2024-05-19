@@ -69,7 +69,7 @@ namespace ChebsNecromancyMod
                 ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
                 return;
             }
-            caster.Entity.Items.RemoveItem(foundCorpseItem);
+            caster.Entity.Items.RemoveOne(foundCorpseItem);
         }
 
         protected override void DoEffect()
