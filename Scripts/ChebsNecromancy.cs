@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
@@ -88,6 +89,8 @@ namespace ChebsNecromancyMod
 
         private static Mod mod;
 
+        private static bool justFastTravelled = false;
+
         [Invoke(StateManager.StateTypes.Start, 0)]
         public static void Init(InitParams initParams)
         {
@@ -112,36 +115,8 @@ namespace ChebsNecromancyMod
 
             #region BeforeSettings
             // Custom items
-            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Dead_Body);
-            // CorpseItem.FromItemData(new ItemData_v1()
-            // {
-            //
-            // });
-            //var corpseItemTemplateIndex = ItemHelper.LastDFTemplate + 3000;
-            // var helper = new ItemHelper();
-            // helper.RegisterCustomItem(CustomCorpseItem.TemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
             DaggerfallUnity.Instance.ItemHelper.RegisterCustomItem(CustomCorpseItem.TemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
             ChebLog("CustomCorpseItem registered.");
-            // if (!helper.GetCustomItemClass(corpseItemTemplateIndex, out Type corpseItem))
-            // {
-            //     ChebError("Failed to create custom corpse item.");
-            // }
-            // else
-            // {
-            //     //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
-            //     CorpseItem.value = 0;
-            //     CorpseItem.weightInKg = 1.0f;
-            //     CorpseItem.RenameItem("Humanoid Corpse");
-            // }
-            //CorpseItem = (CustomCorpseItem)Activator.CreateInstance(typeof(CustomCorpseItem)); // ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
-            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
-            // CorpseItem.SetItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
-            // var template = helper.GetItemTemplate(ItemGroups.MiscItems, corpseItemTemplateIndex);
-            // CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, template.index); //CreateItem(template);
-            //ChebLog("Creating instance of CustomCorpseItem...");
-            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.UselessItems1, CustomCorpseItem.TemplateIndex);
-            //CorpseItem = new CustomCorpseItem();
-            //CorpseItem.SetItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
 
             // Events
             SaveLoadManager.OnLoad += RegisterExistingMinions;
@@ -152,6 +127,33 @@ namespace ChebsNecromancyMod
             PlayerEnterExit.OnTransitionInterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonExterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonInterior += args => { RestoreActiveMinions(); };
+            // Before fast-travel, record minions
+            DaggerfallTravelPopUp.OnPreFastTravel += up =>
+            {
+                ChebLog("OnPreFastTravel: recording active minions. Player pos: {up.");
+                RecordActiveMinions();
+            };
+            // After fast-travel, restore minions
+            DaggerfallTravelPopUp.OnPostFastTravel += () =>
+            {
+                ChebLog("OnPostFastTravel: Restoring minions");
+                // For some reason, OnPostFastTravel doesn't work for restoring minion positions. I think it just
+                // happens too fast and the player position isn't yet properly changed.
+                // As a workaround, just flip a flag to true and then rely on PlayerGPS.OnEnterLocationRect to do the
+                // work but only if having just fast travelled.
+                // todo: find a better solution
+                justFastTravelled = true;
+
+            };
+            PlayerGPS.OnEnterLocationRect += location =>
+            {
+                ChebLog("OnEnterLocationRect");
+                if (justFastTravelled)
+                {
+                    justFastTravelled = false;
+                    RestoreActiveMinions();
+                }
+            };
             // Custom item drops
             EnemyDeath.OnEnemyDeath += OnEnemyDeath; // removed later, if disabled in settings.
             #endregion
