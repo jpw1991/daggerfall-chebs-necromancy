@@ -4,7 +4,9 @@ A mod for Daggerfall Unity that adds Necromancy to the game as spells under the 
 
 The undead are clones of vanilla enemies but are allied to the player. They also have code attached to them which makes them follow the player, but the pathfinding isn't great. It's based off how the enemies pursue the player and works basically the same way.
 
-[![video](https://img.youtube.com/vi/pf2PREe3q1E/0.jpg)](https://www.youtube.com/watch?v=pf2PREe3q1E)
+Video of 0.0.19 below:
+
+[![video](https://img.youtube.com/vi/_lZ5dmt22QA/0.jpg)](https://www.youtube.com/watch?v=_lZ5dmt22QA)
 
 ##  About Me
 
@@ -90,9 +92,22 @@ The spell effects have a backend which can be triggered by console commands:
 
 </details>
 
+## Repository
+
+GitHub for the mod [here](https://github.com/jpw1991/daggerfall-chebs-necromancy).
+
 ## Special Thanks
 
-Special thanks to Hazelnut, [Magicono43](https://github.com/magicono43), Harbinger451 for their invaluable assistance on the Discord and their prior works which I studied to learn how to make this mod.
+Special thanks to:
+
+- [Magicono43](https://github.com/magicono43)
+- [Macadaynu](https://github.com/Macadaynu)
+- Harbinger451
+- [DunnyOfPenwick](https://github.com/DunnyOfPenwick)
+- Hazelnut
+- [Andy B](https://github.com/ajrb)
+
+for their open source repositories (which I studied) and/or their invaluable assistance on the Discord.
 
 ## Changelog
 
