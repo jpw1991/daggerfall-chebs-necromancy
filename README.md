@@ -90,10 +90,15 @@ The spell effects have a backend which can be triggered by console commands:
 
 </details>
 
+## Special Thanks
+
+Special thanks to Hazelnut, [Magicono43](https://github.com/magicono43), Harbinger451 for their invaluable assistance on the Discord and their prior works which I studied to learn how to make this mod.
+
 ## Changelog
 
 Version | Date       | Info
 --- |------------| ---
+0.0.19 | 19/05/2024 | Graves can now be robbed for corpses and other minion-making items.
 0.0.18 | 19/05/2024 | Minions now come with you when fast travelling; improve minion positioning when using recall
 0.0.17 | 19/05/2024 | Necromancer class now starts with a corpse item.
 0.0.16 | 13/05/2024 | If enabled in config, enemy humanoids will drop corpses and these will be a requirement for successful reanimation.
