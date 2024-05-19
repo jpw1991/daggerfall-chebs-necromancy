@@ -94,6 +94,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.18 | 19/05/2024 | Minions now come with you when fast travelling; improve minion positioning when using recall
 0.0.17 | 19/05/2024 | Necromancer class now starts with a corpse item.
 0.0.16 | 13/05/2024 | If enabled in config, enemy humanoids will drop corpses and these will be a requirement for successful reanimation.
 0.0.15 | 28/04/2024 | Minions will follow you through area transitions.

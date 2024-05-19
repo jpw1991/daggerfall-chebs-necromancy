@@ -40,16 +40,25 @@ namespace ChebsNecromancyMod
             RecallMinions();
         }
 
-        public static void RecallMinions()
+        public static void RecallMinions(float maxDistance = 3f)
         {
             if (Camera.main == null)
             {
                 ChebsNecromancy.ChebError("RecallMinionsEffect.RecallMinions: Camera.main is null.");
                 return;
             }
-            var recallPosition = Camera.main.transform.position + Vector3.forward;
+
+            var cameraTransform = Camera.main.transform;
+            var center = cameraTransform.position + cameraTransform.forward * 2;
+
             var activeMinions = UndeadMinion.GetActiveMinions();
-            activeMinions.ForEach(m => m.transform.position = recallPosition);
+            activeMinions.ForEach(minion =>
+            {
+
+                var randomPos = Random.insideUnitSphere.normalized * maxDistance + center;
+                randomPos.y = center.y;
+                minion.transform.position = randomPos;
+            });
         }
     }
 }
