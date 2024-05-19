@@ -1,5 +1,4 @@
 using DaggerfallConnect;
-using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 

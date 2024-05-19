@@ -4,6 +4,8 @@ using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Entity;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Serialization;
 using DaggerfallWorkshop.Game.UserInterface;
@@ -16,6 +18,42 @@ using Wenzil.Console;
 
 namespace ChebsNecromancyMod
 {
+    public class CustomCorpseItem : DaggerfallUnityItem
+    {
+        public const int TemplateIndex = 4733;
+        public const string DisplayName = "Humanoid Corpse";
+        public const ItemGroups TemplateItemGroup = ItemGroups.UselessItems1;
+
+        public CustomCorpseItem() : base(TemplateItemGroup, TemplateIndex)
+        {
+            value = 0;
+            weightInKg = 0f;
+            RenameItem(DisplayName);
+        }
+
+        // 380 is the value for MiscItems.Dead_Body in the texture archive. To view the archive, use the
+        // utility here: https://www.nexusmods.com/daggerfallunity/mods/460
+        // For some reason if I use 380 I get a blood splatter. But you know what? That's close enough for now.
+        public override int InventoryTextureArchive => 380;
+
+        public override bool IsStackable()
+        {
+            return true;
+        }
+
+        public override ItemData_v1 GetSaveData()
+        {
+            ItemData_v1 data = base.GetSaveData();
+            data.className = typeof(CustomCorpseItem).ToString();
+            return data;
+        }
+
+        public static DaggerfallUnityItem Create()
+        {
+            return ItemBuilder.CreateItem(TemplateItemGroup, TemplateIndex);
+        }
+    }
+
     public enum Logging
     {
         Errors = 0,
@@ -25,6 +63,10 @@ namespace ChebsNecromancyMod
     public class ChebsNecromancy : MonoBehaviour
     {
         public const string NecromancerCareerName = "Necromancer";
+
+        public static bool CorpseItemEnabled = true;
+        //public static DaggerfallUnityItem CorpseItem;
+
         public static EffectBundleSettings AnimateDeadSpell, NoviceRecallSpell;
         public static bool EnableCustomClassNecromancer = true;
         public static DFCareer NecromancerCareer;
@@ -62,10 +104,47 @@ namespace ChebsNecromancyMod
                 RecallMinionsCommand.name, RecallMinionsCommand.description,
                 RecallMinionsCommand.usage, RecallMinionsCommand.Execute);
 
+            ConsoleCommandsDatabase.RegisterCommand(
+                SpawnCorpseItemCommand.name, SpawnCorpseItemCommand.description,
+                SpawnCorpseItemCommand.usage, SpawnCorpseItemCommand.Execute);
+
             mod.LoadSettingsCallback = LoadSettings;
 
+            #region BeforeSettings
+            // Custom items
+            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, (int)MiscItems.Dead_Body);
+            // CorpseItem.FromItemData(new ItemData_v1()
+            // {
+            //
+            // });
+            //var corpseItemTemplateIndex = ItemHelper.LastDFTemplate + 3000;
+            // var helper = new ItemHelper();
+            // helper.RegisterCustomItem(CustomCorpseItem.TemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
+            DaggerfallUnity.Instance.ItemHelper.RegisterCustomItem(CustomCorpseItem.TemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
+            ChebLog("CustomCorpseItem registered.");
+            // if (!helper.GetCustomItemClass(corpseItemTemplateIndex, out Type corpseItem))
+            // {
+            //     ChebError("Failed to create custom corpse item.");
+            // }
+            // else
+            // {
+            //     //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
+            //     CorpseItem.value = 0;
+            //     CorpseItem.weightInKg = 1.0f;
+            //     CorpseItem.RenameItem("Humanoid Corpse");
+            // }
+            //CorpseItem = (CustomCorpseItem)Activator.CreateInstance(typeof(CustomCorpseItem)); // ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
+            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
+            // CorpseItem.SetItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
+            // var template = helper.GetItemTemplate(ItemGroups.MiscItems, corpseItemTemplateIndex);
+            // CorpseItem = ItemBuilder.CreateItem(ItemGroups.MiscItems, template.index); //CreateItem(template);
+            //ChebLog("Creating instance of CustomCorpseItem...");
+            //CorpseItem = ItemBuilder.CreateItem(ItemGroups.UselessItems1, CustomCorpseItem.TemplateIndex);
+            //CorpseItem = new CustomCorpseItem();
+            //CorpseItem.SetItem(ItemGroups.MiscItems, corpseItemTemplateIndex);
+
+            // Events
             SaveLoadManager.OnLoad += RegisterExistingMinions;
-            //StateManager.OnStateChange += state => { ChebLog($"State changed: {state}"); };
             // On pre-transition, make note of all active minions
             PlayerEnterExit.OnPreTransition += args => { RecordActiveMinions(); };
             // On post-transition, restore aforementioned active minions
@@ -73,14 +152,76 @@ namespace ChebsNecromancyMod
             PlayerEnterExit.OnTransitionInterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonExterior += args => { RestoreActiveMinions(); };
             PlayerEnterExit.OnTransitionDungeonInterior += args => { RestoreActiveMinions(); };
-
+            // Custom item drops
+            EnemyDeath.OnEnemyDeath += OnEnemyDeath; // removed later, if disabled in settings.
+            #endregion
 
             mod.LoadSettings();
 
+            #region AfterSettings
+            // Create spells after settings are loaded, so that values from the config get used.
             AnimateDeadSpell = CreateAnimateDeadSpell();
             NoviceRecallSpell = CreateNoviceRecallSpell();
+            #endregion
 
             mod.IsReady = true;
+        }
+
+        public static void OnEnemyDeath(object sender, EventArgs eventArgs)
+        {
+            // drop a corpse if it's a humanoid or humanoid-like monster
+            var enemyDeath = sender as EnemyDeath;
+            if (enemyDeath == null) return;
+            if (!enemyDeath.TryGetComponent(out DaggerfallEntityBehaviour entityBehaviour)) return;
+            if (!(entityBehaviour.Entity is EnemyEntity enemyEntity)) return;
+            var dropCorpse = false;
+            if (enemyEntity.EntityType == EntityTypes.EnemyClass)
+            {
+                // humanoid
+                switch (enemyEntity.CareerIndex)
+                {
+                    case (int)ClassCareers.Mage:
+                    case (int)ClassCareers.Spellsword:
+                    case (int)ClassCareers.Battlemage:
+                    case (int)ClassCareers.Sorcerer:
+                    case (int)ClassCareers.Healer:
+                    case (int)ClassCareers.Nightblade:
+                    case (int)ClassCareers.Bard:
+                    case (int)ClassCareers.Acrobat:
+                    case (int)ClassCareers.Assassin:
+                    case (int)ClassCareers.Burglar:
+                    case (int)ClassCareers.Rogue:
+                    case (int)ClassCareers.Thief:
+                    case (int)ClassCareers.Monk:
+                    case (int)ClassCareers.Archer:
+                    case (int)ClassCareers.Ranger:
+                    case (int)ClassCareers.Barbarian:
+                    case (int)ClassCareers.Warrior:
+                    case (int)ClassCareers.Knight:
+                        dropCorpse = true;
+                        break;
+                }
+            }
+            else
+            {
+                // humanoid monster
+                switch (enemyEntity.CareerIndex)
+                {
+                    case (int)MonsterCareers.Orc:
+                    case (int)MonsterCareers.OrcSergeant:
+                    case (int)MonsterCareers.OrcShaman:
+                    case (int)MonsterCareers.OrcWarlord:
+                        dropCorpse = true;
+                        break;
+                }
+            }
+
+            if (dropCorpse)
+            {
+                ChebLog($"Dropping corpse for {enemyEntity.Name}");
+                //entityBehaviour.CorpseLootContainer.Items.AddItem(CorpseItem.Clone());
+                entityBehaviour.CorpseLootContainer.Items.AddItem(CustomCorpseItem.Create());
+            }
         }
 
         public static void RecordActiveMinions()
@@ -336,8 +477,8 @@ namespace ChebsNecromancyMod
             var loggingMap = (Logging[])Enum.GetValues(typeof(Logging));
             Log = loggingMap[modSettings.GetInt("General", "Logging")];
 
-            const string section = "Necromancer Class";
-            EnableCustomClassNecromancer = modSettings.GetBool(section, "Enabled");
+            const string classSection = "Necromancer Class";
+            EnableCustomClassNecromancer = modSettings.GetBool(classSection, "Enabled");
 
             NecromancerCareer = GenerateNecromancerCareer(modSettings);
 
@@ -401,6 +542,12 @@ namespace ChebsNecromancyMod
                     effectBroker.RegisterEffectTemplate(baseEntityEffect);
                 }
             }
+
+            const string corpseSection = "Corpse Item";
+            CorpseItemEnabled = modSettings.GetBool(corpseSection, "Enabled");
+            if (!CorpseItemEnabled) EnemyDeath.OnEnemyDeath -= OnEnemyDeath;
+            // to do: get that to work
+            //CorpseItem.weightInKg = modSettings.GetInt(corpseSection, "Weight in KG");
         }
 
         private static void RegisterExistingMinions(SaveData_v1 saveDataV1)

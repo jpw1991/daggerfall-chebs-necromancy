@@ -34,6 +34,23 @@ Spells can be created at the spell maker in the Mage's Guild.
 
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/d6377ecd-f057-4e6d-8dca-a7f74160ba02)
 
+## Ingredient Requirements
+
+If enabled in the config (default: enabled), items will be required to create minions with. Items are only consumed on successful reanimation.
+
+Minion | Requirements
+--- | ---
+Skeleton | Humanoid Corpse
+Ghost | Humanoid Corpse, Ectoplasm
+Zombie | Humanoid Corpse
+Mummy | Humanoid Corpse, Oil/Bandage
+Vampire | Humanoid Corpse, Red/Yellow Rose
+Lich | Humanoid Corpse, Lich Dust
+Ancient Vampire | Humanoid Corpse, Black/White Rose
+Ancient Lich | Humanoid Corpse, Lich Dust
+
+Item requirements help with balance by making minions more difficult to acquire, without imposing frustrating limits or durations.
+
 ## Installation
 
 1. Copy mod to `/path/to/dfu/DaggerfallUnity_Data/StreamingAssets/Mods`
@@ -55,6 +72,8 @@ Check the log file and look for "Cheb" to find errors related to this mod.
 
 The log file's [location differs per operating system](https://docs.unity3d.com/Manual/LogFiles.html). On Linux it is located in `$HOME/.config/unity3d/Daggerfall Workshop/Daggerfall Unity/Player.log`
 
+The logging level can be increased/decreased in the mod settings. By default, only errors are logged.
+
 ## Cheating
 
 <details>
@@ -67,6 +86,7 @@ The spell effects have a backend which can be triggered by console commands:
   - `spawn skeleton` will spawn a skeletal warrior
   - `spawn vampire` will spawn a vampire, etc.
 - Type `recallminions` to bring the undead to your position if they get stuck or lost
+- Type `sci` to spawn in a corpse item. This stands for `spawn corpse item` and follows the style of other daggerfall commands like `tgm`.
 
 </details>
 
@@ -74,6 +94,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.16 | 13/05/2024 | If enabled in config, enemy humanoids will drop corpses and these will be a requirement for successful reanimation.
 0.0.15 | 28/04/2024 | Minions will follow you through area transitions.
 0.0.14 | 28/04/2024 | Finish implementing limited magnitude scaling. A minion's health, as well as skeleton & zombie melee weapon quality, scales with the player's stats & skills and the spell's magnitude.
 0.0.13 | 19/04/2024 | Expose many class options to the config so users can tweak stuff about it to their liking; improve quiz with necromancy-themed questions

@@ -1,6 +1,7 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
-using DaggerfallWorkshop;
+using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
@@ -38,12 +39,84 @@ namespace ChebsNecromancyMod
             properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
         }
 
+        public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
+
+        protected bool HasReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("HasReagents: caster is null");
+                return false;
+            }
+
+            var corpseItem = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (corpseItem == null)
+            {
+                DaggerfallUI.AddHUDText("No corpse item available.");
+                return false;
+            }
+
+            var blackRoseItem = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
+            var whiteRoseItem = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
+            if (blackRoseItem == null && whiteRoseItem == null)
+            {
+                DaggerfallUI.AddHUDText("Black/White rose required.");
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void ConsumeReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("ConsumeReagents: caster is null");
+                return;
+            }
+
+            var corpseItem = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (corpseItem == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
+                return;
+            }
+            caster.Entity.Items.RemoveOne(corpseItem);
+
+            var blackRose = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
+            var whiteRose = caster.Entity.Items
+                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
+            if (blackRose == null && whiteRose == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: black and white rose is null");
+                return;
+            }
+
+            if (blackRose != null)
+            {
+                ChebsNecromancy.ChebLog("Consuming black rose");
+                caster.Entity.Items.RemoveOne(blackRose);
+            }
+            else
+            {
+                ChebsNecromancy.ChebLog("Consuming white rose");
+                caster.Entity.Items.RemoveOne(whiteRose);
+            }
+        }
+
         protected override void DoEffect()
         {
             base.DoEffect();
 
             Spawn(GetMagnitude(), caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism),
                 caster.Entity.Stats.LiveIntelligence, caster.Entity.Stats.LiveWillpower, true);
+
+            ConsumeReagents();
         }
 
         public static void Spawn(int magnitude, int mysticismLevel, int intelligence, int willpower, bool showHUDMessage)

@@ -1,5 +1,6 @@
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
+using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using UnityEngine;
 
@@ -37,12 +38,48 @@ namespace ChebsNecromancyMod
             properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
         }
 
+        public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
+
+        protected bool HasReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("SummonSkeletonEffect.HasReagents: caster is null");
+                return false;
+            }
+
+            var result = caster.Entity.Items
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex) != null;
+            if (!result) DaggerfallUI.AddHUDText("No corpse item available.");
+            return result;
+        }
+
+        protected void ConsumeReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError("SummonSkeletonEffect.ConsumeReagents: caster is null");
+                return;
+            }
+
+            var foundCorpseItem =
+                caster.Entity.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+            if (foundCorpseItem == null)
+            {
+                ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
+                return;
+            }
+            caster.Entity.Items.RemoveOne(foundCorpseItem);
+        }
+
         protected override void DoEffect()
         {
             base.DoEffect();
 
             Spawn(GetMagnitude(), caster.Entity.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism),
                 caster.Entity.Stats.LiveIntelligence, caster.Entity.Stats.LiveWillpower, true);
+
+            ConsumeReagents();
         }
 
         public static void Spawn(int magnitude, int mysticismLevel, int intelligence, int willpower, bool showHUDMessage)
