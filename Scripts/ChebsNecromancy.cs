@@ -16,6 +16,7 @@ using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 using Newtonsoft.Json;
 using UnityEngine;
 using Wenzil.Console;
+using Random = System.Random;
 
 namespace ChebsNecromancyMod
 {
@@ -91,6 +92,8 @@ namespace ChebsNecromancyMod
 
         private static bool justFastTravelled = false;
 
+        private static Dictionary<int, int> alreadyLootedGraves = new Dictionary<int, int>();
+
         [Invoke(StateManager.StateTypes.Start, 0)]
         public static void Init(InitParams initParams)
         {
@@ -165,6 +168,8 @@ namespace ChebsNecromancyMod
             AnimateDeadSpell = CreateAnimateDeadSpell();
             NoviceRecallSpell = CreateNoviceRecallSpell();
             #endregion
+
+            RegisterCustomActivations(mod);
 
             mod.IsReady = true;
         }
@@ -682,5 +687,97 @@ namespace ChebsNecromancyMod
         }
 
         #endregion
+
+        private static void GravediggingActivation(RaycastHit hit)
+        {
+            var instanceId = hit.collider.gameObject.GetInstanceID();
+            if (alreadyLootedGraves.ContainsKey(instanceId))
+            {
+                DaggerfallUI.AddHUDText("You've already searched this grave.");
+                return;
+            }
+
+            var random = new Random();
+
+            var successMessages = new List<KeyValuePair<string, DaggerfallUnityItem>>
+            {
+                new KeyValuePair<string, DaggerfallUnityItem>("You find a skeleton!", null ),
+                new KeyValuePair<string, DaggerfallUnityItem>("You find a partially decomposed corpse!", null),
+                new KeyValuePair<string, DaggerfallUnityItem>( "This one's fresh!", null),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("The skeleton is pristine, and the flesh has crumbled away into a useful dust.",
+                    ItemBuilder.CreateItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Necrotic juices glow upon this corpse.",
+                    ItemBuilder.CreateItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Ectoplasm)),
+                new KeyValuePair<string, DaggerfallUnityItem>("This corpse is well preserved.",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil)),
+                new KeyValuePair<string, DaggerfallUnityItem>("The wrappings on this stiff may as well be brand new.",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage)),
+                new KeyValuePair<string, DaggerfallUnityItem>("The grave is recently visited! They left behind fresh roses!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Yellow_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("The grave is recently visited! They left behind fresh roses!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Red_rose)),
+            };
+            var failureMessages = new List<KeyValuePair<string, DaggerfallUnityItem>>
+            {
+                new KeyValuePair<string, DaggerfallUnityItem>("Fribble, just fribble...", null),
+                new KeyValuePair<string, DaggerfallUnityItem>("The epitaph reads: Gal bursten it.", null),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Yellow_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Red_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Nothing but dust... ", null),
+                new KeyValuePair<string, DaggerfallUnityItem>("This one's too brittle...", null),
+                new KeyValuePair<string, DaggerfallUnityItem>("Oil in a grave? Why?",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone tried to bandage this corpse, but failed their skillcheck.",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Picked clean already...", null),
+            };
+            var player = GameManager.Instance.PlayerEntity;
+
+            var mysticism = Math.Max(1, Math.Min(100, (int)player.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism)));
+            var intelligence = Math.Max(1, Math.Min(100, player.Stats.LiveIntelligence));
+            var willpower = Math.Max(1, Math.Min(100, player.Stats.LiveWillpower));
+
+            var totalScore = mysticism + intelligence + willpower;
+            var successProbability = totalScore / 3;
+            var roll = random.Next(1, 100);
+            var success = roll <= successProbability;
+
+            var pick = success
+                ? successMessages[random.Next(0, successMessages.Count)]
+                : failureMessages[random.Next(0, failureMessages.Count)];
+            DaggerfallUI.AddHUDText(pick.Key);
+            if (success) player.Items.AddItem(CustomCorpseItem.Create());
+            if (pick.Value != null) player.Items.AddItem(pick.Value);
+
+            alreadyLootedGraves.Add(instanceId, 0);
+        }
+
+        private static void RegisterCustomActivations(Mod mod)
+        {
+            // Register custom activations for grave robbing
+            //
+            // These IDs taken from WorldDataEditorObjectData.cs
+            var graveyardModelIDs = new List<uint>()
+            {
+                // Graveyard Monuments
+                43079, 43080, 43081, 43082, 43109, 43110, 43111, 43112, 43202, 43204, 62314,
+                // Caskets
+                43075, 43076, 43077, 43078, 43304, 43305, 43306,
+                // Wooden Coffins
+                41315, 41317, 41316, 41318, 41322, 41323, 41325, 41326,
+                // Stone Coffins
+                41319, 41320, 41321, 41324, 41327
+            };
+            foreach (var graveyardModelID in graveyardModelIDs)
+            {
+                PlayerActivate.RegisterCustomActivation(mod, graveyardModelID, GravediggingActivation);
+            }
+        }
     }
 }
