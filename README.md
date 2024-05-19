@@ -94,6 +94,7 @@ The spell effects have a backend which can be triggered by console commands:
 
 Version | Date       | Info
 --- |------------| ---
+0.0.17 | 19/05/2024 | Necromancer class now starts with a corpse item.
 0.0.16 | 13/05/2024 | If enabled in config, enemy humanoids will drop corpses and these will be a requirement for successful reanimation.
 0.0.15 | 28/04/2024 | Minions will follow you through area transitions.
 0.0.14 | 28/04/2024 | Finish implementing limited magnitude scaling. A minion's health, as well as skeleton & zombie melee weapon quality, scales with the player's stats & skills and the spell's magnitude.
