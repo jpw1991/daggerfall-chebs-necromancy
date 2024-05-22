@@ -33,10 +33,10 @@ namespace ChebsNecromancyMod
             RenameItem(DisplayName);
         }
 
-        // 380 is the value for MiscItems.Dead_Body in the texture archive. To view the archive, use the
+        // 380 & 1 is the value for MiscItems.Dead_Body in the texture archive. To view the archive, use the
         // utility here: https://www.nexusmods.com/daggerfallunity/mods/460
-        // For some reason if I use 380 I get a blood splatter. But you know what? That's close enough for now.
         public override int InventoryTextureArchive => 380;
+        public override int InventoryTextureRecord => 1;
 
         public override bool IsStackable()
         {
@@ -690,6 +690,12 @@ namespace ChebsNecromancyMod
 
         private static void GravediggingActivation(RaycastHit hit)
         {
+            var test = new Dictionary<int, int>();
+            test.Add(1,1);
+
+            var test2 = new List<KeyValuePair<int, int>>();
+            test2.Add(new KeyValuePair<int, int>(1,1));
+
             var instanceId = hit.collider.gameObject.GetInstanceID();
             if (alreadyLootedGraves.ContainsKey(instanceId))
             {
