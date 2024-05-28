@@ -506,48 +506,9 @@ namespace ChebsNecromancyMod
 
             foreach (var baseEntityEffect in spellEffects)
             {
-                //ChebLog($"Processing {baseEntityEffect.DisplayName}");
-                if (baseEntityEffect.Properties.SupportChance)
-                {
-                    //ChebLog("Has chance");
-                    baseEntityEffect.ChanceCostA = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost A");
-                    baseEntityEffect.ChanceCostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost B");
-                    baseEntityEffect.ChanceCostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Chance Cost Offset");
-                }
-
-                if (baseEntityEffect.Properties.SupportMagnitude)
-                {
-                    //ChebLog("Has magnitude");
-                    baseEntityEffect.MagnitudeCostA = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost A");
-                    baseEntityEffect.MagnitudeCostB = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost B");
-                    baseEntityEffect.MagnitudeCostOffset = modSettings.GetValue<int>(baseEntityEffect.Key, "Magnitude Cost Offset");
-                }
-
-                if (baseEntityEffect.Properties.SupportDuration)
-                {
-                    // todo
-                }
-
+                baseEntityEffect.LoadModSettings(modSettings);
                 baseEntityEffect.SetProperties();
-
-                var existing = effectBroker.HasEffectTemplate(baseEntityEffect.Key);
-                if (existing)
-                {
-                    var template = effectBroker.GetEffectTemplate(baseEntityEffect.Key);
-                    template.Settings = baseEntityEffect.Settings;
-                    // ChebLog($"Updating {baseEntityEffect.Key} with costs " +
-                    //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
-                    //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
-                    //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
-                }
-                else
-                {
-                    // ChebLog($"Registering {baseEntityEffect.Key} with costs " +
-                    //           $"A={baseEntityEffect.Properties.ChanceCosts.CostA}, " +
-                    //           $"B={baseEntityEffect.Properties.ChanceCosts.CostB}, " +
-                    //           $"O={baseEntityEffect.Properties.ChanceCosts.OffsetGold}");
-                    effectBroker.RegisterEffectTemplate(baseEntityEffect);
-                }
+                effectBroker.RegisterEffectTemplate(baseEntityEffect, true);
             }
 
             const string corpseSection = "Corpse Item";
@@ -690,12 +651,6 @@ namespace ChebsNecromancyMod
 
         private static void GravediggingActivation(RaycastHit hit)
         {
-            var test = new Dictionary<int, int>();
-            test.Add(1,1);
-
-            var test2 = new List<KeyValuePair<int, int>>();
-            test2.Add(new KeyValuePair<int, int>(1,1));
-
             var instanceId = hit.collider.gameObject.GetInstanceID();
             if (alreadyLootedGraves.ContainsKey(instanceId))
             {

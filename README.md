@@ -113,7 +113,7 @@ for their open source repositories (which I studied) and/or their invaluable ass
 
 Version | Date       | Info
 --- |------------| ---
-0.0.20 | 22/05/2024 | Fix Humanoid Corpse texture
+0.0.20 | 28/05/2024 | Fix Humanoid Corpse texture; fix spell costs in config not working properly
 0.0.19 | 19/05/2024 | Graves can now be robbed for corpses and other minion-making items.
 0.0.18 | 19/05/2024 | Minions now come with you when fast travelling; improve minion positioning when using recall
 0.0.17 | 19/05/2024 | Necromancer class now starts with a corpse item.

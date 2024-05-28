@@ -3,6 +3,7 @@ using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
 using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
+using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 using UnityEngine;
 
 namespace ChebsNecromancyMod
@@ -11,13 +12,6 @@ namespace ChebsNecromancyMod
     {
         protected override string effectKey => "Summon Ghost";
         protected override string effectDescription => "Summons a ghost to follow and guard you.";
-
-        public new int ChanceCostA { get; set; }
-        public new int ChanceCostB { get; set; }
-        public new int ChanceCostOffset { get; set; }
-        public new int MagnitudeCostA { get; set; }
-        public new int MagnitudeCostB { get; set; }
-        public new int MagnitudeCostOffset { get; set; }
 
         public override void SetProperties()
         {
@@ -32,11 +26,36 @@ namespace ChebsNecromancyMod
             // if we wanna make stuff harder, we can add durations to the spell etc. but we all know Cheb hates that
             // stuff.
             properties.SupportChance = true;
-            properties.ChanceCosts = MakeEffectCosts(ChanceCostA, ChanceCostB, ChanceCostOffset);
             properties.SupportDuration = false;
-            // properties.DurationCosts = MakeEffectCosts(8, 100, 200);
             properties.SupportMagnitude = true;
-            properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
+        }
+
+        public override void LoadModSettings(ModSettings modSettings)
+        {
+            base.LoadModSettings(modSettings);
+
+            var chanceCostA = modSettings.GetValue<int>(effectKey, "Chance Cost A");
+            var chanceCostB = modSettings.GetValue<int>(effectKey, "Chance Cost B");
+            var chanceCostOffset = modSettings.GetValue<int>(effectKey, "Chance Cost Offset");
+            var chanceCosts = new EffectCosts
+            {
+                CostA = chanceCostA,
+                CostB = chanceCostB,
+                OffsetGold = chanceCostOffset
+            };
+
+            var magnitudeCostA = modSettings.GetValue<int>(effectKey, "Magnitude Cost A");
+            var magnitudeCostB = modSettings.GetValue<int>(effectKey, "Magnitude Cost B");
+            var magnitudeCostOffset = modSettings.GetValue<int>(effectKey, "Magnitude Cost Offset");
+            var magnitudeCosts = new EffectCosts
+            {
+                CostA = magnitudeCostA,
+                CostB = magnitudeCostB,
+                OffsetGold = magnitudeCostOffset
+            };
+
+            properties.ChanceCosts = chanceCosts;
+            properties.MagnitudeCosts = magnitudeCosts;
         }
 
         public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());

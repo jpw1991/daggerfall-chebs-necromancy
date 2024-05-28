@@ -2,6 +2,7 @@ using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
 using DaggerfallWorkshop.Game.MagicAndEffects;
+using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 
 namespace ChebsNecromancyMod
 {
@@ -9,13 +10,6 @@ namespace ChebsNecromancyMod
     {
         protected virtual string effectKey => "Recall Minions";
         protected virtual string effectDescription => "Recall all minions to your location.";
-
-        public int ChanceCostA { get; set; }
-        public int ChanceCostB { get; set; }
-        public int ChanceCostOffset { get; set; }
-        public int MagnitudeCostA { get; set; }
-        public int MagnitudeCostB { get; set; }
-        public int MagnitudeCostOffset { get; set; }
 
         public override void SetProperties()
         {
@@ -27,6 +21,11 @@ namespace ChebsNecromancyMod
             properties.MagicSkill = DFCareer.MagicSkills.Mysticism;
             properties.DisableReflectiveEnumeration = true;
         }
+
+        public virtual void LoadModSettings(ModSettings modSettings)
+        {
+        }
+
 
         #region Text
 

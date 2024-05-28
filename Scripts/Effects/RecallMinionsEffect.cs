@@ -1,5 +1,6 @@
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game.MagicAndEffects;
+using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 using UnityEngine;
 
 namespace ChebsNecromancyMod
@@ -9,10 +10,6 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Recall Minions";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Recall all minions to your location.";
-
-        public new int ChanceCostA { get; set; }
-        public new int ChanceCostB { get; set; }
-        public new int ChanceCostOffset { get; set; }
 
         public override void SetProperties()
         {
@@ -25,12 +22,27 @@ namespace ChebsNecromancyMod
             properties.DisableReflectiveEnumeration = true;
 
             properties.SupportChance = true;
-            properties.ChanceCosts = MakeEffectCosts(ChanceCostA, ChanceCostB, ChanceCostOffset);
             // what purpose could duration/magnitude have on recall?
+            // maybe magnitude could increase the amount of minions teleported
             properties.SupportDuration = false;
-            // properties.DurationCosts = MakeEffectCosts(8, 100, 200);
             properties.SupportMagnitude = false;
-            //properties.MagnitudeCosts = MakeEffectCosts(MagnitudeCostA, MagnitudeCostB, MagnitudeCostOffset);
+        }
+
+        public override void LoadModSettings(ModSettings modSettings)
+        {
+            base.LoadModSettings(modSettings);
+
+            var chanceCostA = modSettings.GetValue<int>(EffectKey, "Chance Cost A");
+            var chanceCostB = modSettings.GetValue<int>(EffectKey, "Chance Cost B");
+            var chanceCostOffset = modSettings.GetValue<int>(EffectKey, "Chance Cost Offset");
+            var chanceCosts = new EffectCosts
+            {
+                CostA = chanceCostA,
+                CostB = chanceCostB,
+                OffsetGold = chanceCostOffset
+            };
+
+            properties.ChanceCosts = chanceCosts;
         }
 
         protected override void DoEffect()
