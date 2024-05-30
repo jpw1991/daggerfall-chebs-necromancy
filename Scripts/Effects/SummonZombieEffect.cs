@@ -14,13 +14,7 @@ namespace ChebsNecromancyMod
 
         public override void SetProperties()
         {
-            properties.Key = effectKey;
-            properties.ShowSpellIcon = false;
-            properties.AllowedTargets = TargetTypes.CasterOnly;
-            properties.AllowedElements = EntityEffectBroker.ElementFlags_MagicOnly;
-            properties.AllowedCraftingStations = MagicCraftingStations.SpellMaker;
-            properties.MagicSkill = DFCareer.MagicSkills.Mysticism;
-            properties.DisableReflectiveEnumeration = true;
+            base.SetProperties();
 
             // if we wanna make stuff harder, we can add durations to the spell etc. but we all know Cheb hates that
             // stuff.

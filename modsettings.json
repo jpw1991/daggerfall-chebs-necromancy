@@ -46,6 +46,58 @@
             "$version": "v1"
         },
         {
+            "Name": "Necromancy Effects",
+            "Description": "Configure aspects of the necromancy spell effects.",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Options": [
+                        "Medical",
+                        "Etiquette",
+                        "Streetwise",
+                        "Jumping",
+                        "Orcish",
+                        "Harpy",
+                        "Giantish",
+                        "Dragonish",
+                        "Nymph",
+                        "Daedric",
+                        "Spriggan",
+                        "Centaurian",
+                        "Impish",
+                        "Lockpicking",
+                        "Mercantile",
+                        "Pickpocket",
+                        "Stealth",
+                        "Swimming",
+                        "Climbing",
+                        "Backstabbing",
+                        "Dodging",
+                        "Running",
+                        "Destruction",
+                        "Restoration",
+                        "Illusion",
+                        "Alteration",
+                        "Thaumaturgy",
+                        "Mysticism",
+                        "ShortBlade",
+                        "LongBlade",
+                        "HandToHand",
+                        "Axe",
+                        "BluntWeapon",
+                        "Archery",
+                        "CriticalStrike"
+                    ],
+                    "Value": 27,
+                    "Name": "Skill",
+                    "Description": "The skill associated with necromancy.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
             "Name": "Necromancer Class",
             "Description": "Custom class added by the mod.",
             "IsAdvanced": false,
