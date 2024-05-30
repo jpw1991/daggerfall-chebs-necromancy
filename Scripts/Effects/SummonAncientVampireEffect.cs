@@ -63,7 +63,7 @@ namespace ChebsNecromancyMod
             }
 
             var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
             if (corpseItem == null)
             {
                 DaggerfallUI.AddHUDText("No corpse item available.");
@@ -92,7 +92,7 @@ namespace ChebsNecromancyMod
             }
 
             var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.TemplateIndex);
+                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
             if (corpseItem == null)
             {
                 ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");

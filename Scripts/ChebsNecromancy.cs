@@ -22,11 +22,11 @@ namespace ChebsNecromancyMod
 {
     public class CustomCorpseItem : DaggerfallUnityItem
     {
-        public const int TemplateIndex = 4733;
+        public const int CustomTemplateIndex = 6666;
         public const string DisplayName = "Humanoid Corpse";
         public const ItemGroups TemplateItemGroup = ItemGroups.UselessItems1;
 
-        public CustomCorpseItem() : base(TemplateItemGroup, TemplateIndex)
+        public CustomCorpseItem() : base(TemplateItemGroup, CustomTemplateIndex)
         {
             value = 0;
             weightInKg = 0f;
@@ -52,7 +52,7 @@ namespace ChebsNecromancyMod
 
         public static DaggerfallUnityItem Create()
         {
-            return ItemBuilder.CreateItem(TemplateItemGroup, TemplateIndex);
+            return ItemBuilder.CreateItem(TemplateItemGroup, CustomTemplateIndex);
         }
     }
 
@@ -157,7 +157,7 @@ namespace ChebsNecromancyMod
 
             #region BeforeSettings
             // Custom items
-            DaggerfallUnity.Instance.ItemHelper.RegisterCustomItem(CustomCorpseItem.TemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
+            DaggerfallUnity.Instance.ItemHelper.RegisterCustomItem(CustomCorpseItem.CustomTemplateIndex, CustomCorpseItem.TemplateItemGroup, typeof(CustomCorpseItem));
             ChebLog("CustomCorpseItem registered.");
 
             // Events

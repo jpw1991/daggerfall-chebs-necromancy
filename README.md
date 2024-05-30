@@ -115,6 +115,7 @@ for their open source repositories (which I studied) and/or their invaluable ass
 
 Version | Date       | Info
 --- |------------| ---
+0.0.22 | 30/05/2024 | Change the value for the corpse item so it no longer conflicts with Kleptomania
 0.0.21 | 30/05/2024 | Expose the skill associated with necromancy effects to the config so that people can set something else.
 0.0.20 | 28/05/2024 | Fix Humanoid Corpse texture; fix spell costs in config not working properly
 0.0.19 | 19/05/2024 | Graves can now be robbed for corpses and other minion-making items.
