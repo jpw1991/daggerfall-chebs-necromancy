@@ -88,6 +88,45 @@ namespace ChebsNecromancyMod
             (int)MobileTypes.Zombie
         };
 
+        public static readonly Dictionary<int, DFCareer.Skills> SkillsMap = new Dictionary<int, DFCareer.Skills>
+        {
+            { 0, DFCareer.Skills.Medical  },
+            { 1, DFCareer.Skills.Etiquette  },
+            { 2, DFCareer.Skills.Streetwise  },
+            { 3, DFCareer.Skills.Jumping  },
+            { 4, DFCareer.Skills.Orcish  },
+            { 5, DFCareer.Skills.Harpy  },
+            { 6, DFCareer.Skills.Giantish  },
+            { 7, DFCareer.Skills.Dragonish  },
+            { 8, DFCareer.Skills.Nymph  },
+            { 9, DFCareer.Skills.Daedric  },
+            { 10, DFCareer.Skills.Spriggan  },
+            { 11, DFCareer.Skills.Centaurian  },
+            { 12, DFCareer.Skills.Impish  },
+            { 13, DFCareer.Skills.Lockpicking  },
+            { 14, DFCareer.Skills.Mercantile  },
+            { 15, DFCareer.Skills.Pickpocket  },
+            { 16, DFCareer.Skills.Stealth  },
+            { 17, DFCareer.Skills.Swimming  },
+            { 18, DFCareer.Skills.Climbing  },
+            { 19, DFCareer.Skills.Backstabbing  },
+            { 20, DFCareer.Skills.Dodging  },
+            { 21, DFCareer.Skills.Running  },
+            { 22, DFCareer.Skills.Destruction  },
+            { 23, DFCareer.Skills.Restoration  },
+            { 24, DFCareer.Skills.Illusion  },
+            { 25, DFCareer.Skills.Alteration  },
+            { 26, DFCareer.Skills.Thaumaturgy  },
+            { 27, DFCareer.Skills.Mysticism  },
+            { 28, DFCareer.Skills.ShortBlade  },
+            { 29, DFCareer.Skills.LongBlade  },
+            { 30, DFCareer.Skills.HandToHand  },
+            { 31, DFCareer.Skills.Axe  },
+            { 32, DFCareer.Skills.BluntWeapon  },
+            { 33, DFCareer.Skills.Archery  },
+            { 34, DFCareer.Skills.CriticalStrike  },
+        };
+
         private static Mod mod;
 
         private static bool justFastTravelled = false;
@@ -322,45 +361,44 @@ namespace ChebsNecromancyMod
 
         public static DFCareer GenerateNecromancerCareer(ModSettings modSettings)
         {
-            var skillsMap = new Dictionary<int, DFCareer.Skills>
-            {
-                { 0, DFCareer.Skills.Medical  },
-                { 1, DFCareer.Skills.Etiquette  },
-                { 2, DFCareer.Skills.Streetwise  },
-                { 3, DFCareer.Skills.Jumping  },
-                { 4, DFCareer.Skills.Orcish  },
-                { 5, DFCareer.Skills.Harpy  },
-                { 6, DFCareer.Skills.Giantish  },
-                { 7, DFCareer.Skills.Dragonish  },
-                { 8, DFCareer.Skills.Nymph  },
-                { 9, DFCareer.Skills.Daedric  },
-                { 10, DFCareer.Skills.Spriggan  },
-                { 11, DFCareer.Skills.Centaurian  },
-                { 12, DFCareer.Skills.Impish  },
-                { 13, DFCareer.Skills.Lockpicking  },
-                { 14, DFCareer.Skills.Mercantile  },
-                { 15, DFCareer.Skills.Pickpocket  },
-                { 16, DFCareer.Skills.Stealth  },
-                { 17, DFCareer.Skills.Swimming  },
-                { 18, DFCareer.Skills.Climbing  },
-                { 19, DFCareer.Skills.Backstabbing  },
-                { 20, DFCareer.Skills.Dodging  },
-                { 21, DFCareer.Skills.Running  },
-                { 22, DFCareer.Skills.Destruction  },
-                { 23, DFCareer.Skills.Restoration  },
-                { 24, DFCareer.Skills.Illusion  },
-                { 25, DFCareer.Skills.Alteration  },
-                { 26, DFCareer.Skills.Thaumaturgy  },
-                { 27, DFCareer.Skills.Mysticism  },
-                { 28, DFCareer.Skills.ShortBlade  },
-                { 29, DFCareer.Skills.LongBlade  },
-                { 30, DFCareer.Skills.HandToHand  },
-                { 31, DFCareer.Skills.Axe  },
-                { 32, DFCareer.Skills.BluntWeapon  },
-                { 33, DFCareer.Skills.Archery  },
-                { 34, DFCareer.Skills.CriticalStrike  },
-
-            };
+            // var skillsMap = new Dictionary<int, DFCareer.Skills>
+            // {
+            //     { 0, DFCareer.Skills.Medical  },
+            //     { 1, DFCareer.Skills.Etiquette  },
+            //     { 2, DFCareer.Skills.Streetwise  },
+            //     { 3, DFCareer.Skills.Jumping  },
+            //     { 4, DFCareer.Skills.Orcish  },
+            //     { 5, DFCareer.Skills.Harpy  },
+            //     { 6, DFCareer.Skills.Giantish  },
+            //     { 7, DFCareer.Skills.Dragonish  },
+            //     { 8, DFCareer.Skills.Nymph  },
+            //     { 9, DFCareer.Skills.Daedric  },
+            //     { 10, DFCareer.Skills.Spriggan  },
+            //     { 11, DFCareer.Skills.Centaurian  },
+            //     { 12, DFCareer.Skills.Impish  },
+            //     { 13, DFCareer.Skills.Lockpicking  },
+            //     { 14, DFCareer.Skills.Mercantile  },
+            //     { 15, DFCareer.Skills.Pickpocket  },
+            //     { 16, DFCareer.Skills.Stealth  },
+            //     { 17, DFCareer.Skills.Swimming  },
+            //     { 18, DFCareer.Skills.Climbing  },
+            //     { 19, DFCareer.Skills.Backstabbing  },
+            //     { 20, DFCareer.Skills.Dodging  },
+            //     { 21, DFCareer.Skills.Running  },
+            //     { 22, DFCareer.Skills.Destruction  },
+            //     { 23, DFCareer.Skills.Restoration  },
+            //     { 24, DFCareer.Skills.Illusion  },
+            //     { 25, DFCareer.Skills.Alteration  },
+            //     { 26, DFCareer.Skills.Thaumaturgy  },
+            //     { 27, DFCareer.Skills.Mysticism  },
+            //     { 28, DFCareer.Skills.ShortBlade  },
+            //     { 29, DFCareer.Skills.LongBlade  },
+            //     { 30, DFCareer.Skills.HandToHand  },
+            //     { 31, DFCareer.Skills.Axe  },
+            //     { 32, DFCareer.Skills.BluntWeapon  },
+            //     { 33, DFCareer.Skills.Archery  },
+            //     { 34, DFCareer.Skills.CriticalStrike  },
+            // };
             var toleranceMap = new Dictionary<int, DFCareer.Tolerance>()
             {
                 {0, DFCareer.Tolerance.Normal},
@@ -386,18 +424,18 @@ namespace ChebsNecromancyMod
                     Personality = modSettings.GetInt(section, "Personality"),
                     Speed = modSettings.GetInt(section, "Speed"),
                     Luck = modSettings.GetInt(section, "Luck"),
-                    PrimarySkill1 = skillsMap[modSettings.GetInt(section, "Primary Skill 1")],
-                    PrimarySkill2 = skillsMap[modSettings.GetInt(section, "Primary Skill 2")],
-                    PrimarySkill3 = skillsMap[modSettings.GetInt(section, "Primary Skill 3")],
-                    MajorSkill1 = skillsMap[modSettings.GetInt(section, "Major Skill 1")],
-                    MajorSkill2 = skillsMap[modSettings.GetInt(section, "Major Skill 2")],
-                    MajorSkill3 = skillsMap[modSettings.GetInt(section, "Major Skill 3")],
-                    MinorSkill1 = skillsMap[modSettings.GetInt(section, "Minor Skill 1")],
-                    MinorSkill2 = skillsMap[modSettings.GetInt(section, "Minor Skill 2")],
-                    MinorSkill3 = skillsMap[modSettings.GetInt(section, "Minor Skill 3")],
-                    MinorSkill4 = skillsMap[modSettings.GetInt(section, "Minor Skill 4")],
-                    MinorSkill5 = skillsMap[modSettings.GetInt(section, "Minor Skill 5")],
-                    MinorSkill6 = skillsMap[modSettings.GetInt(section, "Minor Skill 6")],
+                    PrimarySkill1 = SkillsMap[modSettings.GetInt(section, "Primary Skill 1")],
+                    PrimarySkill2 = SkillsMap[modSettings.GetInt(section, "Primary Skill 2")],
+                    PrimarySkill3 = SkillsMap[modSettings.GetInt(section, "Primary Skill 3")],
+                    MajorSkill1 = SkillsMap[modSettings.GetInt(section, "Major Skill 1")],
+                    MajorSkill2 = SkillsMap[modSettings.GetInt(section, "Major Skill 2")],
+                    MajorSkill3 = SkillsMap[modSettings.GetInt(section, "Major Skill 3")],
+                    MinorSkill1 = SkillsMap[modSettings.GetInt(section, "Minor Skill 1")],
+                    MinorSkill2 = SkillsMap[modSettings.GetInt(section, "Minor Skill 2")],
+                    MinorSkill3 = SkillsMap[modSettings.GetInt(section, "Minor Skill 3")],
+                    MinorSkill4 = SkillsMap[modSettings.GetInt(section, "Minor Skill 4")],
+                    MinorSkill5 = SkillsMap[modSettings.GetInt(section, "Minor Skill 5")],
+                    MinorSkill6 = SkillsMap[modSettings.GetInt(section, "Minor Skill 6")],
                     Paralysis = toleranceMap[modSettings.GetInt(section, "Paralysis")],
                     Magic = toleranceMap[modSettings.GetInt(section, "Magic")],
                     Poison = toleranceMap[modSettings.GetInt(section, "Poison")],
@@ -639,6 +677,12 @@ namespace ChebsNecromancyMod
         {
             if (Log == Logging.All)
                 Debug.Log($"Cheb's Necromancy: {msg}");
+        }
+
+        public static void ChebWarning(string msg)
+        {
+            if (Log != Logging.None)
+                Debug.LogWarning($"Cheb's Necromancy: {msg}");
         }
 
         public static void ChebError(string msg)

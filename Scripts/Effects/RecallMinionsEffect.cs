@@ -13,13 +13,7 @@ namespace ChebsNecromancyMod
 
         public override void SetProperties()
         {
-            properties.Key = effectKey;
-            properties.ShowSpellIcon = false;
-            properties.AllowedTargets = TargetTypes.CasterOnly;
-            properties.AllowedElements = EntityEffectBroker.ElementFlags_MagicOnly;
-            properties.AllowedCraftingStations = MagicCraftingStations.SpellMaker;
-            properties.MagicSkill = DFCareer.MagicSkills.Mysticism;
-            properties.DisableReflectiveEnumeration = true;
+            base.SetProperties();
 
             properties.SupportChance = true;
             // what purpose could duration/magnitude have on recall?

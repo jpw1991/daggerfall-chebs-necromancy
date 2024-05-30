@@ -66,6 +66,8 @@ Most, but not all, aspects of the Necromancy class can be tweaked to your liking
 
 By default, the Necromancer class is enabled. It can be disabled in the settings, which may help if you're using other class mods and problems occur.
 
+**Using Classes Expanded by Harbinger451?** This will work, but you need to disable my necromancer class in the config and you may also wish to change the skill associated with necromancy skills to what Harbinger451's necromancer class uses. No guarantees this will work though because it's a language skill and not part of the `DFCareer.MagicSkills` enumeration.
+
 ![image](https://github.com/jpw1991/daggerfall-chebs-necromancy/assets/13718599/1822a5ee-8ed0-40b4-bb42-392a7c36bad1)
 
 ## Debugging
@@ -113,6 +115,7 @@ for their open source repositories (which I studied) and/or their invaluable ass
 
 Version | Date       | Info
 --- |------------| ---
+0.0.21 | 30/05/2024 | Expose the skill associated with necromancy effects to the config so that people can set something else.
 0.0.20 | 28/05/2024 | Fix Humanoid Corpse texture; fix spell costs in config not working properly
 0.0.19 | 19/05/2024 | Graves can now be robbed for corpses and other minion-making items.
 0.0.18 | 19/05/2024 | Minions now come with you when fast travelling; improve minion positioning when using recall
