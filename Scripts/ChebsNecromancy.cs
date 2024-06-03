@@ -48,7 +48,6 @@ namespace ChebsNecromancyMod
         {
             ItemData_v1 data = base.GetSaveData();
             data.className = typeof(CustomCorpseItem).ToString();
-            data.weightInKg = customWeightInKG;
             return data;
         }
 
@@ -163,7 +162,7 @@ namespace ChebsNecromancyMod
             ChebLog("CustomCorpseItem registered.");
 
             // Events
-            SaveLoadManager.OnLoad += RegisterExistingMinions;
+            SaveLoadManager.OnLoad += OnSaveLoad;
             // On pre-transition, make note of all active minions
             PlayerEnterExit.OnPreTransition += args => { RecordActiveMinions(); };
             // On post-transition, restore aforementioned active minions
@@ -174,7 +173,7 @@ namespace ChebsNecromancyMod
             // Before fast-travel, record minions
             DaggerfallTravelPopUp.OnPreFastTravel += up =>
             {
-                ChebLog("OnPreFastTravel: recording active minions. Player pos: {up.");
+                ChebLog("OnPreFastTravel: recording active minions.");
                 RecordActiveMinions();
             };
             // After fast-travel, restore minions
@@ -519,7 +518,22 @@ namespace ChebsNecromancyMod
             CustomCorpseItem.customWeightInKG = modSettings.GetInt(corpseSection, "Weight in KG");
         }
 
-        private static void RegisterExistingMinions(SaveData_v1 saveDataV1)
+        private static void UpdateInventoryItems()
+        {
+            // When the scene loads, check for existing Humanoid Corpses and make sure that they are using whatever
+            // values are specified in the config.
+            ChebLog("Updating inventory items...");
+            var player = GameManager.Instance.PlayerEntity;
+            var existingCorpseItem =
+                player.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
+            if (existingCorpseItem != null)
+            {
+                ChebLog($"Existing item found, updating weight to {CustomCorpseItem.customWeightInKG}");
+                existingCorpseItem.weightInKg = CustomCorpseItem.customWeightInKG;
+            }
+        }
+
+        private static void RegisterExistingMinions()
         {
             // When the scene loads, existing skeletons from the last session won't have the UndeadMinion script
             // attached to them. Find them and attach it here, so that they follow the player etc.
@@ -534,9 +548,15 @@ namespace ChebsNecromancyMod
             }
         }
 
+        private static void OnSaveLoad(SaveData_v1 saveDataV1)
+        {
+            UpdateInventoryItems();
+            RegisterExistingMinions();
+        }
+
         private void OnDestroy()
         {
-            SaveLoadManager.OnLoad -= RegisterExistingMinions;
+            SaveLoadManager.OnLoad -= OnSaveLoad;
         }
 
         private static EffectBundleSettings CreateAnimateDeadSpell()
