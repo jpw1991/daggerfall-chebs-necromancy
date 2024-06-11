@@ -25,11 +25,12 @@ namespace ChebsNecromancyMod
         public const int CustomTemplateIndex = 6666;
         public const string DisplayName = "Humanoid Corpse";
         public const ItemGroups TemplateItemGroup = ItemGroups.UselessItems1;
+        public static float customWeightInKG = 0f;
 
         public CustomCorpseItem() : base(TemplateItemGroup, CustomTemplateIndex)
         {
             value = 0;
-            weightInKg = 0f;
+            weightInKg = customWeightInKG;
             RenameItem(DisplayName);
         }
 
@@ -161,7 +162,7 @@ namespace ChebsNecromancyMod
             ChebLog("CustomCorpseItem registered.");
 
             // Events
-            SaveLoadManager.OnLoad += RegisterExistingMinions;
+            SaveLoadManager.OnLoad += OnSaveLoad;
             // On pre-transition, make note of all active minions
             PlayerEnterExit.OnPreTransition += args => { RecordActiveMinions(); };
             // On post-transition, restore aforementioned active minions
@@ -172,7 +173,7 @@ namespace ChebsNecromancyMod
             // Before fast-travel, record minions
             DaggerfallTravelPopUp.OnPreFastTravel += up =>
             {
-                ChebLog("OnPreFastTravel: recording active minions. Player pos: {up.");
+                ChebLog("OnPreFastTravel: recording active minions.");
                 RecordActiveMinions();
             };
             // After fast-travel, restore minions
@@ -361,44 +362,6 @@ namespace ChebsNecromancyMod
 
         public static DFCareer GenerateNecromancerCareer(ModSettings modSettings)
         {
-            // var skillsMap = new Dictionary<int, DFCareer.Skills>
-            // {
-            //     { 0, DFCareer.Skills.Medical  },
-            //     { 1, DFCareer.Skills.Etiquette  },
-            //     { 2, DFCareer.Skills.Streetwise  },
-            //     { 3, DFCareer.Skills.Jumping  },
-            //     { 4, DFCareer.Skills.Orcish  },
-            //     { 5, DFCareer.Skills.Harpy  },
-            //     { 6, DFCareer.Skills.Giantish  },
-            //     { 7, DFCareer.Skills.Dragonish  },
-            //     { 8, DFCareer.Skills.Nymph  },
-            //     { 9, DFCareer.Skills.Daedric  },
-            //     { 10, DFCareer.Skills.Spriggan  },
-            //     { 11, DFCareer.Skills.Centaurian  },
-            //     { 12, DFCareer.Skills.Impish  },
-            //     { 13, DFCareer.Skills.Lockpicking  },
-            //     { 14, DFCareer.Skills.Mercantile  },
-            //     { 15, DFCareer.Skills.Pickpocket  },
-            //     { 16, DFCareer.Skills.Stealth  },
-            //     { 17, DFCareer.Skills.Swimming  },
-            //     { 18, DFCareer.Skills.Climbing  },
-            //     { 19, DFCareer.Skills.Backstabbing  },
-            //     { 20, DFCareer.Skills.Dodging  },
-            //     { 21, DFCareer.Skills.Running  },
-            //     { 22, DFCareer.Skills.Destruction  },
-            //     { 23, DFCareer.Skills.Restoration  },
-            //     { 24, DFCareer.Skills.Illusion  },
-            //     { 25, DFCareer.Skills.Alteration  },
-            //     { 26, DFCareer.Skills.Thaumaturgy  },
-            //     { 27, DFCareer.Skills.Mysticism  },
-            //     { 28, DFCareer.Skills.ShortBlade  },
-            //     { 29, DFCareer.Skills.LongBlade  },
-            //     { 30, DFCareer.Skills.HandToHand  },
-            //     { 31, DFCareer.Skills.Axe  },
-            //     { 32, DFCareer.Skills.BluntWeapon  },
-            //     { 33, DFCareer.Skills.Archery  },
-            //     { 34, DFCareer.Skills.CriticalStrike  },
-            // };
             var toleranceMap = new Dictionary<int, DFCareer.Tolerance>()
             {
                 {0, DFCareer.Tolerance.Normal},
@@ -552,11 +515,25 @@ namespace ChebsNecromancyMod
             const string corpseSection = "Corpse Item";
             CorpseItemEnabled = modSettings.GetBool(corpseSection, "Enabled");
             if (!CorpseItemEnabled) EnemyDeath.OnEnemyDeath -= OnEnemyDeath;
-            // to do: get that to work
-            //CorpseItem.weightInKg = modSettings.GetInt(corpseSection, "Weight in KG");
+            CustomCorpseItem.customWeightInKG = modSettings.GetInt(corpseSection, "Weight in KG");
         }
 
-        private static void RegisterExistingMinions(SaveData_v1 saveDataV1)
+        private static void UpdateInventoryItems()
+        {
+            // When the scene loads, check for existing Humanoid Corpses and make sure that they are using whatever
+            // values are specified in the config.
+            ChebLog("Updating inventory items...");
+            var player = GameManager.Instance.PlayerEntity;
+            var existingCorpseItem =
+                player.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
+            if (existingCorpseItem != null)
+            {
+                ChebLog($"Existing item found, updating weight to {CustomCorpseItem.customWeightInKG}");
+                existingCorpseItem.weightInKg = CustomCorpseItem.customWeightInKG;
+            }
+        }
+
+        private static void RegisterExistingMinions()
         {
             // When the scene loads, existing skeletons from the last session won't have the UndeadMinion script
             // attached to them. Find them and attach it here, so that they follow the player etc.
@@ -571,9 +548,15 @@ namespace ChebsNecromancyMod
             }
         }
 
+        private static void OnSaveLoad(SaveData_v1 saveDataV1)
+        {
+            UpdateInventoryItems();
+            RegisterExistingMinions();
+        }
+
         private void OnDestroy()
         {
-            SaveLoadManager.OnLoad -= RegisterExistingMinions;
+            SaveLoadManager.OnLoad -= OnSaveLoad;
         }
 
         private static EffectBundleSettings CreateAnimateDeadSpell()
