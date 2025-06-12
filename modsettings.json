@@ -41,7 +41,14 @@
                     "Description": "How much the custom corpse item weighs.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                }
+                },
+                {
+                    "Value": true,
+                    "Name": "Enabled2",
+                    "Description": "If enabled, coffins can be looted.",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                }                
             ],
             "$version": "v1"
         },
