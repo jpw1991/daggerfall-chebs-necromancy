@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DaggerfallConnect;
@@ -68,6 +68,8 @@ namespace ChebsNecromancyMod
         public const string NecromancerCareerName = "Necromancer";
 
         public static bool CorpseItemEnabled = true;
+        public static bool CoffinEnabled = true;
+        
         //public static DaggerfallUnityItem CorpseItem;
 
         public static EffectBundleSettings AnimateDeadSpell, NoviceRecallSpell;
@@ -514,6 +516,7 @@ namespace ChebsNecromancyMod
 
             const string corpseSection = "Corpse Item";
             CorpseItemEnabled = modSettings.GetBool(corpseSection, "Enabled");
+            CoffinEnabled = modSettings.GetBool(corpseSection, "Enabled2");
             if (!CorpseItemEnabled) EnemyDeath.OnEnemyDeath -= OnEnemyDeath;
             CustomCorpseItem.customWeightInKG = modSettings.GetInt(corpseSection, "Weight in KG");
         }
@@ -678,8 +681,10 @@ namespace ChebsNecromancyMod
 
         private static void GravediggingActivation(RaycastHit hit)
         {
+            if (!CoffinEnabled) return;
             var instanceId = hit.collider.gameObject.GetInstanceID();
-            if (alreadyLootedGraves.ContainsKey(instanceId))
+
+            if (alreadyLootedGraves.ContainsKey(instanceId) && alreadyLootedGraves[instanceId] == 0)
             {
                 DaggerfallUI.AddHUDText("You've already searched this grave.");
                 return;
@@ -692,9 +697,9 @@ namespace ChebsNecromancyMod
                 new KeyValuePair<string, DaggerfallUnityItem>("You find a skeleton!", null ),
                 new KeyValuePair<string, DaggerfallUnityItem>("You find a partially decomposed corpse!", null),
                 new KeyValuePair<string, DaggerfallUnityItem>( "This one's fresh!", null),
-                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this corpse! How thoughtful!",
                     ItemBuilder.CreateItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose)),
-                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this corpse! How thoughtful!",
                     ItemBuilder.CreateItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose)),
                 new KeyValuePair<string, DaggerfallUnityItem>("The skeleton is pristine, and the flesh has crumbled away into a useful dust.",
                     ItemBuilder.CreateItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust)),
@@ -713,18 +718,31 @@ namespace ChebsNecromancyMod
             {
                 new KeyValuePair<string, DaggerfallUnityItem>("Fribble, just fribble...", null),
                 new KeyValuePair<string, DaggerfallUnityItem>("The epitaph reads: Gal bursten it.", null),
-                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                new KeyValuePair<string, DaggerfallUnityItem>("Flowers on a empty grave?",
                     ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Yellow_rose)),
-                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave! How thoughtful!",
+                new KeyValuePair<string, DaggerfallUnityItem>("Flowers on a empty grave?",
                     ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Red_rose)),
                 new KeyValuePair<string, DaggerfallUnityItem>("Nothing but dust... ", null),
                 new KeyValuePair<string, DaggerfallUnityItem>("This one's too brittle...", null),
                 new KeyValuePair<string, DaggerfallUnityItem>("Oil in a grave? Why?",
                     ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil)),
-                new KeyValuePair<string, DaggerfallUnityItem>("Someone tried to bandage this corpse, but failed their skillcheck.",
+                new KeyValuePair<string, DaggerfallUnityItem>("Some bandages over a dusted corpse.",
                     ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage)),
                 new KeyValuePair<string, DaggerfallUnityItem>("Picked clean already...", null),
             };
+
+            var failureMessagesTooMuchWeight = new List<KeyValuePair<string, DaggerfallUnityItem>>
+            {
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave, but the corpse is too heavy!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Yellow_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone has left flowers on this grave, but the corpse is too heavy!",
+                    ItemBuilder.CreateItem(ItemGroups.PlantIngredients1, (int)PlantIngredients1.Red_rose)),
+                new KeyValuePair<string, DaggerfallUnityItem>("I find oil with the corpse, taking only the oil.",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil)),
+                new KeyValuePair<string, DaggerfallUnityItem>("Someone tried to bandage this corpse, but failed their skillcheck.",
+                    ItemBuilder.CreateItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage))
+            };
+
             var player = GameManager.Instance.PlayerEntity;
 
             var mysticism = Math.Max(1, Math.Min(100, (int)player.Skills.GetLiveSkillValue(DFCareer.Skills.Mysticism)));
@@ -736,14 +754,65 @@ namespace ChebsNecromancyMod
             var roll = random.Next(1, 100);
             var success = roll <= successProbability;
 
+            var carriedWeight = player.Items.GetWeight();
+            var maxCarryingWeight = player.MaxEncumbrance;
+            var virtualweightsum = carriedWeight + CustomCorpseItem.customWeightInKG;
+            var Surpassed = virtualweightsum > maxCarryingWeight;
+
+            List<string> phrases = new List<string>()
+            {
+                "Too much weight... not even want to see the corpse in the coffin.",
+                "If I even glance at that coffin, my knees will explode.",
+                "I’d rather be buried in the coffin than carry one more corpse.",
+            };
+
+            Random randomnumber = new Random();
+            int indice = random.Next(phrases.Count);
+            string phrasefortoomuch = phrases[indice];
+
+            if (alreadyLootedGraves.ContainsKey(instanceId) && alreadyLootedGraves[instanceId] == 1)
+            {
+                if (Surpassed)
+                {
+                    DaggerfallUI.AddHUDText(phrasefortoomuch);
+                    return;
+                }
+                else
+                {
+                    DaggerfallUI.AddHUDText("Taking this corpse now.");
+                    player.Items.AddItem(CustomCorpseItem.Create());
+                    alreadyLootedGraves[instanceId] = 0;
+                    return;
+                }
+            }
+
             var pick = success
                 ? successMessages[random.Next(0, successMessages.Count)]
                 : failureMessages[random.Next(0, failureMessages.Count)];
-            DaggerfallUI.AddHUDText(pick.Key);
-            if (success) player.Items.AddItem(CustomCorpseItem.Create());
-            if (pick.Value != null) player.Items.AddItem(pick.Value);
 
-            alreadyLootedGraves.Add(instanceId, 0);
+
+            if (!Surpassed && success)
+            {
+                DaggerfallUI.AddHUDText(pick.Key);
+                player.Items.AddItem(CustomCorpseItem.Create());
+                if (pick.Value != null) player.Items.AddItem(pick.Value);
+                alreadyLootedGraves.Add(instanceId, 0);
+            }
+            else if (Surpassed && success)
+            {
+                //pick.Value = null;
+                pick = failureMessagesTooMuchWeight[random.Next(0, failureMessagesTooMuchWeight.Count)];
+                DaggerfallUI.AddHUDText(pick.Key);
+                player.Items.AddItem(pick.Value);
+                alreadyLootedGraves.Add(instanceId, 1);
+            }
+            else  //failed
+            {
+                DaggerfallUI.AddHUDText(pick.Key);
+                player.Items.AddItem(pick.Value);
+                alreadyLootedGraves.Add(instanceId, 0);
+            }
+            
         }
 
         private static void RegisterCustomActivations(Mod mod)
