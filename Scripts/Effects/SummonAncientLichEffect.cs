@@ -10,7 +10,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonAncientLichEffect : ChebEffect
     {
-        protected override string effectKey => "Summon Ancient Lich";
+        public const string EffectKey = "Summon Ancient Lich";
+        protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons an ancient lich to follow and guard you.";
 
         public override void SetProperties()

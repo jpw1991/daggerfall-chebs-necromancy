@@ -10,7 +10,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonAncientVampireEffect : ChebEffect
     {
-        protected override string effectKey => "Summon Ancient Vampire";
+        public const string EffectKey = "Summon Ancient Vampire";
+        protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons an ancient vampire to follow and guard you.";
 
         public override void SetProperties()

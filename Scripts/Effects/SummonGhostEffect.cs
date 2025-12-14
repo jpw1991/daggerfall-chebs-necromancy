@@ -10,7 +10,8 @@ namespace ChebsNecromancyMod
 {
     public class SummonGhostEffect : ChebEffect
     {
-        protected override string effectKey => "Summon Ghost";
+        public const string EffectKey = "Summon Ghost";
+        protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a ghost to follow and guard you.";
 
         public override void SetProperties()

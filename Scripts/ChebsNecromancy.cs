@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using ChebsNecromancy.Scripts.Spells;
 using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
@@ -205,8 +206,16 @@ namespace ChebsNecromancyMod
 
             #region AfterSettings
             // Create spells after settings are loaded, so that values from the config get used.
-            AnimateDeadSpell = CreateAnimateDeadSpell();
-            NoviceRecallSpell = CreateNoviceRecallSpell();
+            // Keep the bundles as static so that the CustomWizard can use them later.
+            AnimateDeadSpell = AnimateDead.Create();
+            NoviceRecallSpell = NoviceRecall.Create();
+            CallAscendedMinion.Create();
+            CallGreaterAscendedMinion.Create();
+            GreaterVampiricPact.Create();
+            RaiseMummy.Create();
+            ReanimateCorpse.Create();
+            RoilSpirit.Create();
+            VampiricPact.Create();
             #endregion
 
             RegisterCustomActivations(mod);
@@ -557,100 +566,6 @@ namespace ChebsNecromancyMod
         private void OnDestroy()
         {
             SaveLoadManager.OnLoad -= OnSaveLoad;
-        }
-
-        private static EffectBundleSettings CreateAnimateDeadSpell()
-        {
-            // In DFU a spell is called an effect bundle - basically a bundle of spell effects (makes sense). Here we
-            // create a beginner spell for people so they have some minions to start off with if they wish.
-            var effectBroker = GameManager.Instance.EntityEffectBroker;
-            if (!effectBroker.HasEffectTemplate(SummonSkeletonEffect.EffectKey))
-            {
-                ChebError("CreateBeginnerSpell: Failed to get template from effect broker");
-                return new EffectBundleSettings();
-            }
-
-            var template = effectBroker.GetEffectTemplate(SummonSkeletonEffect.EffectKey);
-            var templateSettings = new EffectSettings()
-            {
-                ChanceBase = 25,
-                ChancePerLevel = 5,
-                ChancePlus = 1,
-                MagnitudeBaseMin = 1,
-                MagnitudeBaseMax = 1,
-                MagnitudePerLevel = 1,
-                MagnitudePlusMax = 1,
-                MagnitudePlusMin = 1
-            };
-            var effectEntry = new EffectEntry()
-            {
-                Key = template.Properties.Key,
-                Settings = templateSettings,
-            };
-            var animateDead = new EffectBundleSettings()
-            {
-                Version = 1,
-                BundleType = BundleTypes.Spell,
-                TargetType = TargetTypes.CasterOnly,
-                ElementType = ElementTypes.Magic,
-                Name = "Animate Dead",
-                IconIndex = 12,
-                Effects = new EffectEntry[] { effectEntry },
-            };
-            // add it to stores so it can be purchased
-            var offer = new EntityEffectBroker.CustomSpellBundleOffer()
-            {
-                Key = "AnimateDead-CustomOffer",
-                Usage = EntityEffectBroker.CustomSpellBundleOfferUsage.SpellsForSale,
-                BundleSetttings = animateDead,
-            };
-            effectBroker.RegisterCustomSpellBundleOffer(offer);
-
-            return offer.BundleSetttings;
-        }
-
-        private static EffectBundleSettings CreateNoviceRecallSpell()
-        {
-            // Create a basic recall spell so that they can recall their stuck minions
-            var effectBroker = GameManager.Instance.EntityEffectBroker;
-            if (!effectBroker.HasEffectTemplate(RecallMinionsEffect.EffectKey))
-            {
-                ChebError("CreateBeginnerSpell: Failed to get template from effect broker");
-                return new EffectBundleSettings();
-            }
-
-            var template = effectBroker.GetEffectTemplate(RecallMinionsEffect.EffectKey);
-            var templateSettings = new EffectSettings()
-            {
-                ChanceBase = 25,
-                ChancePerLevel = 5,
-                ChancePlus = 1,
-            };
-            var effectEntry = new EffectEntry()
-            {
-                Key = template.Properties.Key,
-                Settings = templateSettings,
-            };
-            var noviceRecall = new EffectBundleSettings()
-            {
-                Version = 1,
-                BundleType = BundleTypes.Spell,
-                TargetType = TargetTypes.CasterOnly,
-                ElementType = ElementTypes.Magic,
-                Name = "Novice Recall",
-                IconIndex = 12,
-                Effects = new EffectEntry[] { effectEntry },
-            };
-            // add it to stores so it can be purchased
-            var offer = new EntityEffectBroker.CustomSpellBundleOffer()
-            {
-                Key = "NoviceRecall-CustomOffer",
-                Usage = EntityEffectBroker.CustomSpellBundleOfferUsage.SpellsForSale,
-                BundleSetttings = noviceRecall,
-            };
-            effectBroker.RegisterCustomSpellBundleOffer(offer);
-
-            return offer.BundleSetttings;
         }
 
         #region Logging
