@@ -14,7 +14,8 @@ namespace ChebsNecromancyMod.MinionSpawners
 
         protected override void ScaleMinion(GameObject minion)
         {
-            if (!minion.TryGetComponent(out DaggerfallEntityBehaviour daggerfallEntityBehaviour))
+            DaggerfallEntityBehaviour daggerfallEntityBehaviour;
+            if (!minion.TryGetComponent(out daggerfallEntityBehaviour))
             {
                 ChebsNecromancy.ChebError("Failed to scale minion - can't get DaggerfallEntityBehaviour");
                 return;

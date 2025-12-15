@@ -38,8 +38,9 @@ namespace ChebsNecromancyMod
             var daggerfallEnemies = FindObjectsOfType<DaggerfallEnemy>();
             foreach (var daggerfallEnemy in daggerfallEnemies)
             {
+                UndeadMinion undeadMinion;
                 if (daggerfallEnemy.MobileUnit.Enemy.Team == MobileTeams.PlayerAlly
-                    && daggerfallEnemy.TryGetComponent(out UndeadMinion _))
+                    && daggerfallEnemy.TryGetComponent(out undeadMinion))
                 {
                     result.Add(daggerfallEnemy);
                 }
@@ -58,7 +59,8 @@ namespace ChebsNecromancyMod
 
             enemyMotor.IsHostile = false;
 
-            if (TryGetComponent(out EnemySounds enemySounds))
+            EnemySounds enemySounds;
+            if (TryGetComponent(out enemySounds))
             {
                 // mute that infernal roaring
                 enemySounds.BarkSound = SoundClips.None;
@@ -135,7 +137,8 @@ namespace ChebsNecromancyMod
 
             direction *= checkDistance;
             var ray = new Ray(rayOrigin + direction, Vector3.down);
-            fallDetected = !Physics.Raycast(ray, out RaycastHit hit, (originalHeight * 0.5f) + FALL_RAYCAST_DISTANCE);
+            RaycastHit hit;
+            fallDetected = !Physics.Raycast(ray, out hit, (originalHeight * 0.5f) + FALL_RAYCAST_DISTANCE);
         }
 
         bool CanFly()
@@ -155,7 +158,8 @@ namespace ChebsNecromancyMod
             Vector3 p1 = enemyMotor.transform.position + (Vector3.up * -originalHeight * 0.1388F);
             Vector3 p2 = p1 + (Vector3.up * Mathf.Min(originalHeight, doorCrouchingHeight) / 2);
 
-            if (Physics.CapsuleCast(p1, p2, controller.radius / 2, direction, out RaycastHit hit, checkDistance, ignoreMaskForObstacles))
+            RaycastHit hit;
+            if (Physics.CapsuleCast(p1, p2, controller.radius / 2, direction, out hit, checkDistance, ignoreMaskForObstacles))
             {
                 obstacleDetected = true;
                 var entityBehaviour2 = hit.transform.GetComponent<DaggerfallEntityBehaviour>();

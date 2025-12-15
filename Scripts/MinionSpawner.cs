@@ -79,13 +79,17 @@ namespace ChebsNecromancyMod
             undeadMinion.createdWithMagnitude = magnitude;
             minion.SetActive(true);
 
-            ChebsNecromancy.ChebLog($@"Finalized minion: {JsonConvert.SerializeObject(mobileUnit.Enemy,
-                new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    Error = ((sender, args) => { })
-                })
-            }");
+            ChebsNecromancy.ChebLog(
+                "Finalized minion: " +
+                JsonConvert.SerializeObject(
+                    mobileUnit.Enemy,
+                    new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                        Error = (sender, args) => { }
+                    }
+                )
+            );
         }
     }
 }

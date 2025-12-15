@@ -35,7 +35,7 @@ namespace ChebsNecromancyMod
         const string newGameCinematic2 = "ANIM0011.VID";
         const string newGameCinematic3 = "DAG2.VID";
 
-        WizardStages wizardStage;
+        StartNewGameWizard.WizardStages wizardStage;
         CharacterDocument characterDocument = new CharacterDocument();
         StartGameBehaviour startGameBehaviour;
 
@@ -56,28 +56,28 @@ namespace ChebsNecromancyMod
 
         bool skillsNeedReroll;
 
-        WizardStages WizardStage
+        StartNewGameWizard.WizardStages WizardStage
         {
             get { return wizardStage; }
         }
 
-        public enum WizardStages
-        {
-            SelectRace,
-            SelectGender,
-            SelectClassMethod,
-            GenerateClass,
-            SelectClassFromList,
-            CustomClassBuilder,
-            SelectBiographyMethod,
-            BiographyQuestions,
-            SelectName,
-            SelectFace,
-            AddBonusStats,
-            AddBonusSkills,
-            SelectReflexes,
-            Summary,
-        }
+        // public enum WizardStages
+        // {
+        //     SelectRace,
+        //     SelectGender,
+        //     SelectClassMethod,
+        //     GenerateClass,
+        //     SelectClassFromList,
+        //     CustomClassBuilder,
+        //     SelectBiographyMethod,
+        //     BiographyQuestions,
+        //     SelectName,
+        //     SelectFace,
+        //     AddBonusStats,
+        //     AddBonusSkills,
+        //     SelectReflexes,
+        //     Summary,
+        // }
 
         public CustomStartNewGameWizard(IUserInterfaceManager uiManager)
             : base(uiManager)
@@ -117,7 +117,7 @@ namespace ChebsNecromancyMod
             createCharRaceSelectWindow.Reset();
             characterDocument.raceTemplate = null;
 
-            wizardStage = WizardStages.SelectRace;
+            wizardStage = StartNewGameWizard.WizardStages.SelectRace;
 
             if (uiManager.TopWindow != createCharRaceSelectWindow)
                 uiManager.PushWindow(createCharRaceSelectWindow);
@@ -131,7 +131,7 @@ namespace ChebsNecromancyMod
                 createCharGenderSelectWindow.OnClose += GenderSelectWindow_OnClose;
             }
 
-            wizardStage = WizardStages.SelectGender;
+            wizardStage = StartNewGameWizard.WizardStages.SelectGender;
             uiManager.PushWindow(createCharGenderSelectWindow);
         }
 
@@ -139,7 +139,7 @@ namespace ChebsNecromancyMod
         {
             createCharChooseClassGenWindow = new CreateCharChooseClassGen(uiManager, createCharRaceSelectWindow);
             createCharChooseClassGenWindow.OnClose += ChooseClassGen_OnClose;
-            wizardStage = WizardStages.SelectClassMethod;
+            wizardStage = StartNewGameWizard.WizardStages.SelectClassMethod;
             uiManager.PushWindow(createCharChooseClassGenWindow);
         }
 
@@ -147,7 +147,7 @@ namespace ChebsNecromancyMod
         {
             createCharClassQuestionsWindow = new CreateCharClassQuestions(uiManager);
             createCharClassQuestionsWindow.OnClose += CreateCharClassQuestions_OnClose;
-            wizardStage = WizardStages.GenerateClass;
+            wizardStage = StartNewGameWizard.WizardStages.GenerateClass;
             uiManager.PushWindow(createCharClassQuestionsWindow);
         }
 
@@ -159,7 +159,7 @@ namespace ChebsNecromancyMod
                 createCharClassSelectWindow.OnClose += ClassSelectWindow_OnClose;
             }
 
-            wizardStage = WizardStages.SelectClassFromList;
+            wizardStage = StartNewGameWizard.WizardStages.SelectClassFromList;
             uiManager.PushWindow(createCharClassSelectWindow);
         }
 
@@ -167,7 +167,7 @@ namespace ChebsNecromancyMod
         {
             createCharCustomClassWindow = new CreateCharCustomClass(uiManager);
             createCharCustomClassWindow.OnClose += CreateCharCustomClassWindow_OnClose;
-            wizardStage = WizardStages.CustomClassBuilder;
+            wizardStage = StartNewGameWizard.WizardStages.CustomClassBuilder;
             uiManager.PushWindow(createCharCustomClassWindow);
         }
 
@@ -176,7 +176,7 @@ namespace ChebsNecromancyMod
             createCharChooseBioWindow = new CreateCharChooseBio(uiManager, createCharRaceSelectWindow);
             createCharChooseBioWindow.OnClose += CreateCharChooseBioWindow_OnClose;
 
-            wizardStage = WizardStages.SelectBiographyMethod;
+            wizardStage = StartNewGameWizard.WizardStages.SelectBiographyMethod;
             skillsNeedReroll = true;
             uiManager.PushWindow(createCharChooseBioWindow);
         }
@@ -187,7 +187,7 @@ namespace ChebsNecromancyMod
             createCharBiographyWindow.OnClose += CreateCharBiographyWindow_OnClose;
 
             createCharBiographyWindow.ClassIndex = characterDocument.classIndex;
-            wizardStage = WizardStages.BiographyQuestions;
+            wizardStage = StartNewGameWizard.WizardStages.BiographyQuestions;
             uiManager.PushWindow(createCharBiographyWindow);
         }
 
@@ -202,7 +202,7 @@ namespace ChebsNecromancyMod
             createCharNameSelectWindow.RaceTemplate = characterDocument.raceTemplate;
             createCharNameSelectWindow.Gender = characterDocument.gender;
 
-            wizardStage = WizardStages.SelectName;
+            wizardStage = StartNewGameWizard.WizardStages.SelectName;
             uiManager.PushWindow(createCharNameSelectWindow);
         }
 
@@ -216,7 +216,7 @@ namespace ChebsNecromancyMod
 
             createCharFaceSelectWindow.SetFaceTextures(characterDocument.raceTemplate, characterDocument.gender);
 
-            wizardStage = WizardStages.SelectFace;
+            wizardStage = StartNewGameWizard.WizardStages.SelectFace;
             uiManager.PushWindow(createCharFaceSelectWindow);
         }
 
@@ -237,7 +237,7 @@ namespace ChebsNecromancyMod
                 createCharAddBonusStatsWindow.Reroll();
             }
 
-            wizardStage = WizardStages.AddBonusStats;
+            wizardStage = StartNewGameWizard.WizardStages.AddBonusStats;
             uiManager.PushWindow(createCharAddBonusStatsWindow);
         }
 
@@ -250,7 +250,7 @@ namespace ChebsNecromancyMod
             }
 
             createCharAddBonusSkillsWindow.SetCharacterDocument(characterDocument, !skillsNeedReroll);
-            wizardStage = WizardStages.AddBonusSkills;
+            wizardStage = StartNewGameWizard.WizardStages.AddBonusSkills;
             uiManager.PushWindow(createCharAddBonusSkillsWindow);
         }
 
@@ -262,7 +262,7 @@ namespace ChebsNecromancyMod
                 createCharReflexSelectWindow.OnClose += ReflexSelectWindow_OnClose;
             }
 
-            wizardStage = WizardStages.SelectReflexes;
+            wizardStage = StartNewGameWizard.WizardStages.SelectReflexes;
             uiManager.PushWindow(createCharReflexSelectWindow);
         }
 
@@ -277,7 +277,7 @@ namespace ChebsNecromancyMod
 
             createCharSummaryWindow.CharacterDocument = characterDocument;
 
-            wizardStage = WizardStages.Summary;
+            wizardStage = StartNewGameWizard.WizardStages.Summary;
             uiManager.PushWindow(createCharSummaryWindow);
         }
 

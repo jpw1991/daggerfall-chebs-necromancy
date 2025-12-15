@@ -228,8 +228,10 @@ namespace ChebsNecromancyMod
             // drop a corpse if it's a humanoid or humanoid-like monster
             var enemyDeath = sender as EnemyDeath;
             if (enemyDeath == null) return;
-            if (!enemyDeath.TryGetComponent(out DaggerfallEntityBehaviour entityBehaviour)) return;
-            if (!(entityBehaviour.Entity is EnemyEntity enemyEntity)) return;
+            DaggerfallEntityBehaviour entityBehaviour;
+            if (!enemyDeath.TryGetComponent(out entityBehaviour)) return;
+            EnemyEntity enemyEntity = entityBehaviour.Entity as EnemyEntity;
+            if (enemyEntity == null) return;
             var dropCorpse = false;
             if (enemyEntity.EntityType == EntityTypes.EnemyClass)
             {
