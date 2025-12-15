@@ -115,6 +115,7 @@ for their open source repositories (which I studied) and/or their invaluable ass
 
 Version | Date       | Info
 --- |------------| ---
+0.0.24 | 16/12/2025 | Add multiple new spells for purchase; refactor to be old C# language compliant (seems DFU 1.1.1 needs that)
 0.0.23 | 03/06/2024 | Fix problem of custom Humanoid Corpse weights not applying
 0.0.22 | 30/05/2024 | Change the value for the corpse item so it no longer conflicts with Kleptomania
 0.0.21 | 30/05/2024 | Expose the skill associated with necromancy effects to the config so that people can set something else.
