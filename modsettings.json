@@ -1035,6 +1035,52 @@
                     "Description": "The offsetGold parameter to the MakeEffectCosts assigned to MagnitudeCosts.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Name": "Reagent 1 Item Group",
+                    "Description": "The items consumed when casting the spell. Set to None for no requirement.",
+                    "Value": 1,
+                    "Options": [
+                        "None",
+                        "Drugs",
+                        "UselessItems1",
+                        "Armor",
+                        "Weapons",
+                        "MagicItems",
+                        "Artifacts",
+                        "MensClothing",
+                        "Books",
+                        "Furniture",
+                        "UselessItems2",
+                        "ReligiousItems",
+                        "Maps",
+                        "WomensClothing",
+                        "Paintings",
+                        "Gems",
+                        "PlantIngredients1",
+                        "PlantIngredients2",
+                        "CreatureIngredients1",
+                        "CreatureIngredients2",
+                        "CreatureIngredients3",
+                        "MiscellaneousIngredients1",
+                        "MetalIngredients",
+                        "MiscellaneousIngredients2",
+                        "Transportation",
+                        "Deeds",
+                        "Jewellery",
+                        "QuestItems",
+                        "MiscItems",
+                        "Currency"
+                    ],
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.MultipleChoiceKey"
+                },
+                {
+                    "Name": "Reagent 1 Item Code",
+                    "Description": "The item code of the desired reagent. Refer to mod README for help",
+                    "Value": "6666",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.TextKey"
                 }
             ],
             "$version": "v1"

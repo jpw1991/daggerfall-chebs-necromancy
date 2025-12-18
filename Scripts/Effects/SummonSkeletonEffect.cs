@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 using UnityEngine;
@@ -12,6 +14,14 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Summon Skeleton";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a skeleton to follow and guard you.";
+
+        protected override List<KeyValuePair<ItemGroups, int>> reagentsItems
+        {
+            get { return new List<KeyValuePair<ItemGroups, int>>
+            {
+                new KeyValuePair<ItemGroups, int>(CustomCorpseItem.TemplateItemGroup, (int)CustomCorpseItem.CustomTemplateIndex)
+            }; }
+        }
 
         public override void SetProperties()
         {
@@ -53,38 +63,6 @@ namespace ChebsNecromancyMod
         }
 
         public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
-
-        protected bool HasReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("SummonSkeletonEffect.HasReagents: caster is null");
-                return false;
-            }
-
-            var result = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex) != null;
-            if (!result) DaggerfallUI.AddHUDText("No corpse item available.");
-            return result;
-        }
-
-        protected void ConsumeReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("SummonSkeletonEffect.ConsumeReagents: caster is null");
-                return;
-            }
-
-            var foundCorpseItem =
-                caster.Entity.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (foundCorpseItem == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
-                return;
-            }
-            caster.Entity.Items.RemoveOne(foundCorpseItem);
-        }
 
         protected override void DoEffect()
         {

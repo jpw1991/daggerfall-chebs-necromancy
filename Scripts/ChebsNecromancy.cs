@@ -527,6 +527,10 @@ namespace ChebsNecromancyMod
             CorpseItemEnabled = modSettings.GetBool(corpseSection, "Enabled");
             if (!CorpseItemEnabled) EnemyDeath.OnEnemyDeath -= OnEnemyDeath;
             CustomCorpseItem.customWeightInKG = modSettings.GetInt(corpseSection, "Weight in KG");
+
+            //var test = modSettings.get
+            //DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey
+            //var test = modSettings.GetTupleInt(corpseSection, "Test");
         }
 
         private static void UpdateInventoryItems()

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
@@ -13,6 +14,14 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Summon Mummy";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a mummy to follow and guard you.";
+        protected override List<KeyValuePair<ItemGroups, int>> reagentsItems
+        {
+            get { return new List<KeyValuePair<ItemGroups, int>>
+            {
+                new KeyValuePair<ItemGroups, int>(CustomCorpseItem.TemplateItemGroup, (int)CustomCorpseItem.CustomTemplateIndex),
+                new KeyValuePair<ItemGroups, int>(ItemGroups.UselessItems2, (int)UselessItems2.Bandage)
+            }; }
+        }
 
         public override void SetProperties()
         {
@@ -54,76 +63,6 @@ namespace ChebsNecromancyMod
         }
 
         public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
-
-        protected bool HasReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("SummonMummyEffect.HasReagents: caster is null");
-                return false;
-            }
-
-            var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (corpseItem == null)
-            {
-                DaggerfallUI.AddHUDText("No corpse item available.");
-                return false;
-            }
-
-            var bandage = caster.Entity.Items
-                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage);
-            var oil = caster.Entity.Items
-                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil);
-            if (oil == null && bandage == null)
-            {
-                DaggerfallUI.AddHUDText("Bandages or oil required.");
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void ConsumeReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("SummonMummyEffect.ConsumeReagents: caster is null");
-                return;
-            }
-
-            var foundCorpseItem =
-                caster.Entity.Items.GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (foundCorpseItem == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: foundCorpseItem is null");
-                return;
-            }
-
-            // consume oil before bandages (oil seems more useless)
-            var bandage = caster.Entity.Items
-                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Bandage);
-            var oil = caster.Entity.Items
-                .GetItem(ItemGroups.UselessItems2, (int)UselessItems2.Oil);
-            if (oil == null && bandage == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: oil and bandages is null");
-                return;
-            }
-
-            if (oil != null)
-            {
-                ChebsNecromancy.ChebLog("Consuming oil");
-                caster.Entity.Items.RemoveOne(oil);
-            }
-            else
-            {
-                ChebsNecromancy.ChebLog("Consuming bandage");
-                caster.Entity.Items.RemoveItem(bandage);
-            }
-
-            caster.Entity.Items.RemoveOne(foundCorpseItem);
-        }
 
         protected override void DoEffect()
         {

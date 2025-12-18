@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallWorkshop;
+using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 
@@ -11,6 +14,65 @@ namespace ChebsNecromancyMod
         public static DFCareer.Skills Skill = DFCareer.Skills.Mysticism;
         protected virtual string effectKey => "Recall Minions";
         protected virtual string effectDescription => "Recall all minions to your location.";
+
+        #region Reagents
+        // key, value => ItemGroups.PlantIngredients2, PlantIngredients2.Black_rose
+        protected virtual List<KeyValuePair<ItemGroups, int>> reagentsItems => new List<KeyValuePair<ItemGroups, int>>();
+
+        protected string ReagentsText()
+        {
+            if (reagentsItems.Count == 0) return "Requires: Nothing";
+            var result = "Requires: ";
+            foreach (var reagent in reagentsItems)
+            {
+                result += reagent;
+            }
+            return result;
+        }
+
+        protected bool HasReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError(effectKey + " -> HasReagents: caster is null");
+                return false;
+            }
+
+            foreach (var reagentItem in reagentsItems)
+            {
+                var reagent = caster.Entity.Items
+                    .GetItem(reagentItem.Key, reagentItem.Value);
+                if (reagent == null)
+                {
+                    DaggerfallUI.AddHUDText("Missing reagent: " + reagentItem);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        protected void ConsumeReagents()
+        {
+            if (caster == null)
+            {
+                ChebsNecromancy.ChebError(effectKey + " -> ConsumeReagents: caster is null");
+                return;
+            }
+
+            foreach (var reagentItem in reagentsItems)
+            {
+                var reagent = caster.Entity.Items
+                    .GetItem(reagentItem.Key, reagentItem.Value);
+                if (reagent == null)
+                {
+                    ChebsNecromancy.ChebError(effectKey + " -> ConsumeReagents: Failed to consume reagent: " + reagentItem);
+                    return;
+                }
+                caster.Entity.Items.RemoveOne(reagent);
+            }
+        }
+        #endregion
 
         public override void SetProperties()
         {
@@ -62,7 +124,7 @@ namespace ChebsNecromancyMod
             return DaggerfallUnity.Instance.TextProvider.CreateTokens(
                 TextFile.Formatting.JustifyCenter,
                 GroupName,
-                effectDescription,
+                effectDescription + ReagentsText(),
                 "Duration: Instantaneous.",
                 "Chance: % Chance summoning will succeed.",
                 "Magnitude: N/A");
@@ -76,7 +138,7 @@ namespace ChebsNecromancyMod
                 "Duration: Instantaneous.",
                 "Chance: %bch + %ach per %clc level(s)",
                 "Magnitude: N/A",
-                effectDescription);
+                effectDescription + ReagentsText());
         }
 
         #endregion

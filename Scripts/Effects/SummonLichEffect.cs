@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
@@ -13,6 +14,14 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Summon Lich";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a lich to follow and guard you.";
+        protected override List<KeyValuePair<ItemGroups, int>> reagentsItems
+        {
+            get { return new List<KeyValuePair<ItemGroups, int>>
+            {
+                new KeyValuePair<ItemGroups, int>(CustomCorpseItem.TemplateItemGroup, (int)CustomCorpseItem.CustomTemplateIndex),
+                new KeyValuePair<ItemGroups, int>(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust)
+            }; }
+        }
 
         public override void SetProperties()
         {
@@ -54,60 +63,6 @@ namespace ChebsNecromancyMod
         }
 
         public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
-
-        protected bool HasReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("HasReagents: caster is null");
-                return false;
-            }
-
-            var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (corpseItem == null)
-            {
-                DaggerfallUI.AddHUDText("No corpse item available.");
-                return false;
-            }
-
-            var lichDust = caster.Entity.Items
-                .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
-            if (lichDust == null)
-            {
-                DaggerfallUI.AddHUDText("No lich dust available.");
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void ConsumeReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("ConsumeReagents: caster is null");
-                return;
-            }
-
-            var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (corpseItem == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
-                return;
-            }
-            caster.Entity.Items.RemoveOne(corpseItem);
-
-            var lichDust = caster.Entity.Items
-                .GetItem(ItemGroups.CreatureIngredients1, (int)CreatureIngredients1.Lich_dust);
-            if (lichDust == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: lichDust is null");
-                return;
-            }
-            caster.Entity.Items.RemoveOne(lichDust);
-        }
 
         protected override void DoEffect()
         {

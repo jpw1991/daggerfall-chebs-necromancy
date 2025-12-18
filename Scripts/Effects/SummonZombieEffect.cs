@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
+using DaggerfallWorkshop.Game.Items;
 using DaggerfallWorkshop.Game.MagicAndEffects;
 using DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings;
 using UnityEngine;
@@ -12,6 +14,13 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Summon Zombie";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons a zombie to follow and guard you.";
+        protected override List<KeyValuePair<ItemGroups, int>> reagentsItems
+        {
+            get { return new List<KeyValuePair<ItemGroups, int>>
+            {
+                new KeyValuePair<ItemGroups, int>(CustomCorpseItem.TemplateItemGroup, (int)CustomCorpseItem.CustomTemplateIndex)
+            }; }
+        }
 
         public override void SetProperties()
         {

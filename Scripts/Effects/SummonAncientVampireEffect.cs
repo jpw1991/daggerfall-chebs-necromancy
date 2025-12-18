@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ChebsNecromancyMod.MinionSpawners;
 using DaggerfallConnect;
 using DaggerfallWorkshop.Game;
@@ -13,6 +14,14 @@ namespace ChebsNecromancyMod
         public const string EffectKey = "Summon Ancient Vampire";
         protected override string effectKey => EffectKey;
         protected override string effectDescription => "Summons an ancient vampire to follow and guard you.";
+        protected override List<KeyValuePair<ItemGroups, int>> reagentsItems
+        {
+            get { return new List<KeyValuePair<ItemGroups, int>>
+            {
+                new KeyValuePair<ItemGroups, int>(CustomCorpseItem.TemplateItemGroup, (int)CustomCorpseItem.CustomTemplateIndex),
+                new KeyValuePair<ItemGroups, int>(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose)
+            }; }
+        }
 
         public override void SetProperties()
         {
@@ -54,74 +63,6 @@ namespace ChebsNecromancyMod
         }
 
         public override bool ChanceSuccess => base.ChanceSuccess && (!ChebsNecromancy.CorpseItemEnabled || HasReagents());
-
-        protected bool HasReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("HasReagents: caster is null");
-                return false;
-            }
-
-            var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (corpseItem == null)
-            {
-                DaggerfallUI.AddHUDText("No corpse item available.");
-                return false;
-            }
-
-            var blackRoseItem = caster.Entity.Items
-                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
-            var whiteRoseItem = caster.Entity.Items
-                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
-            if (blackRoseItem == null && whiteRoseItem == null)
-            {
-                DaggerfallUI.AddHUDText("Black/White rose required.");
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void ConsumeReagents()
-        {
-            if (caster == null)
-            {
-                ChebsNecromancy.ChebError("ConsumeReagents: caster is null");
-                return;
-            }
-
-            var corpseItem = caster.Entity.Items
-                .GetItem(CustomCorpseItem.TemplateItemGroup, CustomCorpseItem.CustomTemplateIndex);
-            if (corpseItem == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: corpseItem is null");
-                return;
-            }
-            caster.Entity.Items.RemoveOne(corpseItem);
-
-            var blackRose = caster.Entity.Items
-                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.Black_rose);
-            var whiteRose = caster.Entity.Items
-                .GetItem(ItemGroups.PlantIngredients2, (int)PlantIngredients2.White_rose);
-            if (blackRose == null && whiteRose == null)
-            {
-                ChebsNecromancy.ChebError("Failed to consume reagents: black and white rose is null");
-                return;
-            }
-
-            if (blackRose != null)
-            {
-                ChebsNecromancy.ChebLog("Consuming black rose");
-                caster.Entity.Items.RemoveOne(blackRose);
-            }
-            else
-            {
-                ChebsNecromancy.ChebLog("Consuming white rose");
-                caster.Entity.Items.RemoveOne(whiteRose);
-            }
-        }
 
         protected override void DoEffect()
         {
